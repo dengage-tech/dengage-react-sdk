@@ -4,7 +4,7 @@
 The platform positions itself between our client’s data sources and its customers. It is also capable of exporting anonymous data to 3rd party networks such as **Oracle Bluekai, Criteo, Facebook Custom Audiences** and **Google Customer** Match to support retargeting and remarketing efforts of our clients.
 For further details about dEngage please [visit here](https://docs.dengage.com).
 
-This package makes it easy to integrate your native React-Native iOS and/or Android apps with dEngage. Following are instructions for installation of react-native-dengage SDK to your react-native applications.
+This package makes it easy to integrate, dEngage, with your React-Native iOS and/or Android apps. Following are instructions for installation of react-native-dengage SDK to your react-native applications.
 
 ## Installation
 
@@ -74,6 +74,19 @@ Following extra steps after the installation of the react-native-dengage SDK are
 
 <details>
   <summary> iOS Specific Extra steps </summary>
+  
+  #### Requirements
+  - D·engage Integration Key
+  - iOS Push Cerificate
+  - iOS Device (you need to test on a real device for notifications)
+  - A mac with latest Xcode
+
+  #### Endpoint Configuration in PInfo.list
+  For initial setup, if you have given URL addresses by dEngage Support team, you need to setup url address by using ```Info.plist``` file. Otherwise you don’t need to add anything to ```Info.plist``` file. Following screenshot for the keys in ```Info.plist``` file.
+  ![Info.plist screenshot](https://raw.githubusercontent.com/whitehorse-technology/Dengage.Framework/master/docs/img/Screen%20Shot%202020-09-25%20at%2015.41.27.png)
+
+> Note: Please see API Endpoints by Datacenter documentation in this section for end points. [here is link](https://dev.dengage.com/mobile-sdk/api-endpoints)
+
 </details>
 
 <details>
