@@ -17,10 +17,10 @@ npm install react-native-dengage
 <details>
   <summary> iOS Linking </summary>
   
-  ### React Native 0.60 and above
+  #### React Native 0.60 and above
   Run npx ```pod-install```. Linking is not required in React Native 0.60 and above.
   
-  ### React Native 0.59 and below
+  #### React Native 0.59 and below
   Run react-native link react-native-dengage to link the react-native-dengage library.
 
 </details>
@@ -28,6 +28,45 @@ npm install react-native-dengage
 <details>
   <summary> android Linking </summary>
   
+  Linking is NOT required in React Native 0.60 and above. If your project is using React Native < 0.60, run ```react-native link react-native-dengage``` to link the react-native-dengage library.
+
+Or if you have trouble, make the following additions to the given files manually:
+
+#### android/settings.gradle
+
+```
+include ':react-native-dengage'
+project(':react-native-dengage').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-dengage/android')
+```
+
+#### android/app/build.gradle
+
+```
+dependencies {
+   ...
+   implementation project(':react-native-dengage')
+}
+```
+
+#### MainApplication.java
+
+On top, where imports are:
+```
+import com.reactnativedengage.DengagePackage;
+```
+
+Add the DengagePackage class to your list of exported packages.
+
+```
+@Override
+protected List<ReactPackage> getPackages() {
+    return Arrays.asList(
+            new MainReactPackage(),
+            new DengagePackage()
+    );
+}
+```
+
 </details>
 
 ## Platform Specific Extra Steps
