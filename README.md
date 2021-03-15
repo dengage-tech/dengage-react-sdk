@@ -51,6 +51,7 @@ dependencies {
 #### MainApplication.java
 
 On top, where imports are:
+
 ```
 import com.reactnativedengage.DengagePackage;
 ```
@@ -76,18 +77,25 @@ Following extra steps after the installation of the react-native-dengage SDK are
   <summary> iOS Specific Extra steps </summary>
   
   #### Requirements
-  - D·engage Integration Key
+  - dEngage Integration Key
   - iOS Push Cerificate
   - iOS Device (you need to test on a real device for notifications)
   - A mac with latest Xcode
 
-  #### Endpoint Configuration in PInfo.list
+  ### Steps
+  
+  1. Endpoint Configuration in PInfo.list
   For initial setup, if you have given URL addresses by dEngage Support team, you need to setup url address by using ```Info.plist``` file. Otherwise you don’t need to add anything to ```Info.plist``` file. Following screenshot for the keys in ```Info.plist``` file.
   
   ![Info.plist screenshot](https://raw.githubusercontent.com/whitehorse-technology/Dengage.Framework/master/docs/img/Screen%20Shot%202020-09-25%20at%2015.41.27.png)
 
 > Note: Please see API Endpoints by Datacenter documentation in this section for end points. [here is link](https://dev.dengage.com/mobile-sdk/api-endpoints)
 
+  2. Add Required Capabilities
+  In Xcode, select the root project and main app target. In ***Signing & Capabilities***, select ***All*** and ***+ Capability***. Add "Push Notifications" and ***Background Modes***
+  ![capabilities screenshot](https://files.readme.io/710b29e-Screen_Shot_2020-08-15_at_5.40.54_PM.png)
+
+#### Setting dEngage Integeration Key
 </details>
 
 <details>
