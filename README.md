@@ -12,6 +12,19 @@ This package makes it easy to integrate your native React-Native iOS and/or Andr
 npm install react-native-dengage
 ```
 
+## Linking
+
+<details>
+  <summary> iOS Linking </summary>
+  
+  ## React Native 0.60 and above
+  Run npx ```pod-install```. Linking is not required in React Native 0.60 and above.
+  
+  ## React Native 0.59 and below
+  Run react-native link react-native-dengage to link the react-native-dengage library.
+
+</details>
+
 ## Usage
 
 ```js
