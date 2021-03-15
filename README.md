@@ -233,7 +233,44 @@ import Dengage from "react-native-dengage";
 
 // ...
 
-const result = await Dengage.multiply(3, 7);
+Dengage.setIntegrationKey("Your-Dengage-Integeration-Key");
+```
+
+### Subscription
+****Subscription is a process which is triggered by sending subscription event to Dengage. It contains necessary informations about application to send push notifications to clients.****
+
+Subscriptions are self managed by dEngage SDK and subcription cycle starts with Prompting user permission. SDK will automaticlly send subscription events under following circumstances;
+
+- Setting Contact key
+- Setting Token
+- Setting User Permission (if you have manual management of permission)
+
+### Asking User Permission for Notification
+> Note: Android doesn't require to ask for push notifications explicitely. Therefore, you can only ask for push notification's permissions on iOS.
+
+IOS uses shared `UNUserNotificationCenter` by itself while asking user to send notification. Dengage SDK manager uses `UNUserNotificationCenter` to ask permission as well. [Apple Doc Reference](https://developer.apple.com/documentation/usernotifications/asking_permission_to_use_notifications)
+
+If in your application, you want to get UserNotification permissions explicitely, you can do by calling one of the following methods:
+
+```Javascript
+// At the top import
+import dEngage from 'react-native-dengage'
+
+// somewhere in your javascript/typescript code
+dEngage.promptForPushNotifications()
+```
+
+OR
+
+```Javascript
+// At the top import
+import dEngage from 'react-native-dengage'
+
+// somewhere in your javascript/typescript code
+dEngage.promptForPushNotifications((hasPermission: Boolean) => {
+  // do somthing with hasPermission flag.
+  // Note: hasPermission provides information if user enabled or disabled notification permission from iOS Settings > Notifications.
+})
 ```
 
 ## Contributing
