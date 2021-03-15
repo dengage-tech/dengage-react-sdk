@@ -84,14 +84,14 @@ Following extra steps after the installation of the react-native-dengage SDK are
 
   ### Steps
   
-  1. Endpoint Configuration in PInfo.list
+  #### 1. Endpoint Configuration in PInfo.list
   For initial setup, if you have given URL addresses by dEngage Support team, you need to setup url address by using ```Info.plist``` file. Otherwise you don’t need to add anything to ```Info.plist``` file. Following screenshot for the keys in ```Info.plist``` file.
   
   ![Info.plist screenshot](https://raw.githubusercontent.com/whitehorse-technology/Dengage.Framework/master/docs/img/Screen%20Shot%202020-09-25%20at%2015.41.27.png)
 
 > Note: Please see API Endpoints by Datacenter documentation in this section for end points. [here is link](https://dev.dengage.com/mobile-sdk/api-endpoints)
 
-  2. Add Required Capabilities
+  #### 2. Add Required Capabilities
   In Xcode, select the root project and main app target. In ***Signing & Capabilities***, select ***All*** and ***+ Capability***. Add "Push Notifications" and ***Background Modes***
   <summary> screenshot 1 </summary>
 
@@ -101,6 +101,63 @@ Following extra steps after the installation of the react-native-dengage SDK are
   
   ![background modes](https://files.readme.io/badc90e-dengage_push_step2.png)
 
+  #### 3. Add Notification Service Extension (required only if using rich notifications)
+  The ```DengageNotificationServiceExtension``` allows your application to receive rich notifications with images and/or buttons, and to report analytics about which notifications users receive.
+  3.1 In Xcode Select ```File``` > ```New``` > ```Target```
+  3.2 Select ```Notification Service Extension``` then press ```Next```
+  
+  ![step 3.2 screenshot](https://github.com/whitehorse-technology/Dengage.Framework/raw/master/docs/img/extension.png)
+  
+  3.3 Enter the product name as ```DengageNotificationServiceExtension``` and press ```Finish```.
+  
+  > Do NOT press "Activate" on the dialog shown after this.
+  
+  ![step 3.3 screenshot](https://github.com/whitehorse-technology/Dengage.Framework/raw/master/docs/img/settings.png)
+  
+  3.4 Press ```Cancel``` on the Activate scheme prompt.
+  
+  ![step 3.4 screenshot](https://github.com/whitehorse-technology/Dengage.Framework/raw/master/docs/img/activate.png)
+
+  > By canceling, you are keeping Xcode debugging your app, instead of just the extension. If you activate by accident, you can always switch back to debug your app within Xcode (next to the play button).
+  
+  3.5 In the ***Project Navigator***, select the top-level project directory and select the ```DengageNotificationServiceExtension``` target in the ***project and targets list***. Ensure the ```Deployment Target``` is set to ```iOS 10``` for maximum platform compatibility.
+  
+  ![step 3_5 screenshot](https://files.readme.io/c834169-step3_5_iOS_version.png)
+
+  3.6 Finish Notification Service Extension Setup
+  If you did not use ***Cocoapods***, follow [these steps](google.com).
+  > Note: non-cocoapods steps yet to be determined.
+  
+  Otherwise, continue with the following setup:
+  - In your ```Project Root``` > ```iOS``` > ```Podfile```, add the notification service extension outside the main target (should be at the same level as your main target):
+  
+  ```Ruby
+    target 'DengageNotificationServiceExtension' do
+      pod 'Dengage.Framework',‘~> 2.5’
+    end
+  ```
+  
+  Close Xcode. While still in the ```ios``` directory, run ```pod install``` again.
+  
+  - Open the ```.xcworkspace``` file in Xcode. In the ```DengageNotificationServiceExtension directory``` > ```NotificationService.swift``` file, replace the whole file contents with the code below:
+  
+  ```Swift
+      override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
+        self.contentHandler = contentHandler
+        bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
+         
+        if let bestAttemptContent = bestAttemptContent {
+            
+            // add this line of code
+            Dengage.didReceiveNotificationExtentionRequest(receivedRequest: request, with: bestAttemptContent)
+            contentHandler(bestAttemptContent)
+        }
+    }
+  ```
+  > Ignore any build errors at this point, we will resolve these later by importing the Dengage library.
+  
+  ![NotificationService.swift screenshot]()
+  
 #### Setting dEngage Integeration Key
 </details>
 
