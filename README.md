@@ -306,8 +306,58 @@ import dEngage from 'react-native-dengage'
 dEngage.setToken(token)
 ```
 
+### Setting Contact Key
+***Contact Key represents a value which has a relation with Devices and Contacts. There are two types of devices. Anonimous Devies and Contact Devices. Contact Devices contains Contact Key.***
 
+To track devices by their contacts you need to set contact key on SDK.
 
+> Note: It is recommended to call this method, if you have user information. You should call in every app open and on login, logout pages.
+
+```
+// import statement
+import dEngage from 'react-native-dengage'
+
+// in js/ts code
+dEngage.setContactKey(contactKey)
+```
+
+### Logging
+SDK can provide logs for debuging. It displays queries and payloads which are sent to REST API’s.
+
+To validate your inputs you can enable SDK’s log by a method.
+
+```
+// isVisible is Boolean. By default isVisible set to false.
+dEngage.setLogStatus(isVisible)
+```
+
+### Handling Notification Action Callback
+SDK provides a method if you want to get and parse payload manually for custom parameters or etc.
+
+```
+dEngage.handleNotificationActionBlock((notificationResponse: Object) => {
+  // handle notification Response here.
+})
+```
+
+### DeepLinking
+SDK supports URL schema deeplink. If target url has a valid link, it will redirect to the related link.
+Please see related links below about deeplinking.
+<details>
+  <summary> iOS Specific Links </summary>
+  
+  [Apple Url Scheme Links](https://developer.apple.com/documentation/xcode/allowing_apps_and_websites_to_link_to_your_content/defining_a_custom_url_scheme_for_your_app)
+  
+  [Apple Universal Link](https://developer.apple.com/documentation/xcode/allowing_apps_and_websites_to_link_to_your_content)
+</details>
+
+<details>
+  <summary> android Specific Links </summary>
+  
+  [Create a deep link for a destination](https://developer.android.com/guide/navigation/navigation-deep-link)
+  
+  [Create Deep Links to App Content](https://developer.android.com/training/app-links/deep-linking)
+</details>
 
 ## Contributing
 
