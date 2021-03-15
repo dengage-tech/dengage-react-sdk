@@ -93,7 +93,13 @@ Following extra steps after the installation of the react-native-dengage SDK are
 
   2. Add Required Capabilities
   In Xcode, select the root project and main app target. In ***Signing & Capabilities***, select ***All*** and ***+ Capability***. Add "Push Notifications" and ***Background Modes***
-  ![capabilities screenshot](https://files.readme.io/17798af-dengage_push_Step1.png)
+  <summary> screenshot 1 </summary>
+
+  ![push notifications](https://files.readme.io/17798af-dengage_push_Step1.png)
+  
+  <summary> screenshot 2 </summary>
+  
+  ![background modes](https://files.readme.io/badc90e-dengage_push_step2.png)
 
 #### Setting dEngage Integeration Key
 </details>
