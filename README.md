@@ -172,7 +172,7 @@ Following extra steps after the installation of the react-native-dengage SDK are
   To set integration key SDK Provides ```Dengage.setIntegrationKey(key: String)``` method.
   Call this method at the begining of your application life cycle.
   
-  > Recommendation : Use it on AppDelegate
+  > Recommendation : Use it on AppDelegate.m
   
   ```Swift
     Dengage.setIntegrationKey(key: String)
@@ -180,6 +180,7 @@ Following extra steps after the installation of the react-native-dengage SDK are
   
   ### 5. Initialization with Launch Options
   After setting Integration Key, to use SDK features, ```Dengage.initWithLaunchOptions(withLaunchOptions: [UIApplication.LaunchOptionsKey: Any]?,badgeCountReset: Bool?)``` function must be called.
+  
 ***Parameters***
   ```withLaunchOptions```: ```[UIApplication.LaunchOptionsKey: Any]?```: Pass didFinishLaunchingWithOptions params
   ```badgeCountReset```: ```bool``` If you want to reset (clear) badge icon on your notifications set this option to true
