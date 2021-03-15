@@ -285,6 +285,28 @@ import dEngage from 'react-native-dengage'
 dEngage.setUserPermission(true)
 ```
 
+### Getting Mobile Push Token
+
+```Javascript
+// At the top import
+import dEngage from 'react-native-dengage'
+
+// somewhere in your javascript/typescript code
+const token = await dEngage.getToken()
+```
+
+
+### Setting Mobile Push Token
+
+```Javascript
+// At the top import
+import dEngage from 'react-native-dengage'
+
+// somewhere in your javascript/typescript code
+dEngage.setToken(token)
+```
+
+
 
 
 ## Contributing
