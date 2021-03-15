@@ -21,7 +21,7 @@ npm install react-native-dengage
   Run npx ```pod-install```. Linking is not required in React Native 0.60 and above.
   
   #### React Native 0.59 and below
-  Run react-native link react-native-dengage to link the react-native-dengage library.
+  Run ```react-native link react-native-dengage``` to link the react-native-dengage library.
 
 </details>
 
