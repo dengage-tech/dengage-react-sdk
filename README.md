@@ -125,7 +125,9 @@ Following extra steps after the installation of the react-native-dengage SDK are
   ![step 3_5 screenshot](https://files.readme.io/c834169-step3_5_iOS_version.png)
 
   3.6 Finish Notification Service Extension Setup
+  
   If you did not use ***Cocoapods***, follow [these steps](google.com).
+  
   > Note: non-cocoapods steps yet to be determined.
   
   Otherwise, continue with the following setup:
@@ -156,7 +158,9 @@ Following extra steps after the installation of the react-native-dengage SDK are
   ```
   > Ignore any build errors at this point, we will resolve these later by importing the Dengage library.
   
-  ![NotificationService.swift screenshot]()
+  ![NotificationService.swift screenshot](https://files.readme.io/56a0fd9-3_6_NotificationService_screenshot.png)
+  
+  
   
 #### Setting dEngage Integeration Key
 </details>
