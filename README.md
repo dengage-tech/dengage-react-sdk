@@ -45,17 +45,17 @@ Following extra steps after the installation of the react-native-dengage SDK are
 <details>
   <summary> iOS </summary>
   
-  D·engage Mobil SDK for IOS supports version IOS 10 and later.
+  dEngage Mobile SDK for IOS supports version IOS 10 and later.
 </details>
 
 <details>
   <summary> android </summary>
   
-  D·engage Mobil SDK for Android supports version 4.4 (API Level 19) and later.
+  dEngage Mobile SDK for Android supports version 4.4 (API Level 19) and later.
 
   <summary> Huawei </summary>
   
-  D·engage Mobil SDK for Huawei supports all new versions.
+  dEngage Mobile SDK for Huawei supports all new versions.
 </details>
 
 
