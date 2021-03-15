@@ -17,13 +17,47 @@ npm install react-native-dengage
 <details>
   <summary> iOS Linking </summary>
   
-  ## React Native 0.60 and above
+  ### React Native 0.60 and above
   Run npx ```pod-install```. Linking is not required in React Native 0.60 and above.
   
-  ## React Native 0.59 and below
+  ### React Native 0.59 and below
   Run react-native link react-native-dengage to link the react-native-dengage library.
 
 </details>
+
+<details>
+  <summary> android Linking </summary>
+  
+</details>
+
+## Platform Specific Extra Steps
+Following extra steps after the installation of the react-native-dengage SDK are required for it to work properly.
+
+<details>
+  <summary> iOS Specific Extra steps </summary>
+</details>
+
+<details>
+  <summary> android Specific Extra Steps </summary>
+</details>
+
+## Supported Versions 
+<details>
+  <summary> iOS </summary>
+  
+  D·engage Mobil SDK for IOS supports version IOS 10 and later.
+</details>
+
+<details>
+  <summary> android </summary>
+  
+  D·engage Mobil SDK for Android supports version 4.4 (API Level 19) and later.
+
+  <summary> Huawei </summary>
+  
+  D·engage Mobil SDK for Huawei supports all new versions.
+</details>
+
 
 ## Usage
 
