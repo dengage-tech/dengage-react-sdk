@@ -239,7 +239,7 @@ Dengage.setIntegrationKey("Your-Dengage-Integeration-Key");
 ### Subscription
 ****Subscription is a process which is triggered by sending subscription event to Dengage. It contains necessary informations about application to send push notifications to clients.****
 
-Subscriptions are self managed by dEngage SDK and subcription cycle starts with Prompting user permission. SDK will automaticlly send subscription events under following circumstances;
+Subscriptions are self managed by dEngage SDK and subcription cycle starts with Prompting user permission. SDK will automaticlly send subscription events under following circumstances:
 
 - Setting Contact key
 - Setting Token
@@ -270,8 +270,22 @@ import dEngage from 'react-native-dengage'
 dEngage.promptForPushNotifications((hasPermission: Boolean) => {
   // do somthing with hasPermission flag.
   // Note: hasPermission provides information if user enabled or disabled notification permission from iOS Settings > Notifications.
+  
+  // here you may send application's permission state using 
+  dEngage.setUserPermission(hasPermission)
 })
 ```
+### User Permission Management (optional)
+If you manage your own user permission states on your application you may send user permission by using `setUserPermission` method.
+```Javascript
+// At the top import
+import dEngage from 'react-native-dengage'
+
+// somewhere in your javascript/typescript code
+dEngage.setUserPermission(true)
+```
+
+
 
 ## Contributing
 
