@@ -12,6 +12,12 @@ This package makes it easy to integrate, dEngage, with your React-Native iOS and
 npm install react-native-dengage
 ```
 
+or using ```yarn```
+
+```sh
+yarn add react-native-dengage
+```
+
 ## Linking
 
 <details>
@@ -159,14 +165,46 @@ Following extra steps after the installation of the react-native-dengage SDK are
   > Ignore any build errors at this point, we will resolve these later by importing the Dengage library.
   
   ![NotificationService.swift screenshot](https://files.readme.io/56a0fd9-3_6_NotificationService_screenshot.png)
+
+  ### 4. Setting Integration Key
+  ***Integration Key*** is genereted by CDMP Platform while defining application. It is a hash string which contains information about application.
+  At the beginning of your application cycle you must set Integration Key.
+  To set integration key SDK Provides ```Dengage.setIntegrationKey(key: String)``` method.
+  Call this method at the begining of your application life cycle.
   
+  > Recommendation : Use it on AppDelegate
   
+  ```Swift
+    Dengage.setIntegrationKey(key: String)
+  ```
   
-#### Setting dEngage Integeration Key
+  ### 5. Initialization with Launch Options
+  After setting Integration Key, to use SDK features, ```Dengage.initWithLaunchOptions(withLaunchOptions: [UIApplication.LaunchOptionsKey: Any]?,badgeCountReset: Bool?)``` function must be called.
+***Parameters***
+  ```withLaunchOptions```: ```[UIApplication.LaunchOptionsKey: Any]?```: Pass didFinishLaunchingWithOptions params
+  ```badgeCountReset```: ```bool``` If you want to reset (clear) badge icon on your notifications set this option to true
+
+***Sample:***
+In the ```AppDelegate.m```
+```
+import Dengage_Framework
+
+@UIApplicationMain
+class AppDelegate: UIResponder, UIApplicationDelegate, REFrostedViewControllerDelegate {
+    // STEP 1: setting integration key
+    let integrationKey = "Your-Integeration-Key-Here"
+    Dengage.setIntegrationKey(key: integrationKey)
+
+    // STEP 2: setting initWithLauchOptions
+    Dengage.initWithLaunchOptions(withLaunchOptions: launchOptions, badgeCountReset: false)
+}
+```
+  
 </details>
 
 <details>
   <summary> android Specific Extra Steps </summary>
+  
 </details>
 
 ## Supported Versions 
