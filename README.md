@@ -359,6 +359,55 @@ Please see related links below about deeplinking.
   [Create Deep Links to App Content](https://developer.android.com/training/app-links/deep-linking)
 </details>
 
+### Rich Notifications
+Rich Notifications is a notification type which supports image, gif, video content. Dengage SDK supports varieties of contents and handles notification.
+Rich Notifications supports following media types:
+- Image
+- Video
+- Gif
+
+For further details about rich notification and its setup on iOS side please follow [this link](https://dev.dengage.com/mobile-sdk/ios/richnotification)
+
+> Note: on Android there is no special setup required for rich notifications.
+
+### Carousel Push
+Carousel Push is a notification type which has a different UI than Rich Notification. SDK will handle notification payload and displays UI if it’s a carousel push. Carousel Push functionality allows you to show your notification with a slideshow.
+
+<details>
+  <summary> iOS </summary>
+  
+  ### Requirements
+  - iOS 10 or higher
+  - Notification Service Extension
+  - Notification Content Extension
+  - Dengage.Framework.Extensions
+
+  to setup Carousel Push on iOS you can follow [this link](https://dev.dengage.com/mobile-sdk/ios/carousel-push)
+</details>
+
+<details>
+  <summary> android </summary>
+  
+  ### Requirements
+  - Android SDK 2.0.0+
+  
+  to setup Carousel Push on android you can follow [this link](https://dev.dengage.com/mobile-sdk/android/carousel-push)
+</details>
+
+### Action Buttons
+Android SDK allows you to put clickable buttons under the notification. Action buttons are supported in Android SDK 2.0.0+.
+For further setup of Action Buttons, follow [this link](https://dev.dengage.com/mobile-sdk/android/action-buttons).
+
+### Event Collection
+In order to collect android mobile events and use that data to create behavioral segments in dEngage you have to determine the type of events and data that needs to collected. Once you have determined that, you will need to create a “Big Data” table in dEngage. Collected events will be stored in this table. Multiple tables can be defined depending on your specific need.
+
+Any type of event can be collected. The content and the structure of the events are completely flexible and can be changed according to unique business requirements. You will just need to define a table for events.
+
+Once defined, all you have to do is to send the event data to these tables. D·engage SDK has only two functions for sending events: `sendDeviceEvent` and `sendCustomEvent`. Most of the time you will just need the `sendDeviceEvent` function.
+
+
+
+
 ## Contributing
 
 See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.
