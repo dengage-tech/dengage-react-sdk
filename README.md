@@ -737,8 +737,8 @@ If you want to use screen name filter, you should send screen name to setNavigat
   // Scheduled: April 2021
   // if you have extra information 
   // you can send them to use screen data filters.
-  var screenData = ["productId": "~hs7674", "price": 1200]
-  dEngage.setNavigation(withName: 'product', andData: screenData)
+  const screenData = {productId: "~hs7674", price: 1200}
+  dEngage.setNavigation('product', screenData)
   ```
 
 ## Contributing
