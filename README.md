@@ -654,6 +654,23 @@ Search events will be stored in `search_events` table.
   dEngage.sharedEvents.search(params)
 ```
 
+### 2.1 Custom Events
+#### Send device specific events
+You can use `sendDeviceEvent` function for sending events for the device. Events are sent to a big data table defined in your dEngage account. That table must have relation to the `master_device` table. If you set `contact_key` for that device. Collected events will be associated for that user.
+```Javascript
+// for example if you have a table named "events"
+// and events table has "key", "event_date", "event_name", "product_id" columns
+// you just have to send the columns except "key" and "event_date", because those columns sent by the SDK
+// methodSignature => dengage(‘sendDeviceEvent’, tableName: String, dataObject, callback);
+const params = {
+    "event_name": "page_view", 
+    "product_id": "1234",
+}
+dEngage.customEvents.SendDeviceEvent(toEventTable: 'events', andWithEventDetails: params, (err, res) => {
+  // handle error or success response.
+})
+```
+
 ## Contributing
 
 See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.
