@@ -477,7 +477,7 @@ Android SDK allows you to put clickable buttons under the notification. Action b
 For further setup of Action Buttons, follow [this link](https://dev.dengage.com/mobile-sdk/android/action-buttons).
 
 ### Event Collection <a name="event_collection" />
-In order to collect android mobile events and use that data to create behavioral segments in D-engage you have to determine the type of events and data that needs to collected. Once you have determined that, you will need to create a “Big Data” table in dEngage. Collected events will be stored in this table. Multiple tables can be defined depending on your specific need.
+In order to collect android mobile events and use that data to create behavioral segments in D-engage you have to determine the type of events and data that needs to collected. Once you have determined that, you will need to create a “Big Data” table in D-engage. Collected events will be stored in this table. Multiple tables can be defined depending on your specific need.
 
 Any type of event can be collected. The content and the structure of the events are completely flexible and can be changed according to unique business requirements. You will just need to define a table for events.
 
@@ -734,7 +734,7 @@ Search events will be stored in `search_events` table.
 
 ### 2.1 Custom Events
 #### Send device specific events
-You can use `sendDeviceEvent` function for sending events for the device. Events are sent to a big data table defined in your dEngage account. That table must have relation to the `master_device` table. If you set `contact_key` for that device. Collected events will be associated for that user.
+You can use `sendDeviceEvent` function for sending events for the device. Events are sent to a big data table defined in your D-engage account. That table must have relation to the `master_device` table. If you set `contact_key` for that device. Collected events will be associated for that user.
 ```Javascript
 // for example if you have a table named "events"
 // and events table has "key", "event_date", "event_name", "product_id" columns
@@ -759,8 +759,8 @@ In order to save messages into App Inbox, you need to select “Save to Inbox”
 Inbox messages are kept in the memory storage of the phone until app is completely closed or for a while and D-engage SDK provides functions for getting and managing these messages.
 
   #### Requirements
-  - *Android*: dEngage SDK 3.2.3+
-  - *iOS*: dEngage SDK 2.5.21+
+  - *Android*: D-engage SDK 3.2.3+
+  - *iOS*: D-engage SDK 2.5.21+
 
   #### Methods
   There are 3 methods to manage App Inbox Messages
