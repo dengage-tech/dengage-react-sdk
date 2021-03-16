@@ -307,7 +307,7 @@ dEngage.setToken(token)
 ```
 
 ### Setting Contact Key
-***Contact Key represents a value which has a relation with Devices and Contacts. There are two types of devices. Anonimous Devies and Contact Devices. Contact Devices contains Contact Key.***
+***Contact Key represents a value which has a relation with Devices and Contacts. There are two types of devices. Anonymous Devices and Contact Devices. Contact Devices contains Contact Key.***
 
 To track devices by their contacts you need to set contact key on SDK.
 
@@ -408,8 +408,9 @@ Once defined, all you have to do is to send the event data to these tables. D·e
 ### 1. Login / Logout Action
 If the user loggs in or you have user information, this means you have contact_key for that user. You can set contact_key in order to match user with the browser. There are two functions for getting and setting contact_key.
 
-### 1.a [setContactKey](#setting-contact-key)
-
+### 1.a setContactKey
+If user logged in set user id. This is important for identifying your users. You can put this function call in every page. It will not send unnecessary events.
+[code example is here](#setting-contact-key)
 
 ## Contributing
 
