@@ -640,8 +640,8 @@ There are 2 wishlist event functions. `addToWishlist`, `removeFromWishlist`. In 
   ]
   dEngage.sharedEvents.removeFromWishList(removeParams)
 ```
-<a name="search-event"/>
-### Search Event 
+
+### Search Event <a name="search-event"/>
 Search events will be stored in `search_events` table.
 
 ```Javascript
