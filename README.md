@@ -206,6 +206,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate, REFrostedViewControllerDe
 <details>
   <summary> android Specific Extra Steps </summary>
   
+  ### Firebase SDK Setup (Follow these steps only if you're using firebase for push, for Huawei [follow these steps](huawei-sdk-setup))
+  
+  #### Requirements
+  - Google Firebase App Configuration
+  - Android Studio
+  - Android Device or Emulator
+  
+  dEngage Android SDK provides an interface which handles push notification messages easily. Optionally, It also gives to send event functionality such as open and subscription to dEngage Platform.
+
+  Supports Android API level 4.1.x or higher.
+
+  For detailed steps for firebase SDK setup and it's integeration with dEngage, [click here](https://dev.dengage.com/mobile-sdk/android/firebase)
+  
+  ### Huawei SDK Setup (Note: use these steps only if you're using HUAWEI Messaging Service for push, if using firebase, [follow these steps](firebase-sdk-setup))
+  
+  #### Requirements
+  
+  - Huawei Developer Account
+  - Java JDK installation package
+  - Android SDK package
+  - Android Studio 3.X
+  - HMS Core (APK) 4.X or later
+  - Huawei Device or Huawei Cloud Debugging
+
+  Supports Android API level 4.4 or higher. (Note that Huawei AdID service requires min target SDK version 19)
+  
+  **dEngage Huawei SDK** provides an interface which handles push notification messages that delivered by `Huawei Messaging Service (HMS)`. It is similar to Firebase but has a bit different configuration process that contains [steps mentioned here.](https://dev.dengage.com/mobile-sdk/android/huawei)
 </details>
 
 ## Supported Versions 
