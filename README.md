@@ -233,6 +233,54 @@ class AppDelegate: UIResponder, UIApplicationDelegate, REFrostedViewControllerDe
   Supports Android API level 4.4 or higher. (Note that Huawei AdID service requires min target SDK version 19)
   
   **dEngage Huawei SDK** provides an interface which handles push notification messages that delivered by `Huawei Messaging Service (HMS)`. It is similar to Firebase but has a bit different configuration process that contains [steps mentioned here.](https://dev.dengage.com/mobile-sdk/android/huawei)
+  
+  ### Create DengageManager instance
+  
+  First, you need to create DengageManager instance in your main or launcher activity.
+  
+  ```Java
+    // import statement
+    import com.dengage.sdk.DengageManager;
+    
+    // ...
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+      super.onCreate(savedInstanceState);
+      /// add following lines 
+      Context context = getApplicationContext();
+      final DengageManager manager = DengageManager .getInstance(context)
+       .setLogStatus(true)
+       .setFirebaseIntegrationKey("YOUR_DENGAGE_FIREBASE_APP_INTEGRATION_KEY")
+       .setHuaweiIntegrationKey("OUR_DENGAGE_HUAWEI_APP_INTEGRATION_KEY")
+       .useCloudSubscription(false)
+       .init();    
+    }
+  ```
+  
+  After these steps, You will be able to send a push notification message to your app.
+  
+  ### Change Subscription Api Endpoint
+  You can change subscription api endpoint by adding following metadata tag in `YourProject/android/src/main/AndroidManifest.xml` 
+  
+  ```
+  <meta-data
+    android:name="den_push_api_url"
+    android:value="https://your_push_api_endpoint" />
+  ```
+  
+  Note: Please see API Endpoints By Datacenter to set your subscription end point.
+  
+  ### Changing Event Api Endpoint
+  similar to subscription endpoints, you can change event api endpoints by setting following metadata tag in `YourProject/android/src/main/AndroidManifest.xml` 
+  ```
+  <meta-data
+    android:name="den_push_api_url"
+    android:value="https://your_push_api_endpoint" />
+  ```
+  
+  Note: Please see API Endpoints By Datacenter to set your event end point.
+
+  Now you can setContactKey like mentioned [here](#setting-contact-key)
 </details>
 
 ## Supported Versions 
