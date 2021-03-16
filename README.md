@@ -429,7 +429,6 @@ If your dEngage account is an ecommerce account, you should use standard ecommer
 There are standard ecommerce events in dEngage SDK.
 
 - [**Page View Events**](#page-view-events-details)
-  star:
   - Home page view
   - Product page view
   - Category page view
