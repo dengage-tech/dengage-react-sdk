@@ -206,7 +206,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, REFrostedViewControllerDe
 <details>
   <summary> android Specific Extra Steps </summary>
   
-  ### Firebase SDK Setup (Follow these steps only if you're using firebase for push, for Huawei [follow these steps](huawei-sdk-setup))<a name="firebase-sdk-setup" />
+  ### Firebase SDK Setup (Follow these steps only if you're using firebase for push, for Huawei [follow these steps](#huawei-sdk-setup))<a name="firebase-sdk-setup" />
   
   #### Requirements
   - Google Firebase App Configuration
@@ -219,7 +219,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, REFrostedViewControllerDe
 
   For detailed steps for firebase SDK setup and it's integeration with dEngage, [click here](https://dev.dengage.com/mobile-sdk/android/firebase)
   
-  ### Huawei SDK Setup (Note: use these steps only if you're using HUAWEI Messaging Service for push, if using firebase, [follow these steps](firebase-sdk-setup))<a name="huawei-sdk-setup" />
+  ### Huawei SDK Setup (Note: use these steps only if you're using HUAWEI Messaging Service for push, if using firebase, [follow these steps](#firebase-sdk-setup))<a name="huawei-sdk-setup" />
   
   #### Requirements
   
