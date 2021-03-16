@@ -671,6 +671,41 @@ dEngage.customEvents.SendDeviceEvent(toEventTable: 'events', andWithEventDetails
 })
 ```
 
+### App Inbox
+App Inbox is a screen within a mobile app that stores persistent messages. It’s kind of like an email inbox, but it lives inside the app itself. App Inbox differs from other mobile channels such as push notifications or in-app messages. For both push and in-app messages, they’re gone once you open them.
+
+In other words, D·engage admin panel lets you keep selected messages on the platform and Mobile SDK may retreive and display these messages when needed.
+
+In order to save messages into App Inbox, you need to select “Save to Inbox” option when sending messages in D·engage admin panel by assigning an expire date to it.
+
+Inbox messages are kept in the memory storage of the phone until app is completely closed or for a while and D·engage SDK provides functions for getting and managing these messages.
+
+  #### Requirements
+  - *Android*: dEngage SDK 3.2.3+
+  - *iOS*: dEngage SDK 2.5.21+
+
+  #### Methods
+  There are 3 methods to manage App Inbox Messages
+  
+  - To get app inbox messages from the server
+    ```
+      dEngage.getInboxMessages(offset, limit, onComplete)
+      // where offset: Int, limit: Int = 20, onComplete: ([DengageMessage], Error>) -> Void
+    ```
+  - To delete a specific message from the inbox.
+    ```
+      dEngage.deleteInboxMessage(id, onComplete)
+      // where id: String, onComplete: (Result<Void, Error>) -> Void
+    ```
+
+  - to mark a specific message as clicked.
+    ```
+      dEngage.setInboxMessageAsClicked(id, onComplete)
+      // where id: String, onComplete: (Result<Void, Error>) -> Void
+    ```
+
+
+
 ## Contributing
 
 See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.
