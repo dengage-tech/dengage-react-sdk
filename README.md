@@ -440,15 +440,15 @@ There are standard ecommerce events in dEngage SDK.
   - View Cart
   - Begin Checkout
   
-- **Order Events**
+- [**Order Events**](#order-events)
   - Order
   - Cancel order
 
-- **Wishlist Events**
+- [**Wishlist Events**](#wishlist-events)
   - Add to wishlist
   - Remove from wishlist
 
-- **Search Event**
+- [**Search Event**](#search-event)
 
 For these event there are related tables in your account. Following are the details and sample codes for each of above events.
 
@@ -558,6 +558,100 @@ var checkoutParams = {
     "cartItems":cartItems
 }
 dEngage.sharedEvents.beginCheckout(checkoutParams)
+```
+
+### Order Events <a name="order-events" />
+Orders events will be sent to order_events and order_events_detail tables.
+```Javascript
+// Ordered items or canceled items must be added to an array
+// import statement
+import dEngage from 'react-native-dengage'
+
+const cartItem = {}
+
+cartItem["product_id"] = 1
+cartItem["product_variant_id"] = 1
+cartItem["quantity"] = 1
+cartItem["unit_price"] = 10.00
+cartItem["discounted_price"] = 9.99
+// ... extra columns in order_events_detail table, can be added in cartItem
+
+const cartItems = []
+cartItems.push(cartItem) 
+cartItems.push(cartItem2) 
+// ... ordered or canceled items must be added
+
+
+// Place order action
+const placeOrderParams = {
+    "order_id":1,
+    "item_count":1, // total ordered item count
+    "total_amount":1, // total price
+    "discounted_price":9.99, // use total price if there is no discount
+    "payment_method":"card",
+    "shipping":5,
+    "coupon_code":"",
+    // ... extra columns in order_events table, can be added here
+    "cartItems":cartItems //ordered items
+}
+dEngage.sharedEvents.order(placeOrderParams)
+
+// Cancel order action
+const cancelParams = {
+    "order_id":1, // canceled order id
+    "item_count":1, // canceled total item count
+    "total_amount":1, // canceled item's total price
+    "discounted_price":9.99, // use total price if there is no discount
+    // ... extra columns in order_events table, can be added here
+    "cartItems":cartItems // // canceled items 
+}
+dEngage.sharedEvents.cancelOrder(cancelParams)
+```
+
+### Wishlist Event <a name="wishlist-events" />
+These events will be stored in `wishlist_events` and `wishlist_events_detail`. 
+There are 2 wishlist event functions. `addToWishlist`, `removeFromWishlist`. In every event call, you can send all items in wishlist. It makes it easy to track current items in wishlist.
+
+```Javascript
+  // import statement 
+  import dEngage from 'react-native-dengage'
+
+  // Current items in wishlist
+  const wishListItem = {}
+  wishListItem["product_id"] = 1
+
+  const wishListItems = []
+  wishListItems.push(wishListItem)
+
+
+  // Add to wishlist action
+  const params = [
+      "product_id": 1,
+      // ... extra columns in wishlist_events table, can be added here
+      "items": wishlistItems // current items
+  ]
+  dEngage.sharedEvents.addToWishList(params)
+
+  // Remove from wishlist action
+  const removeParams = [
+      "product_id": 1,
+      // ... extra columns in wishlist_events table, can be added here
+      "items": wishlistItems // current items
+  ]
+  dEngage.sharedEvents.removeFromWishList(removeParams)
+```
+
+### Search Event <a name="search-event"/>
+Search events will be stored in `search_events` table.
+
+```Javascript
+  const params = {
+      "keywords":"some product name", // text in the searchbox
+      "result_count":12,
+      "filters":"" //you can send extra filters selected by user here. Formating is not specified
+      // ... extra columns in search_events table, can be added here
+  }
+  dEngage.sharedEvents.search(params)
 ```
 
 ## Contributing
