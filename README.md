@@ -451,6 +451,7 @@ For further details about rich notification and its setup on iOS side please fol
 Carousel Push is a notification type which has a different UI than Rich Notification. SDK will handle notification payload and displays UI if it’s a carousel push. Carousel Push functionality allows you to show your notification with a slideshow.
 
 <details>
+  
   <summary> iOS </summary>
   
   ### Requirements
