@@ -318,7 +318,7 @@ To track devices by their contacts you need to set contact key on SDK.
 import dEngage from 'react-native-dengage'
 
 // in js/ts code
-dEngage.setContactKey(contactKey)
+dEngage.setContactKey(userId: String)
 ```
 
 ### Logging
@@ -411,6 +411,50 @@ If the user loggs in or you have user information, this means you have contact_k
 ### 1.a setContactKey
 If user logged in set user id. This is important for identifying your users. You can put this function call in every page. It will not send unnecessary events.
 [code example is here](#setting-contact-key)
+
+### 1.b getContactKey
+to get the current user information from SDK getContactKey method can be used.
+```Javascript
+// in imports
+import dEngage from 'react-native-dengage'
+
+// in the code, where user information required
+const userId = await dEngage.getContactKey()
+```
+
+### 2. Event Collection
+If your dEngage account is an ecommerce account, you should use standard ecommerce events in the SDK. If you need some custom events or your account is not standard ecommerce account, you should use custom event functions.
+
+### 2.1 Events for Ecommerce Accounts
+There are standard ecommerce events in dEngage SDK.
+
+- [**Page View Events**](#page-view-events-details)
+  star:
+  - Home page view
+  - Product page view
+  - Category page view
+  - Promotion page view
+  
+- **Shopping Cart Events**
+  star: 
+  - Add to cart
+  - Remove from cart
+  - View Cart
+  - Begin Checkout
+  
+- **Order Events**
+  star:
+  - Order
+  - Cancel order
+- **Wishlist Events**
+  star:
+  - Add to wishlist
+  - Remove from wishlist
+- **Search Event**
+
+For these event there are related tables in your account. Following are the details and sample codes for each of above events.
+
+- **Page View Events** <a name="page-view-events-details" />
 
 ## Contributing
 
