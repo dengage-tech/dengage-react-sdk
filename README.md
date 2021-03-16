@@ -674,11 +674,11 @@ dEngage.customEvents.SendDeviceEvent(toEventTable: 'events', andWithEventDetails
 ### App Inbox
 App Inbox is a screen within a mobile app that stores persistent messages. It’s kind of like an email inbox, but it lives inside the app itself. App Inbox differs from other mobile channels such as push notifications or in-app messages. For both push and in-app messages, they’re gone once you open them.
 
-In other words, D·engage admin panel lets you keep selected messages on the platform and Mobile SDK may retreive and display these messages when needed.
+In other words, dEngage admin panel lets you keep selected messages on the platform and Mobile SDK may retreive and display these messages when needed.
 
-In order to save messages into App Inbox, you need to select “Save to Inbox” option when sending messages in D·engage admin panel by assigning an expire date to it.
+In order to save messages into App Inbox, you need to select “Save to Inbox” option when sending messages in dEngage admin panel by assigning an expire date to it.
 
-Inbox messages are kept in the memory storage of the phone until app is completely closed or for a while and D·engage SDK provides functions for getting and managing these messages.
+Inbox messages are kept in the memory storage of the phone until app is completely closed or for a while and dEngage SDK provides functions for getting and managing these messages.
 
   #### Requirements
   - *Android*: dEngage SDK 3.2.3+
@@ -704,7 +704,40 @@ Inbox messages are kept in the memory storage of the phone until app is complete
       // where id: String, onComplete: (Result<Void, Error>) -> Void
     ```
 
+### In-App Messaging
+In-app message is a type of mobile message where the notification is displayed within the app. It is not sent in a specific time but it is show to user when user are using the app. Examples include popups, yes/no prompts, banners, and more. In order to show in-app messages, there is no permission requirement.
 
+  #### Requirements
+  - iOS: dEngage SDK 3.2.3+
+  - android: dEngage SDK 3.2.3+
+
+  #### Methods
+  > Experimental in react-native and this functionality requires proper verification with react-native navigations libs like `react-navigation`, `react-native-router-flux` etc.
+  
+  Created messages will be stored in dEngage backend and will be served to mobile SDKs. If you integrated mobile SDK correctly for push messages, for using in-app features you just have to add setNavigtion function to every page navigation.
+If you want to use screen name filter, you should send screen name to setNavigation function in every page navigation.
+
+  #### Simple In App Messaging
+  ```
+  dEngage.setNavigation()
+  ```
+
+  #### In App Messaging with Screen Name
+  ```
+  dEngage.setNavigation('cart')
+  ```
+
+  #### In App Messaging with Screen Name and Page Data
+
+  ```
+  //
+  // (Coming soon)
+  // Scheduled: April 2021
+  // if you have extra information 
+  // you can send them to use screen data filters.
+  var screenData = ["productId": "~hs7674", "price": 1200]
+  dEngage.setNavigation(withName: 'product', andData: screenData)
+  ```
 
 ## Contributing
 
