@@ -346,17 +346,17 @@ Please see related links below about deeplinking.
 <details>
   <summary> iOS Specific Links </summary>
   
-  [Apple Url Scheme Links](https://developer.apple.com/documentation/xcode/allowing_apps_and_websites_to_link_to_your_content/defining_a_custom_url_scheme_for_your_app)
+    [Apple Url Scheme Links](https://developer.apple.com/documentation/xcode/allowing_apps_and_websites_to_link_to_your_content/defining_a_custom_url_scheme_for_your_app)
   
-  [Apple Universal Link](https://developer.apple.com/documentation/xcode/allowing_apps_and_websites_to_link_to_your_content)
+    [Apple Universal Link](https://developer.apple.com/documentation/xcode/allowing_apps_and_websites_to_link_to_your_content)
 </details>
 
 <details>
   <summary> android Specific Links </summary>
   
-  [Create a deep link for a destination](https://developer.android.com/guide/navigation/navigation-deep-link)
-  
-  [Create Deep Links to App Content](https://developer.android.com/training/app-links/deep-linking)
+    [Create a deep link for a destination](https://developer.android.com/guide/navigation/navigation-deep-link)
+
+    [Create Deep Links to App Content](https://developer.android.com/training/app-links/deep-linking)
 </details>
 
 ### Rich Notifications <a name="rich_push" />
