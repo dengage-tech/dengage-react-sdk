@@ -454,7 +454,7 @@ There are standard ecommerce events in dEngage SDK.
 
 For these event there are related tables in your account. Following are the details and sample codes for each of above events.
 
-- **Page View Events** <a name="page-view-events-details" />
+**Page View Events** <a name="page-view-events-details" />
 Page view events will be sent to `page_view_events` table. If you add new columns to this table. You can send these in the event data.
 ```Javascript
 // import at top
