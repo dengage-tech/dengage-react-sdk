@@ -434,26 +434,131 @@ There are standard ecommerce events in dEngage SDK.
   - Category page view
   - Promotion page view
   
-- **Shopping Cart Events**
-  star: 
+- [**Shopping Cart Events**](#shopping-cart-events)
   - Add to cart
   - Remove from cart
   - View Cart
   - Begin Checkout
   
 - **Order Events**
-  star:
   - Order
   - Cancel order
+
 - **Wishlist Events**
-  star:
   - Add to wishlist
   - Remove from wishlist
+
 - **Search Event**
 
 For these event there are related tables in your account. Following are the details and sample codes for each of above events.
 
 - **Page View Events** <a name="page-view-events-details" />
+Page view events will be sent to `page_view_events` table. If you add new columns to this table. You can send these in the event data.
+```Javascript
+// import at top
+import dEngage from 'react-native-dengage'
+...
+
+
+// Home page view
+dEngage.sharedEvents.pageView({
+    "page_type":"home"
+    // ... extra columns in page_view_events table, can be added here
+})
+
+// Category page view
+dEngage.sharedEvents.pageView({
+    "page_type":"category",
+    "category_id":"1"
+    // ... extra columns in page_view_events table, can be added here
+})
+
+// Product page view
+dEngage.sharedEvents.pageView({
+    "page_type":"product",
+    "product_id":"1"
+    // ... extra columns in page_view_events table, can be added here
+})
+
+//promotion page view
+dEngage.sharedEvents.pageView({
+    "page_type":"promotion",
+    "promotion_id":"1"
+    // ... extra columns in page_view_events table, can be added here
+})
+
+//custom page view
+dEngage.sharedEvents.pageView({
+    "page_type":"custom"
+    // ... extra columns in page_view_events table, can be added here
+})
+
+// For other pages you can send anything as page_type
+```
+
+### Shopping Cart Events <a name="shopping-cart-events" />
+These events will be stored in `shopping_cart_events` and `shopping_cart_events_detail`. There are 4 shopping cart event functions. `addToCart`, `removeFromCart`, `viewCart`, `beginCheckout` Every shopping cart event function needs all items in cart as an array. You must send last version of the shopping cart.
+
+For example: If there is one item in cart and item id is 5. And after that, an add to cart action is happened with the item id 10. You have to send 10 as `product_id` in event parameters and you must send current version of cart items. Meaning [5, 10]
+
+```Javascript
+// import statement
+import dEngage from 'react-native-dengage'
+
+// All items currently exists in shopping cart must be added to an array
+const cartItem = {}, // cartItem will be an object with key:value types as String:Any
+
+cartItem["product_id"] = 1
+cartItem["product_variant_id"] = 1
+cartItem["quantity"] = 1
+cartItem["unit_price"] = 10.00
+cartItem["discounted_price"] = 9.99
+// ... extra columns in shopping_cart_events_detail table, can be added in cartItem
+
+let cartItems = []
+cartItems.push(cartItem) 
+cartItems.push(cartItem2) 
+
+
+// Add to cart action
+const addParams = {
+    "product_id":1,
+    "product_variant_id":1,
+    "quantity":1,
+    "unit_price":10.00,
+    "discounted_price":9.99,
+    // ... extra columns in shopping_cart_events table, can be added here
+    "cartItems":cartItems // all items in cart
+}
+dEngage.sharedEvents.addToCart(addParams)
+
+// ....
+// Remove from cart action
+const removeParams = {
+    "product_id":1,
+    "product_variant_id":1,
+    "quantity":1,
+    "unit_price":10.00,
+    "discounted_price":9.99,
+    // ... extra columns in shopping_cart_events table, can be added here
+    "cartItems":cartItems // all items in cart
+}
+dEngage.sharedEvents.removeFromCart(removeParams)
+
+// view cart action
+const viewParams = {
+    // ... extra columns in shopping_cart_events table, can be added here
+    "cartItems":cartItems
+}
+dEngage.sharedEvents.viewCart(viewParams)
+
+// begin checkout action
+var checkoutParams = {
+    // ... extra columns in shopping_cart_events table, can be added here
+    "cartItems":cartItems
+}
+dEngage.sharedEvents.beginCheckout(checkoutParams)
+```
 
 ## Contributing
 
