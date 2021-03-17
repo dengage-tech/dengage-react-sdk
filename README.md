@@ -1,10 +1,9 @@
 # react-native-dengage
 
-**D-engage Customer Driven Marketing Platform (CDMP)** serves as a customer data platform (CDP) with built-in omnichannel marketing features. It replaces your marketing automation and cross-channel campaign management.
-The platform positions itself between our client’s data sources and its customers. It is also capable of exporting anonymous data to 3rd party networks such as **Oracle Bluekai, Criteo, Facebook Custom Audiences** and **Google Customer** Match to support retargeting and remarketing efforts of our clients.
-For further details about D-engage please [visit here](https://docs.dengage.com).
+**D·engage Customer Driven Marketing Platform (CDMP)** serves as a customer data platform (CDP) with built-in omnichannel marketing features. It replaces your marketing automation and cross-channel campaign management.
+For further details about D·engage please [visit here](https://dev.dengage.com).
 
-This package makes it easy to integrate, D-engage, with your React-Native iOS and/or Android apps. Following are instructions for installation of react-native-dengage SDK to your react-native applications.
+This package makes it easy to integrate, D·engage, with your React-Native iOS and/or Android apps. Following are instructions for installation of react-native-dengage SDK to your react-native applications.
 
 ## Installation
 
@@ -83,7 +82,7 @@ Following extra steps after the installation of the react-native-dengage SDK are
   <summary> iOS Specific Extra steps </summary>
   
   #### Requirements
-  - D-engage Integration Key
+  - D·engage Integration Key
   - iOS Push Cerificate
   - iOS Device (you need to test on a real device for notifications)
   - A mac with latest Xcode
@@ -91,7 +90,7 @@ Following extra steps after the installation of the react-native-dengage SDK are
   ### Steps
   
   #### 1. Endpoint Configuration in PInfo.list
-  For initial setup, if you have given URL addresses by D-engage Support team, you need to setup url address by using ```Info.plist``` file. Otherwise you don’t need to add anything to ```Info.plist``` file. Following screenshot for the keys in ```Info.plist``` file.
+  For initial setup, if you have given URL addresses by D·engage Support team, you need to setup url address by using ```Info.plist``` file. Otherwise you don’t need to add anything to ```Info.plist``` file. Following screenshot for the keys in ```Info.plist``` file.
   
   ![Info.plist screenshot](https://raw.githubusercontent.com/whitehorse-technology/Dengage.Framework/master/docs/img/Screen%20Shot%202020-09-25%20at%2015.41.27.png)
 
@@ -162,7 +161,7 @@ Following extra steps after the installation of the react-native-dengage SDK are
         }
     }
   ```
-  > Ignore any build errors at this point, we will resolve these later by importing the D-engage library.
+  > Ignore any build errors at this point, we will resolve these later by importing the D·engage library.
   
   ![NotificationService.swift screenshot](https://files.readme.io/56a0fd9-3_6_NotificationService_screenshot.png)
 
@@ -213,11 +212,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, REFrostedViewControllerDe
   - Android Studio
   - Android Device or Emulator
   
-  D-engage Android SDK provides an interface which handles push notification messages easily. Optionally, It also gives to send event functionality such as open and subscription to dEngage Platform.
+  D·engage Android SDK provides an interface which handles push notification messages easily. Optionally, It also gives to send event functionality such as open and subscription to dEngage Platform.
 
   Supports Android API level 4.1.x or higher.
 
-  For detailed steps for firebase SDK setup and it's integeration with D-engage, [click here](https://dev.dengage.com/mobile-sdk/android/firebase)
+  For detailed steps for firebase SDK setup and it's integeration with D·engage, [click here](https://dev.dengage.com/mobile-sdk/android/firebase)
   
   ### Huawei SDK Setup (Note: use these steps only if you're using HUAWEI Messaging Service for push, if using firebase, [follow these steps](#firebase-sdk-setup))<a name="huawei-sdk-setup" />
   
@@ -232,7 +231,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, REFrostedViewControllerDe
 
   Supports Android API level 4.4 or higher. (Note that Huawei AdID service requires min target SDK version 19)
   
-  **D-engage Huawei SDK** provides an interface which handles push notification messages that delivered by `Huawei Messaging Service (HMS)`. It is similar to Firebase but has a bit different configuration process that contains [steps mentioned here.](https://dev.dengage.com/mobile-sdk/android/huawei)
+  **D·engage Huawei SDK** provides an interface which handles push notification messages that delivered by `Huawei Messaging Service (HMS)`. It is similar to Firebase but has a bit different configuration process that contains [steps mentioned here.](https://dev.dengage.com/mobile-sdk/android/huawei)
   
   ### Create DengageManager instance
   
@@ -287,35 +286,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate, REFrostedViewControllerDe
 <details>
   <summary> iOS </summary>
   
-  D-engage Mobile SDK for IOS supports version IOS 10 and later.
+  D·engage Mobile SDK for IOS supports version IOS 10 and later.
 </details>
 
 <details>
   <summary> android </summary>
   
-  D-engage Mobile SDK for Android supports version 4.4 (API Level 19) and later.
+  D·engage Mobile SDK for Android supports version 4.4 (API Level 19) and later.
 
   <summary> Huawei </summary>
   
-  D-engage Mobile SDK for Huawei supports all new versions.
+  D·engage Mobile SDK for Huawei supports all new versions.
 </details>
 
 
 ## Usage
 
-```js
-import Dengage from "react-native-dengage";
-
-// ...
-
-Dengage.setIntegrationKey("Your-Dengage-Integeration-Key");
-```
-
 ### Subscription
-****Subscription is a process which is triggered by sending subscription event to D-engage. It contains necessary informations about application to send push notifications to clients.****
+****Subscription is a process which is triggered by sending subscription event to D·engage. It contains necessary informations about application to send push notifications to clients.****
 
-Subscriptions are self managed by D-engage SDK and subcription cycle starts with Prompting user permission. SDK will automaticlly send subscription events under following circumstances:
+Subscriptions are self managed by D·engage SDK and subcription cycle starts with Prompting user permission. SDK will automaticlly send subscription events under following circumstances:
 
+- Initialization
 - Setting Contact key
 - Setting Token
 - Setting User Permission (if you have manual management of permission)
@@ -323,7 +315,7 @@ Subscriptions are self managed by D-engage SDK and subcription cycle starts with
 ### Asking User Permission for Notification
 > Note: Android doesn't require to ask for push notifications explicitely. Therefore, you can only ask for push notification's permissions on iOS.
 
-IOS uses shared `UNUserNotificationCenter` by itself while asking user to send notification. D-engage SDK manager uses `UNUserNotificationCenter` to ask permission as well. [Apple Doc Reference](https://developer.apple.com/documentation/usernotifications/asking_permission_to_use_notifications)
+IOS uses shared `UNUserNotificationCenter` by itself while asking user to send notification. D·engage SDK manager uses `UNUserNotificationCenter` to ask permission as well. [Apple Doc Reference](https://developer.apple.com/documentation/usernotifications/asking_permission_to_use_notifications)
 
 If in your application, you want to get UserNotification permissions explicitely, you can do by calling one of the following methods:
 
@@ -345,44 +337,11 @@ import dEngage from 'react-native-dengage'
 dEngage.promptForPushNotifications((hasPermission: Boolean) => {
   // do somthing with hasPermission flag.
   // Note: hasPermission provides information if user enabled or disabled notification permission from iOS Settings > Notifications.
-  
-  // here you may send application's permission state using 
-  dEngage.setUserPermission(hasPermission)
 })
-```
-### User Permission Management (optional)
-If you manage your own user permission states on your application you may send user permission by using `setUserPermission` method.
-```Javascript
-// At the top import
-import dEngage from 'react-native-dengage'
-
-// somewhere in your javascript/typescript code
-dEngage.setUserPermission(true)
-```
-
-### Getting Mobile Push Token
-
-```Javascript
-// At the top import
-import dEngage from 'react-native-dengage'
-
-// somewhere in your javascript/typescript code
-const token = await dEngage.getToken()
-```
-
-
-### Setting Mobile Push Token
-
-```Javascript
-// At the top import
-import dEngage from 'react-native-dengage'
-
-// somewhere in your javascript/typescript code
-dEngage.setToken(token)
 ```
 
 ### Setting Contact Key
-***Contact Key represents a value which has a relation with Devices and Contacts. There are two types of devices. Anonymous Devices and Contact Devices. Contact Devices contains Contact Key.***
+***Contact Key represents user id in your system. There are two types of devices. Anonymous Devices and Contact Devices. Contact Devices contains Contact Key.***
 
 To track devices by their contacts you need to set contact key on SDK.
 
@@ -394,6 +353,40 @@ import dEngage from 'react-native-dengage'
 
 // in js/ts code
 dEngage.setContactKey(userId: String)
+
+
+// You may need getting current contact key from SDK. In that case you can use getContactKey
+var contactkey = await dEngage.getContactKey()
+```
+
+
+### Manual Management of Tokens
+
+If you need to get current token or if you are managing token subscription process manually, you can use setToken and getToken functions.
+
+```Javascript
+// At the top import
+import dEngage from 'react-native-dengage'
+
+// somewhere in your javascript/typescript code
+const token = await dEngage.getToken()
+
+// setting the token that is taken manually
+dEngage.setToken(token)
+```
+
+
+### User Permission Management (optional)
+If you manage your own user permission states on your application you may send user permission by using `setUserPermission` method.
+```Javascript
+// At the top import
+import dEngage from 'react-native-dengage'
+
+// somewhere in your javascript/typescript code
+dEngage.setUserPermission(true)
+
+// For getting last permission set by user
+const permission = await dEngage.getUserPermission(true)
 ```
 
 ### Logging
@@ -437,7 +430,7 @@ Please see related links below about deeplinking.
 </details>
 
 ### Rich Notifications <a name="rich_push" />
-Rich Notifications is a notification type which supports image, gif, video content. D-engage SDK supports varieties of contents and handles notification.
+Rich Notifications is a notification type which supports image, gif, video content. D·engage SDK supports varieties of contents and handles notification.
 Rich Notifications supports following media types:
 - Image
 - Video
@@ -451,7 +444,6 @@ For further details about rich notification and its setup on iOS side please fol
 Carousel Push is a notification type which has a different UI than Rich Notification. SDK will handle notification payload and displays UI if it’s a carousel push. Carousel Push functionality allows you to show your notification with a slideshow.
 
 <details>
-  
   <summary> iOS </summary>
   
   ### Requirements
@@ -477,7 +469,7 @@ Android SDK allows you to put clickable buttons under the notification. Action b
 For further setup of Action Buttons, follow [this link](https://dev.dengage.com/mobile-sdk/android/action-buttons).
 
 ### Event Collection <a name="event_collection" />
-In order to collect android mobile events and use that data to create behavioral segments in D-engage you have to determine the type of events and data that needs to collected. Once you have determined that, you will need to create a “Big Data” table in D-engage. Collected events will be stored in this table. Multiple tables can be defined depending on your specific need.
+In order to collect android mobile events and use that data to create behavioral segments in D·engage you have to determine the type of events and data that needs to collected. Once you have determined that, you will need to create a “Big Data” table in D·engage. Collected events will be stored in this table. Multiple tables can be defined depending on your specific need.
 
 Any type of event can be collected. The content and the structure of the events are completely flexible and can be changed according to unique business requirements. You will just need to define a table for events.
 
@@ -501,10 +493,10 @@ const userId = await dEngage.getContactKey()
 ```
 
 ### 2. Event Collection
-If your D-engage account is an ecommerce account, you should use standard ecommerce events in the SDK. If you need some custom events or your account is not standard ecommerce account, you should use custom event functions.
+If your D·engage account is an ecommerce account, you should use standard ecommerce events in the SDK. If you need some custom events or your account is not standard ecommerce account, you should use custom event functions.
 
 ### 2.1 Events for Ecommerce Accounts
-There are standard ecommerce events in D-engage SDK.
+There are standard ecommerce events in D·engage SDK.
 
 - [**Page View Events**](#page-view-events-details)
   - Home page view
@@ -734,7 +726,7 @@ Search events will be stored in `search_events` table.
 
 ### 2.1 Custom Events
 #### Send device specific events
-You can use `sendDeviceEvent` function for sending events for the device. Events are sent to a big data table defined in your D-engage account. That table must have relation to the `master_device` table. If you set `contact_key` for that device. Collected events will be associated for that user.
+You can use `sendDeviceEvent` function for sending events for the device. Events are sent to a big data table defined in your D·engage account. That table must have relation to the `master_device` table. If you set `contact_key` for that device. Collected events will be associated for that user.
 ```Javascript
 // for example if you have a table named "events"
 // and events table has "key", "event_date", "event_name", "product_id" columns
@@ -752,15 +744,15 @@ dEngage.customEvents.SendDeviceEvent(toEventTable: 'events', andWithEventDetails
 ### App Inbox
 App Inbox is a screen within a mobile app that stores persistent messages. It’s kind of like an email inbox, but it lives inside the app itself. App Inbox differs from other mobile channels such as push notifications or in-app messages. For both push and in-app messages, they’re gone once you open them.
 
-In other words, D-engage admin panel lets you keep selected messages on the platform and Mobile SDK may retreive and display these messages when needed.
+In other words, D·engage admin panel lets you keep selected messages on the platform and Mobile SDK may retreive and display these messages when needed.
 
-In order to save messages into App Inbox, you need to select “Save to Inbox” option when sending messages in D-engage admin panel by assigning an expire date to it.
+In order to save messages into App Inbox, you need to select “Save to Inbox” option when sending messages in D·engage admin panel by assigning an expire date to it.
 
-Inbox messages are kept in the memory storage of the phone until app is completely closed or for a while and D-engage SDK provides functions for getting and managing these messages.
+Inbox messages are kept in the memory storage of the phone until app is completely closed or for a while and D·engage SDK provides functions for getting and managing these messages.
 
   #### Requirements
-  - *Android*: D-engage SDK 3.2.3+
-  - *iOS*: D-engage SDK 2.5.21+
+  - *Android*: D·engage SDK 3.2.3+
+  - *iOS*: D·engage SDK 2.5.21+
 
   #### Methods
   There are 3 methods to manage App Inbox Messages
@@ -786,13 +778,13 @@ Inbox messages are kept in the memory storage of the phone until app is complete
 In-app message is a type of mobile message where the notification is displayed within the app. It is not sent in a specific time but it is show to user when user are using the app. Examples include popups, yes/no prompts, banners, and more. In order to show in-app messages, there is no permission requirement.
 
   #### Requirements
-  - iOS: D-engage SDK 3.2.3+
-  - android: D-engage SDK 3.2.3+
+  - iOS: D·engage SDK 3.2.3+
+  - android: D·engage SDK 3.2.3+
 
   #### Methods
   > Experimental in react-native and this functionality requires proper verification with react-native navigations libs like `react-navigation`, `react-native-router-flux` etc.
   
-  Created messages will be stored in D-engage backend and will be served to mobile SDKs. If you integrated mobile SDK correctly for push messages, for using in-app features you just have to add setNavigtion function to every page navigation.
+  Created messages will be stored in D·engage backend and will be served to mobile SDKs. If you integrated mobile SDK correctly for push messages, for using in-app features you just have to add setNavigtion function to every page navigation.
 If you want to use screen name filter, you should send screen name to setNavigation function in every page navigation.
 
   #### Simple In App Messaging
