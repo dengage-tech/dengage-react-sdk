@@ -313,11 +313,11 @@ Subscriptions are self managed by D·engage SDK and subcription cycle starts wit
 - Setting User Permission (if you have manual management of permission)
 
 ### Asking User Permission for Notification
-> Note: Android doesn't require to ask for push notifications explicitely. Therefore, you can only ask for push notification's permissions on iOS.
+> Note: Android doesn't require to ask for push notifications explicitly. Therefore, you can only ask for push notification's permissions on iOS.
 
 IOS uses shared `UNUserNotificationCenter` by itself while asking user to send notification. D·engage SDK manager uses `UNUserNotificationCenter` to ask permission as well. [Apple Doc Reference](https://developer.apple.com/documentation/usernotifications/asking_permission_to_use_notifications)
 
-If in your application, you want to get UserNotification permissions explicitely, you can do by calling one of the following methods:
+If in your application, you want to get UserNotification permissions explicitly, you can do by calling one of the following methods:
 
 ```Javascript
 // At the top import
