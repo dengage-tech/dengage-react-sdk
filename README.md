@@ -165,38 +165,45 @@ Following extra steps after the installation of the react-native-dengage SDK are
   
   ![NotificationService.swift screenshot](https://files.readme.io/56a0fd9-3_6_NotificationService_screenshot.png)
 
-  ### 4. Setting Integration Key
+  ### 4. Setup Dengage SDK (it include two steps of the iOS native SDK. 1. Setting Integration Key  2. Initialization with Launch Options)
   ***Integration Key*** is genereted by CDMP Platform while defining application. It is a hash string which contains information about application.
-  At the beginning of your application cycle you must set Integration Key.
-  To set integration key SDK Provides ```Dengage.setIntegrationKey(key: String)``` method.
-  Call this method at the begining of your application life cycle.
-  
-  > Recommendation : Use it on AppDelegate.m
-  
-  ```Swift
-    Dengage.setIntegrationKey(key: String)
-  ```
-  
-  ### 5. Initialization with Launch Options
-  After setting Integration Key, to use SDK features, ```Dengage.initWithLaunchOptions(withLaunchOptions: [UIApplication.LaunchOptionsKey: Any]?,badgeCountReset: Bool?)``` function must be called.
-  
-***Parameters***
-  ```withLaunchOptions```: ```[UIApplication.LaunchOptionsKey: Any]?```: Pass didFinishLaunchingWithOptions params
-  ```badgeCountReset```: ```bool``` If you want to reset (clear) badge icon on your notifications set this option to true
+  At the beginning of your application cycle you must set Integration Key and right after initialize sdk with launch options.
+  Following sample shows how to do that in your `AppDelegate.m` file:
 
 ***Sample:***
 In the ```AppDelegate.m```
 ```
-import Dengage_Framework
+// make sure to keep import before Flipper related imports in AppDelegate.m
+@import react_native_dengage; // ADD THIS IN IMPORTS
 
-@UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, REFrostedViewControllerDelegate {
-    // STEP 1: setting integration key
-    let integrationKey = "Your-Integeration-Key-Here"
-    Dengage.setIntegrationKey(key: integrationKey)
+@implementation AppDelegate
 
-    // STEP 2: setting initWithLauchOptions
-    Dengage.initWithLaunchOptions(withLaunchOptions: launchOptions, badgeCountReset: false)
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+  #ifdef FB_SONARKIT_ENABLED
+    InitializeFlipper(application);
+  #endif
+  RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
+
+  /**** Dengage Setup code Starting here ********/
+
+  DengageRNCoordinator *coordinator = [DengageRNCoordinator staticInstance];
+  [coordinator setupDengage:@"YOUR_INTEGERATION_KEY_HERE" launchOptions:launchOptions];
+  
+  /**** Dengage Setup code ends here ********/
+  
+  RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
+                                                   moduleName:@"DengageExample"
+                                            initialProperties:nil];
+
+  rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
+
+  self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+  UIViewController *rootViewController = [UIViewController new];
+  rootViewController.view = rootView;
+  self.window.rootViewController = rootViewController;
+  [self.window makeKeyAndVisible];
+  return YES;
 }
 ```
   
