@@ -7,16 +7,24 @@ export default function App() {
   const [result, setResult] = React.useState<number | undefined>();
 
   React.useEffect(() => {
-    Dengage.multiply(3, 7).then(setResult);
-    // Dengage.setIntegerationKey("KgSgzg1Ac14Jf_p_l_c6V_s_l_7EqnhH1UinXdp_s_l_N7E3ZU4afMfZJcDQPIGm8Y4KX57kE018fi3IfQOhSZMoPA007Ylaod9n7l_s_l_ic9S6Mxk8CnP6o36CijU7hu4BQWeyN_p_l_g_s_l_hk4y")
-     Dengage.promptForPushNotificationsWitCallback((hasPermission) => {
+     Dengage.promptForPushNotificationsWitCallback(async (hasPermission) => {
        console.log("hasPermission", hasPermission)
+       Dengage.setUserPermission(hasPermission)
+       setResult(String(hasPermission))
+       if (hasPermission) {
+         const token = await Dengage.getToken()
+         console.log("tokenIs: ", token)
+         if (token) {
+           Dengage.setToken(token)
+           Dengage.setLogStatus(true);
+         }
+       }
      })
   }, []);
 
   return (
     <View style={styles.container}>
-      <Text>Result: {result}</Text>
+      <Text>HasPermission: {result}</Text>
     </View>
   );
 }

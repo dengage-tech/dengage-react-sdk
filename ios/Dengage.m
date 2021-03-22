@@ -12,4 +12,12 @@ RCT_EXTERN_METHOD(promptForPushNotifications)
 
 RCT_EXTERN_METHOD(promptForPushNotificationsWitCallback:(RCTResponseSenderBlock)callback)
 
+RCT_EXTERN_METHOD(setUserPermission:(BOOL)permission)
+
+RCT_EXTERN_METHOD(getToken:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(setToken:(NSString *)token)
+
+RCT_EXTERN_METHOD(setLogStatus:(BOOL)isVisible)
+
 @end
