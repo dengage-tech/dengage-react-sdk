@@ -2,8 +2,9 @@ import { NativeModules } from 'react-native';
 
 type DengageType = {
   multiply(a: number, b: number): Promise<number>;
+  setIntegerationKey(key: string): void;
 };
 
-const { Dengage } = NativeModules;
+const { DengageRN } = NativeModules;
 
-export default Dengage as DengageType;
+export default DengageRN as DengageType;
