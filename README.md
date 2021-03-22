@@ -341,7 +341,7 @@ OR
 import dEngage from 'react-native-dengage'
 
 // somewhere in your javascript/typescript code
-dEngage.promptForPushNotifications((hasPermission: Boolean) => {
+dEngage.promptForPushNotificationsWitCallback((hasPermission: Boolean) => {
   // do somthing with hasPermission flag.
   // Note: hasPermission provides information if user enabled or disabled notification permission from iOS Settings > Notifications.
 })
