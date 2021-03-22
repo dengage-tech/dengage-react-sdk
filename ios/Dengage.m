@@ -10,6 +10,6 @@ RCT_EXTERN_METHOD(setIntegerationKey:(NSString *)key)
 
 RCT_EXTERN_METHOD(promptForPushNotifications)
 
-RCT_EXTERN_METHOD(promptForPushNotifications)
+RCT_EXTERN_METHOD(promptForPushNotificationsWitCallback:(RCTResponseSenderBlock)callback)
 
 @end

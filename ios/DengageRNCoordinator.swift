@@ -20,7 +20,11 @@ public class DengageRNCoordinator: NSObject {
     @objc(setupDengage:launchOptions:)
     public func setupDengage(key:NSString, launchOptions:NSDictionary?) {
         Dengage.setIntegrationKey(key: key as String)
-        Dengage.initWithLaunchOptions(withLaunchOptions: (launchOptions as! [UIApplication.LaunchOptionsKey : Any]))
+        if (launchOptions != nil) {
+            Dengage.initWithLaunchOptions(withLaunchOptions: launchOptions as! [UIApplication.LaunchOptionsKey : Any])
+        } else {
+            Dengage.initWithLaunchOptions(withLaunchOptions: nil)
+        }
     }
 
 }

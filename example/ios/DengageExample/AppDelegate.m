@@ -40,11 +40,11 @@ static void InitializeFlipper(UIApplication *application) {
   #endif
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
 
-  
+
   DengageRNCoordinator *coordinator = [DengageRNCoordinator staticInstance];
   [coordinator setValue:launchOptions forKey:@"launchOptions"];
-  [coordinator setupDengage:@"my-vew-value" launchOptions:launchOptions];
-  
+  [coordinator setupDengage:@"YOUR-INTEGERATION-KEY-HERE" launchOptions:launchOptions];
+
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
                                                    moduleName:@"DengageExample"
                                             initialProperties:nil];

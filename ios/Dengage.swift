@@ -7,7 +7,7 @@ class DengageRN: NSObject {
     func multiply(a: Float, b: Float, resolve:RCTPromiseResolveBlock,reject:RCTPromiseRejectBlock) -> Void {
         resolve(a*b)
     }
-    
+
     @objc(setIntegerationKey:)
     func setIntegerationKey(_ key: String) -> Void {
         Dengage.setIntegrationKey(key: key)
@@ -17,7 +17,11 @@ class DengageRN: NSObject {
     func promptForPushNotifications() {
         Dengage.promptForPushNotifications()
     }
-    
-    
-    
+
+    @objc(promptForPushNotificationsWitCallback:)
+    func promptForPushNotifications(callback: @escaping RCTResponseSenderBlock) {
+        Dengage.promptForPushNotifications() { hasPermission in
+            callback([hasPermission])
+        }
+    }
 }
