@@ -58,5 +58,14 @@ class DengageModule(reactContext: ReactApplicationContext) : ReactContextBaseJav
       }
     }
 
+    @ReactMethod
+    fun getContactKey(promise: Promise) {
+      try {
+        val contactKey = DengageRNCoordinator.sharedInstance.dengageManager?.subscription?.contactKey
+        promise.resolve(contactKey)
+      } catch (ex: Exception) {
+        promise.reject(ex)
+      }
+    }
 
 }

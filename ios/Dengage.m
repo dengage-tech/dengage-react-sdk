@@ -16,6 +16,8 @@ RCT_EXTERN_METHOD(setUserPermission:(BOOL)permission)
 
 RCT_EXTERN_METHOD(getToken:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
 
+RCT_EXTERN_METHOD(getContactKey:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
+
 RCT_EXTERN_METHOD(setToken:(NSString *)token)
 
 RCT_EXTERN_METHOD(setLogStatus:(BOOL)isVisible)

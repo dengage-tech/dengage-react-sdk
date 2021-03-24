@@ -1,4 +1,4 @@
-import { NativeModules, Platform } from 'react-native';
+import { NativeModules } from 'react-native';
 
 type DengageType = {
   multiply(a: number, b: number): Promise<number>;
@@ -6,6 +6,7 @@ type DengageType = {
   setHuaweiIntegrationKey(key: string): void; // android only
   setFirebaseIntegrationKey(key: string): void; // android only
   setContactKey(key: string): void;
+  getContactKey(): Promise<string | null | undefined>;
   promptForPushNotifications(): void; // iOS only
   promptForPushNotificationsWitCallback(callback: 'function'): void; // iOS only
   setUserPermission(permission: boolean): void;

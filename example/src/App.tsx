@@ -6,6 +6,7 @@ import Dengage from 'react-native-dengage';
 export default function App() {
   const [result, setResult] = React.useState<string>('checking...');
   const [token, setToken] = React.useState<string>('checking...');
+  const [contactKey, setContactKey] = React.useState<string>('checking...');
 
   React.useEffect(() => {
     if (Platform.OS === 'ios') {
@@ -22,6 +23,7 @@ export default function App() {
             Dengage.setToken(token)
             Dengage.setLogStatus(true);
           }
+          setContactKey(await Dengage.getContactKey())
         }
       })
     } else {
@@ -29,6 +31,7 @@ export default function App() {
       const invokeIt = async () => {
         const token = await Dengage.getToken()
         setToken(token);
+        setContactKey(await Dengage.getContactKey())
       }
       invokeIt()
     }
@@ -40,6 +43,8 @@ export default function App() {
       <Text>{result}</Text>
       <Text style={styles.heading}>Token</Text>
       <Text>{token}</Text>
+      <Text style={styles.heading}>Contact Key</Text>
+      <Text>{contactKey}</Text>
 
     </View>
   );

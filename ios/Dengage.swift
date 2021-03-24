@@ -37,11 +37,23 @@ class DengageRN: NSObject {
             let currentToken = try Dengage.getToken()
             resolve(currentToken)
         } catch {
-            print("Unexpected non-vending-machine-related error: \(error)")
+            print("Unexpected getTOken error: \(error)")
             reject("UNABLE_TO_RETREIVE_TOKEN", error.localizedDescription ?? "Something went wrong", error)
         }
     }
 
+    @objc
+    func getContactKey(_ resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
+        do {
+            let contactKey = try Dengage.getContactKey()
+            resolve(contactKey)
+        } catch {
+            print()
+            print("Unexpected getContactKey error: \(error)")
+            reject("UNABLE_TO_RETREIVE_CONTACT_KEY", error.localizedDescription ?? "Something went wrong", error)
+        }
+    }
+    
     @objc(setToken:)
     func setToken(token: String) {
         Dengage.setToken(token: token)
