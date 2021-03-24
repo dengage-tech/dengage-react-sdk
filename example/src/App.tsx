@@ -4,7 +4,8 @@ import { StyleSheet, View, Text, Platform } from 'react-native';
 import Dengage from 'react-native-dengage';
 
 export default function App() {
-  const [result, setResult] = React.useState<number | undefined>('checking...');
+  const [result, setResult] = React.useState<string>('checking...');
+  const [token, setToken] = React.useState<string>('checking...');
 
   React.useEffect(() => {
     if (Platform.OS === 'ios') {
@@ -13,8 +14,10 @@ export default function App() {
         Dengage.setUserPermission(hasPermission)
         setResult(String(hasPermission))
         if (hasPermission) {
+          Dengage.setContactKey("Your-contact-key-here.");
           const token = await Dengage.getToken()
           console.log("tokenIs: ", token)
+          setToken(token)
           if (token) {
             Dengage.setToken(token)
             Dengage.setLogStatus(true);
@@ -25,7 +28,7 @@ export default function App() {
       Dengage.setContactKey("Your-contact-key-here.");
       const invokeIt = async () => {
         const token = await Dengage.getToken()
-        setResult(token);
+        setToken(token);
       }
       invokeIt()
     }
@@ -33,7 +36,11 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Text>{Platform.OS === 'ios' ? 'HasPermission: ' : 'Token: '}{result}</Text>
+      <Text style={styles.heading}>HasPermission</Text>
+      <Text>{result}</Text>
+      <Text style={styles.heading}>Token</Text>
+      <Text>{token}</Text>
+
     </View>
   );
 }
@@ -41,12 +48,16 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
     justifyContent: 'center',
+    padding: 20,
   },
   box: {
     width: 60,
     height: 60,
     marginVertical: 20,
   },
+  heading: {
+    fontWeight: 'bold',
+    marginTop: 20
+  }
 });

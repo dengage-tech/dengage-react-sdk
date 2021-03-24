@@ -20,4 +20,6 @@ RCT_EXTERN_METHOD(setToken:(NSString *)token)
 
 RCT_EXTERN_METHOD(setLogStatus:(BOOL)isVisible)
 
+RCT_EXTERN_METHOD(setContactKey:(NSString *)contactKey)
+
 @end

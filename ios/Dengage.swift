@@ -51,4 +51,9 @@ class DengageRN: NSObject {
     func setLogStatus(isVisible: Bool) {
         Dengage.setLogStatus(isVisible: isVisible)
     }
+    
+    @objc(setContactKey:)
+    func setContactKey(contactKey: String) {
+        Dengage.setContactKey(contactKey: contactKey)
+    }
 }
