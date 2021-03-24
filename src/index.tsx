@@ -11,7 +11,7 @@ type DengageType = {
   promptForPushNotificationsWitCallback(callback: 'function'): void; // iOS only
   setUserPermission(permission: boolean): void;
   getToken(): Promise<string | any>;
-  setToken(token: String): void; // iOS only
+  setToken(token: String): void;
   setLogStatus(isVisible: boolean): void;
 };
 

@@ -45,18 +45,24 @@ class DengageModule(reactContext: ReactApplicationContext) : ReactContextBaseJav
     }
 
     @ReactMethod
-    fun getToken (promise: Promise) {
-      try {
-        val token = DengageRNCoordinator.sharedInstance.dengageManager?.subscription?.token
-        if (token !== null) {
-          promise.resolve(token)
-          return
-        }
-        throw Exception("unable to get token.");
-      } catch (ex: Exception) {
-        promise.reject(ex)
-      }
+    fun setToken (token: String) {
+      DengageRNCoordinator.sharedInstance.dengageManager?.subscription?.token = token
     }
+
+
+    @ReactMethod
+      fun getToken (promise: Promise) {
+        try {
+          val token = DengageRNCoordinator.sharedInstance.dengageManager?.subscription?.token
+          if (token !== null) {
+            promise.resolve(token)
+            return
+          }
+          throw Exception("unable to get token.");
+        } catch (ex: Exception) {
+          promise.reject(ex)
+        }
+      }
 
     @ReactMethod
     fun getContactKey(promise: Promise) {
