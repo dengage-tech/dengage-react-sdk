@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1054534331652",
+    "project_id": "dengagernsdkexample",
+    "storage_bucket": "dengagernsdkexample.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1054534331652:android:d8bfcac734c7305f95f451",
+        "android_client_info": {
+          "package_name": "com.example.reactnativedengage"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1054534331652-a2q5oe2cu0tqub1bi3cjf8d75snjr4kq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCMIu88cQrg_eVd9Z3-UdfcYMD7DXyPyXM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1054534331652-a2q5oe2cu0tqub1bi3cjf8d75snjr4kq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

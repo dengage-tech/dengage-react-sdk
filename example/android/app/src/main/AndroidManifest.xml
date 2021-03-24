@@ -2,6 +2,8 @@
   package="com.example.reactnativedengage">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
 
     <application
       android:name=".MainApplication"
@@ -22,6 +24,21 @@
         </intent-filter>
       </activity>
       <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
+
+      <service android:name="com.dengage.sdk.FcmMessagingService">
+        <intent-filter>
+          <action  android:name="com.google.firebase.MESSAGING_EVENT"/>
+        </intent-filter>
+      </service>
+      <receiver android:name="com.dengage.sdk.NotificationReceiver"
+        android:exported="false">
+        <intent-filter>
+          <action android:name="com.dengage.push.intent.RECEIVE" />
+          <action android:name="com.dengage.push.intent.OPEN" />
+          <action android:name="com.dengage.push.intent.DELETE" />
+        </intent-filter>
+      </receiver>
+
     </application>
 
 </manifest>
