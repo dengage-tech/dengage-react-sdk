@@ -246,20 +246,21 @@ In the ```AppDelegate.m```
   
   ```Java
     // import statement
-    import com.dengage.sdk.DengageManager;
+    import com.reactnativedengage.DengageRNCoordinator;
     
     // ...
     @Override
     protected void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
-      /// add following lines 
-      Context context = getApplicationContext();
-      final DengageManager manager = DengageManager .getInstance(context)
-       .setLogStatus(true)
-       .setFirebaseIntegrationKey("YOUR_DENGAGE_FIREBASE_APP_INTEGRATION_KEY")
-       .setHuaweiIntegrationKey("OUR_DENGAGE_HUAWEI_APP_INTEGRATION_KEY")
-       .useCloudSubscription(false)
-       .init();    
+      // These three lines need to be added
+      DengageRNCoordinator coordinator = DengageRNCoordinator.Companion.getSharedInstance();
+      coordinator.injectReactInstanceManager(getReactInstanceManager());
+      coordinator.setupDengage(
+        true, // it is LogStatus & could be true OR false
+        "YOURE_FIREBASE_KEY_HERE", // null in case no firebase key
+        "YOURE_HUAWEI_KEY_HERE", // null in case no huawei key
+        getApplicationContext()
+      );    
     }
   ```
   
