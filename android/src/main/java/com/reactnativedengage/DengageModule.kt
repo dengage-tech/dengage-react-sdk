@@ -74,4 +74,14 @@ class DengageModule(reactContext: ReactApplicationContext) : ReactContextBaseJav
       }
     }
 
+    @ReactMethod
+    fun getUserPermission(promise: Promise) {
+      try {
+        val hasPermission = DengageRNCoordinator.sharedInstance.dengageManager?.subscription?.permission
+        promise.resolve(hasPermission)
+      } catch (ex: Exception) {
+        promise.reject(ex)
+      }
+    }
+
 }

@@ -10,6 +10,7 @@ type DengageType = {
   promptForPushNotifications(): void; // iOS only
   promptForPushNotificationsWitCallback(callback: 'function'): void; // iOS only
   setUserPermission(permission: boolean): void;
+  getUserPermission(): Promise<boolean>; // android only, in iOS use promptForPushNotificationsWitCallback
   getToken(): Promise<string | any>;
   setToken(token: String): void;
   setLogStatus(isVisible: boolean): void;

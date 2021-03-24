@@ -29,6 +29,8 @@ export default function App() {
     } else {
       Dengage.setContactKey("Your-contact-key-here.");
       const invokeIt = async () => {
+        const hasPermissions = await Dengage.getUserPermission()
+        setResult(String(hasPermissions))
         const token = await Dengage.getToken()
         setToken(token);
         setContactKey(await Dengage.getContactKey())
