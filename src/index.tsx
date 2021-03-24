@@ -1,13 +1,16 @@
-import { NativeModules } from 'react-native';
+import { NativeModules, Platform } from 'react-native';
 
 type DengageType = {
   multiply(a: number, b: number): Promise<number>;
-  setIntegerationKey(key: string): void;
-  promptForPushNotifications(): void;
-  promptForPushNotificationsWitCallback(callback: 'function'): void;
+  setIntegerationKey(key: string): void; // iOS only
+  setHuaweiIntegrationKey(key: string): void; // android only
+  setFirebaseIntegrationKey(key: string): void; // android only
+  setContactKey(key: string): void;
+  promptForPushNotifications(): void; // iOS only
+  promptForPushNotificationsWitCallback(callback: 'function'): void; // iOS only
   setUserPermission(permission: boolean): void;
   getToken(): Promise<string | any>;
-  setToken(token: String): void;
+  setToken(token: String): void; // iOS only
   setLogStatus(isVisible: boolean): void;
 };
 
