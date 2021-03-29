@@ -24,4 +24,6 @@ RCT_EXTERN_METHOD(setLogStatus:(BOOL)isVisible)
 
 RCT_EXTERN_METHOD(setContactKey:(NSString *)contactKey)
 
+RCT_EXTERN_METHOD(handleNotificationActionBlock:(RCTResponseSenderBlock)callback)
+
 @end
