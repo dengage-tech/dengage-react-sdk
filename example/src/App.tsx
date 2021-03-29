@@ -37,6 +37,12 @@ export default function App() {
       }
       invokeIt()
     }
+
+
+    Dengage.handleNotificationActionBlock((notificationAction) => {
+      console.log(notificationAction)
+      // handle notification {notificationAction} here.
+    })
   }, []);
 
   return (

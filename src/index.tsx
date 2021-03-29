@@ -1,4 +1,5 @@
 import { NativeModules } from 'react-native';
+import { DengageTypes } from './types';
 
 type DengageType = {
   multiply(a: number, b: number): Promise<number>;
@@ -8,12 +9,13 @@ type DengageType = {
   setContactKey(key: string): void;
   getContactKey(): Promise<string | null | undefined>;
   promptForPushNotifications(): void; // iOS only
-  promptForPushNotificationsWitCallback(callback: 'function'): void; // iOS only
+  promptForPushNotificationsWitCallback(callback: (hasPermission: boolean) => void): void; // iOS only
   setUserPermission(permission: boolean): void;
   getUserPermission(): Promise<boolean>; // android only, in iOS use promptForPushNotificationsWitCallback
   getToken(): Promise<string | any>;
   setToken(token: String): void;
   setLogStatus(isVisible: boolean): void;
+  handleNotificationActionBlock(callback: (notificationAction: DengageTypes["NotificationAction"]) => void): void; // iOS only
 };
 
 const { DengageRN } = NativeModules;
