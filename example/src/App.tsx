@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import { StyleSheet, View, Text, Platform } from 'react-native';
 import Dengage from 'react-native-dengage';
+import { DengageTypes } from '../../src/types';
 
 export default function App() {
   const [result, setResult] = React.useState<string>('checking...');
@@ -39,8 +40,8 @@ export default function App() {
     }
 
 
-    Dengage.handleNotificationActionBlock((notificationAction) => {
-      console.log(notificationAction)
+    Dengage.handleNotificationActionBlock((notificationAction: DengageTypes["NotificationAction"]) => {
+      console.log(notificationAction.notification)
       // handle notification {notificationAction} here.
     })
   }, []);
