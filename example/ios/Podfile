@@ -19,3 +19,6 @@ target 'DengageExample' do
     flipper_post_install(installer)
   end
 end
+target 'DengageNotificationServiceExtension' do
+  pod 'Dengage.Framework'
+end
