@@ -44,6 +44,8 @@
           <action android:name="com.dengage.push.intent.RECEIVE" />
           <action android:name="com.dengage.push.intent.OPEN" />
           <action android:name="com.dengage.push.intent.DELETE" />
+          <action android:name="com.dengage.push.intent.ITEM_CLICK" /> <!-- add this line-->
+          <action android:name="com.dengage.push.intent.CAROUSEL_ITEM_CLICK" /><!-- add this line-->
         </intent-filter>
       </receiver>
 

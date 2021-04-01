@@ -40,10 +40,13 @@ export default function App() {
     }
 
 
-    Dengage.handleNotificationActionBlock((notificationAction: DengageTypes["NotificationAction"]) => {
-      console.log(notificationAction.notification)
-      // handle notification {notificationAction} here.
-    })
+    if (Platform.OS === 'ios') {
+      Dengage.handleNotificationActionBlock((notificationAction: DengageTypes["NotificationAction"]) => {
+        console.log(notificationAction.notification)
+        // handle notification {notificationAction} here.
+      })
+    }
+
   }, []);
 
   return (
