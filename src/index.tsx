@@ -16,6 +16,17 @@ type DengageType = {
   setToken(token: String): void;
   setLogStatus(isVisible: boolean): void;
   handleNotificationActionBlock(callback: (notificationAction: DengageTypes["NotificationAction"]) => void): void; // iOS only
+  pageView(params: object): void;
+  addToCart(params: object): void;
+  removeFromCart(params: object): void;
+  viewCart(params: object): void;
+  beginCheckout(params: object): void;
+  placeOrder(params: object): void;
+  cancelOrder(params: object): void;
+  addToWishList(params: object): void;
+  removeFromWishList(params: object): void;
+  search(params: object): void;
+  SendDeviceEvent(tableName: string, data: object): void;
 };
 
 const { DengageRN } = NativeModules;

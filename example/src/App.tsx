@@ -9,6 +9,85 @@ export default function App() {
   const [token, setToken] = React.useState<string>('checking...');
   const [contactKey, setContactKey] = React.useState<string>('checking...');
 
+  const pageViewExample = () => {
+    // pageView event example
+    Dengage.pageView({
+      "product_id":1,
+      "product_variant_id":1,
+      "quantity":1,
+      "unit_price":10.00,
+      "discounted_price":9.99,
+    })
+  }
+  const addToCartExample = () => {
+    // addToCart action starts here.
+    // All items currently exists in shopping cart must be added to an array
+    const cartItem = {}
+    cartItem["product_id"] = 1
+    cartItem["product_variant_id"] = 1
+    cartItem["quantity"] = 1
+    cartItem["unit_price"] = 10.00
+    cartItem["discounted_price"] = 9.99
+    // ... extra columns in shopping_cart_events_detail table, can be added in cartItem
+
+    let cartItems = []
+    cartItems.push(cartItem)
+    cartItems.push(cartItem)
+
+
+    // Add to cart action
+    const addParams = {
+      "product_id":1,
+      "product_variant_id":1,
+      "quantity":1,
+      "unit_price":10.00,
+      "discounted_price":9.99,
+      // ... extra columns in shopping_cart_events table, can be added here
+      "cartItems":cartItems // all items in cart
+    }
+    Dengage.addToCart(addParams)
+    // addToCart action ends here.
+  }
+  const removeFromCartExample = () => {
+    const cartItem = {}
+    cartItem["product_id"] = 1
+    cartItem["product_variant_id"] = 1
+    cartItem["quantity"] = 1
+    cartItem["unit_price"] = 10.00
+    cartItem["discounted_price"] = 9.99
+    // ... extra columns in shopping_cart_events_detail table, can be added in cartItem
+
+    let cartItems = []
+    cartItems.push(cartItem)
+    cartItems.push(cartItem)
+
+    // Remove from cart action
+    const removeParams = {
+      "product_id":1,
+      "product_variant_id":1,
+      "quantity":1,
+      "unit_price":10.00,
+      "discounted_price":9.99,
+      // ... extra columns in shopping_cart_events table, can be added here
+      "cartItems":cartItems // all items in cart
+    }
+    Dengage.removeFromCart(removeParams)
+  }
+  const viewCart = () => {
+    const cartItem = {}
+    cartItem["product_id"] = 1
+    cartItem["product_variant_id"] = 1
+    cartItem["quantity"] = 1
+    cartItem["unit_price"] = 10.00
+    cartItem["discounted_price"] = 9.99
+    // ... extra columns in shopping_cart_events_detail table, can be added in cartItem
+
+    let cartItems = []
+    cartItems.push(cartItem)
+    cartItems.push(cartItem)
+    Dengage.viewCart(cartItems)
+  }
+
   React.useEffect(() => {
     if (Platform.OS === 'ios') {
       Dengage.promptForPushNotificationsWitCallback(async (hasPermission) => {
@@ -25,6 +104,10 @@ export default function App() {
             Dengage.setLogStatus(true);
           }
           setContactKey(await Dengage.getContactKey())
+
+          pageViewExample()
+          addToCartExample()
+          removeFromCartExample()
         }
       })
     } else {

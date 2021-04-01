@@ -26,4 +26,26 @@ RCT_EXTERN_METHOD(setContactKey:(NSString *)contactKey)
 
 RCT_EXTERN_METHOD(handleNotificationActionBlock:(RCTResponseSenderBlock)callback)
 
+RCT_EXTERN_METHOD(pageView:(NSDictionary *)data)
+
+RCT_EXTERN_METHOD(addToCart:(NSDictionary *)data)
+
+RCT_EXTERN_METHOD(removeFromCart:(NSDictionary *)data)
+
+RCT_EXTERN_METHOD(viewCart:(NSDictionary *)data)
+
+RCT_EXTERN_METHOD(beginCheckout:(NSDictionary *)data)
+
+RCT_EXTERN_METHOD(placeOrder:(NSDictionary *)data)
+
+RCT_EXTERN_METHOD(cancelOrder:(NSDictionary *)data)
+
+RCT_EXTERN_METHOD(addToWishList:(NSDictionary *)data)
+
+RCT_EXTERN_METHOD(removeFromWishList:(NSDictionary *)data)
+
+RCT_EXTERN_METHOD(search:(NSDictionary *)data)
+
+RCT_EXTERN_METHOD(SendDeviceEvent:(NSString *)tableName withData:(NSDictionary *)withData)
+
 @end

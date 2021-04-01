@@ -48,7 +48,6 @@ class DengageRN: NSObject {
             let contactKey = try Dengage.getContactKey()
             resolve(contactKey)
         } catch {
-            print()
             print("Unexpected getContactKey error: \(error)")
             reject("UNABLE_TO_RETREIVE_CONTACT_KEY", error.localizedDescription ?? "Something went wrong", error)
         }
@@ -227,4 +226,114 @@ class DengageRN: NSObject {
 
         }
     }
+    
+    @objc(pageView:)
+    func pageView (_ data: NSDictionary) -> Void {
+        do {
+            try DengageEvent.shared.pageView(params: data as! NSMutableDictionary)
+        } catch {
+            print("Unexpected pageView error: \(error)")
+        }
+    }
+
+    @objc(addToCart:)
+    func addToCart (_ data: NSDictionary) -> Void {
+        do {
+            print(data)
+            try DengageEvent.shared.addToCart(params: data as! NSMutableDictionary)
+        } catch {
+            print("Unexpected addToCart error: \(error)")
+        }
+    }
+    
+    @objc(removeFromCart:)
+    func removeFromCart (_ data: NSDictionary) -> Void {
+        do {
+            print(data)
+            try DengageEvent.shared.removeFromCart(params: data as! NSMutableDictionary)
+        } catch {
+            print("Unexpected removeFromCart error: \(error)")
+        }
+    }
+
+    @objc(viewCart:)
+    func viewCart (_ data: NSDictionary) -> Void {
+        do {
+            print(data)
+            try DengageEvent.shared.viewCart(params: data as! NSMutableDictionary)
+        } catch {
+            print("Unexpected viewCart error: \(error)")
+        }
+    }
+
+    @objc(beginCheckout:)
+    func beginCheckout (_ data: NSDictionary) -> Void {
+        do {
+            print(data)
+            try DengageEvent.shared.beginCheckout(params: data as! NSMutableDictionary)
+        } catch {
+            print("Unexpected beginCheckout error: \(error)")
+        }
+    }
+    
+    @objc(placeOrder:)
+    func placeOrder (_ data: NSDictionary) -> Void {
+        do {
+            print(data)
+            try DengageEvent.shared.order(params: data as! NSMutableDictionary)
+        } catch {
+            print("Unexpected placeOrder error: \(error)")
+        }
+    }
+
+    @objc(cancelOrder:)
+    func cancelOrder (_ data: NSDictionary) -> Void {
+        do {
+            print(data)
+            try DengageEvent.shared.cancelOrder(params: data as! NSMutableDictionary)
+        } catch {
+            print("Unexpected cancelOrder error: \(error)")
+        }
+    }
+    
+    @objc(addToWishList:)
+    func addToWishList (_ data: NSDictionary) -> Void {
+        do {
+            print(data)
+            try DengageEvent.shared.addToWithList(params: data as! NSMutableDictionary)
+        } catch {
+            print("Unexpected addToWishList error: \(error)")
+        }
+    }
+
+    @objc(removeFromWishList:)
+    func removeFromWishList (_ data: NSDictionary) -> Void {
+        do {
+            print(data)
+            try DengageEvent.shared.removeFromWithList(params: data as! NSMutableDictionary)
+        } catch {
+            print("Unexpected removeFromWishList error: \(error)")
+        }
+    }
+
+    @objc(search:)
+    func search (_ data: NSDictionary) -> Void {
+        do {
+            print(data)
+            try DengageEvent.shared.search(params: data as! NSMutableDictionary)
+        } catch {
+            print("Unexpected search error: \(error)")
+        }
+    }
+
+    @objc(SendDeviceEvent:withData:)
+    func SendDeviceEvent (_ tableName: String, withData: NSDictionary) -> Void {
+        do {
+            print(withData)
+            try Dengage.SendDeviceEvent(toEventTable: tableName, andWithEventDetails: withData as! NSMutableDictionary)
+        } catch {
+            print("Unexpected search error: \(error)")
+        }
+    }
+
 }
