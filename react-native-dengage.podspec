@@ -17,4 +17,5 @@ Pod::Spec.new do |s|
 
   s.dependency "React-Core"
   s.dependency "Dengage.Framework","~> 2.5"
+  s.dependency "Dengage.Framework.Extensions","1.0.10"
 end
