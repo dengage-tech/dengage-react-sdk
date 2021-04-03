@@ -29,7 +29,7 @@ class DengageRN: NSObject {
     func setUserPermission(permission: Bool) {
         Dengage.setUserPermission(permission: permission)
     }
-    
+
     // _ before resolve here is neccessary, need to revisit rn docs about why.
     @objc
     func getToken(_ resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
@@ -52,7 +52,7 @@ class DengageRN: NSObject {
             reject("UNABLE_TO_RETREIVE_CONTACT_KEY", error.localizedDescription ?? "Something went wrong", error)
         }
     }
-    
+
     @objc(setToken:)
     func setToken(token: String) {
         Dengage.setToken(token: token)
@@ -62,30 +62,30 @@ class DengageRN: NSObject {
     func setLogStatus(isVisible: Bool) {
         Dengage.setLogStatus(isVisible: isVisible)
     }
-    
+
     @objc(setContactKey:)
     func setContactKey(contactKey: String) {
         Dengage.setContactKey(contactKey: contactKey)
     }
-    
+
     @objc(handleNotificationActionBlock:)
     func handleNotificationActionBlock (_ callback: @escaping RCTResponseSenderBlock) {
         Dengage.handleNotificationActionBlock { (notificationResponse) in
             var response = [String:Any?]();
             response["actionIdentifier"] = notificationResponse.actionIdentifier
-            
+
             var notification = [String:Any?]()
             notification["date"] = notificationResponse.notification.date.description
-            
+
             var notificationReq = [String:Any?]()
             notificationReq["identifier"] = notificationResponse.notification.request.identifier
-            
+
             if (notificationResponse.notification.request.trigger?.repeats != nil) {
                 var notificationReqTrigger = [String:Any?]()
                 notificationReqTrigger["repeats"] = notificationResponse.notification.request.trigger?.repeats ?? nil
                 notificationReq["trigger"] = notificationReqTrigger
             }
-            
+
             var reqContent = [String:Any?]()
             var contentAttachments = [Any]()
             for attachement in notificationResponse.notification.request.content.attachments {
@@ -112,13 +112,13 @@ class DengageRN: NSObject {
             if #available(iOS 13.0, *) {
                 reqContent["targetContentIdentifier"] = notificationResponse.notification.request.content.targetContentIdentifier
             }
-            
-            
+
+
             reqContent["attachments"] = contentAttachments
             notificationReq["content"] = reqContent
             notification["request"] = notificationReq
             response["notification"] = notification
-            
+
             callback([response])
 
             /**
@@ -132,7 +132,7 @@ class DengageRN: NSObject {
                      // The unique identifier for this notification request. It can be used to replace or remove a pending notification request or a delivered notification.
                      open var identifier: String { get }
 
-                     
+
                      // The content that will be shown on the notification.
                      @NSCopying open var content: UNNotificationContent {
                             // Optional array of attachments.
@@ -140,62 +140,62 @@ class DengageRN: NSObject {
                                  // The identifier of this attachment
                                  open var identifier: String { get }
 
-                                 
+
                                  // The URL to the attachment's data. If you have obtained this attachment from UNUserNotificationCenter then the URL will be security-scoped.
                                  open var url: URL { get }
 
-                                 
+
                                  // The UTI of the attachment.
                                  open var type: String { get }
 
-                                 
+
                                  // Creates an attachment for the data at URL with an optional options dictionary. URL must be a file URL. Returns nil if the data at URL is not supported.
                                  public convenience init(identifier: String, url URL: URL, options: [AnyHashable : Any]? = nil) throws
 
                              }
 
-                             
+
                              // The application badge number.
                              @NSCopying open var badge: NSNumber? { get }
 
-                             
+
                              // The body of the notification.
                              open var body: String { get }
 
-                             
+
                              // The identifier for a registered UNNotificationCategory that will be used to determine the appropriate actions to display for the notification.
                              open var categoryIdentifier: String { get }
 
-                             
+
                              // The launch image that will be used when the app is opened from the notification.
                              open var launchImageName: String { get }
 
-                             
+
                              // The sound that will be played for the notification.
                              @NSCopying open var sound: UNNotificationSound? { get }
 
-                             
+
                              // The subtitle of the notification.
                              open var subtitle: String { get }
 
-                             
+
                              // The unique identifier for the thread or conversation related to this notification request. It will be used to visually group notifications together.
                              open var threadIdentifier: String { get }
 
-                             
+
                              // The title of the notification.
                              open var title: String { get }
 
-                             
+
                              // Apps can set the userInfo for locally scheduled notification requests. The contents of the push payload will be set as the userInfo for remote notifications.
                              open var userInfo: [AnyHashable : Any] { get }
 
-                             
+
                              /// The argument to be inserted in the summary for this notification.
                              @available(iOS 12.0, *)
                              open var summaryArgument: String { get }
 
-                             
+
                              /// A number that indicates how many items in the summary are represented in the summary.
                              /// For example if a podcast app sends one notification for 3 new episodes in a show,
                              /// the argument should be the name of the show and the count should be 3.
@@ -203,19 +203,19 @@ class DengageRN: NSObject {
                              @available(iOS 12.0, *)
                              open var summaryArgumentCount: Int { get }
 
-                             
+
                              // An identifier for the content of the notification used by the system to customize the scene to be activated when tapping on a notification.
                              @available(iOS 13.0, *)
                              open var targetContentIdentifier: String? { get } // default nil
                      }
 
-                     
+
                      // The trigger that will or did cause the notification to be delivered. A nil trigger means deliver immediately.
                      @NSCopying open var trigger: UNNotificationTrigger? {
                         open var repeats: Bool { get }
                      }
 
-                     
+
                      // Use a nil trigger to deliver immediately.
                      public convenience init(identifier: String, content: UNNotificationContent, trigger: UNNotificationTrigger?)
 
@@ -226,7 +226,7 @@ class DengageRN: NSObject {
 
         }
     }
-    
+
     @objc(pageView:)
     func pageView (_ data: NSDictionary) -> Void {
         do {
@@ -245,7 +245,7 @@ class DengageRN: NSObject {
             print("Unexpected addToCart error: \(error)")
         }
     }
-    
+
     @objc(removeFromCart:)
     func removeFromCart (_ data: NSDictionary) -> Void {
         do {
@@ -275,7 +275,7 @@ class DengageRN: NSObject {
             print("Unexpected beginCheckout error: \(error)")
         }
     }
-    
+
     @objc(placeOrder:)
     func placeOrder (_ data: NSDictionary) -> Void {
         do {
@@ -295,7 +295,7 @@ class DengageRN: NSObject {
             print("Unexpected cancelOrder error: \(error)")
         }
     }
-    
+
     @objc(addToWishList:)
     func addToWishList (_ data: NSDictionary) -> Void {
         do {
@@ -327,13 +327,26 @@ class DengageRN: NSObject {
     }
 
     @objc(SendDeviceEvent:withData:)
-    func SendDeviceEvent (_ tableName: String, withData: NSDictionary) -> Void {
+    func sendDeviceEvent (_ tableName: String, withData: NSDictionary) -> Void {
         do {
             print(withData)
             try Dengage.SendDeviceEvent(toEventTable: tableName, andWithEventDetails: withData as! NSMutableDictionary)
         } catch {
             print("Unexpected search error: \(error)")
         }
+    }
+
+    @objc(getSubscription:withReject:)
+    func getSubscription(_ resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock){
+        // this method is yet not available in iOS
+        reject("NO_NATIVE_METHOD_YET", "this method is yet not available in iOS", nil)
+
+//        do {
+//            let contactId = try Dengage.getContactKey()
+//            resolve(contactId)
+//        } catch {
+//            reject("UNABLE_TO_RETREIVE_CONTACT_KEY", error.localizedDescription ?? "Something went wrong", error)
+//        }
     }
 
 }

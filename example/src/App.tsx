@@ -118,6 +118,8 @@ export default function App() {
         const token = await Dengage.getToken()
         setToken(token);
         setContactKey(await Dengage.getContactKey())
+        const subscription = await Dengage.getSubscription()
+        console.log("subscription", subscription)
       }
       invokeIt()
     }

@@ -26,7 +26,8 @@ type DengageType = {
   addToWishList(params: object): void;
   removeFromWishList(params: object): void;
   search(params: object): void;
-  SendDeviceEvent(tableName: string, data: object): void;
+  sendDeviceEvent(tableName: string, data: object): void;
+  getSubscription(): Promise<object | null | undefined>; // android only yet. for iOS use getContactKey
 };
 
 const { DengageRN } = NativeModules;

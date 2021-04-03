@@ -1,10 +1,13 @@
 package com.reactnativedengage
 
+import com.dengage.sdk.DengageEvent
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReactContextBaseJavaModule
 import com.facebook.react.bridge.ReactMethod
 import com.facebook.react.bridge.Promise
+import com.google.gson.Gson
 import java.lang.Exception
+import java.util.*
 
 class DengageModule(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext) {
 
@@ -84,4 +87,111 @@ class DengageModule(reactContext: ReactApplicationContext) : ReactContextBaseJav
       }
     }
 
+    @ReactMethod
+    fun getSubscription (promise: Promise) {
+      try {
+        promise.resolve(Gson().toJson(DengageRNCoordinator.sharedInstance.dengageManager?.subscription))
+      } catch (ex: Exception) {
+        promise.reject(ex)
+      }
+    }
+
+    @ReactMethod
+    fun pageView (data: Map<String, Any>) {
+      try {
+        DengageEvent.getInstance(reactApplicationContext).pageView(data)
+      } catch (ex: Exception){
+        print(ex)
+      }
+    }
+
+    @ReactMethod
+    fun addToCart (data: Map<String, Any>) {
+      try {
+        DengageEvent.getInstance(reactApplicationContext).addToCart(data)
+      } catch (ex: Exception){
+        print(ex)
+      }
+    }
+
+    @ReactMethod
+    fun removeFromCart (data: Map<String, Any>) {
+      try {
+        DengageEvent.getInstance(reactApplicationContext).removeFromCart(data)
+      } catch (ex: Exception){
+        print(ex)
+      }
+    }
+
+    @ReactMethod
+    fun viewCart (data: Map<String, Any>) {
+      try {
+        DengageEvent.getInstance(reactApplicationContext).viewCart(data)
+      } catch (ex: Exception){
+        print(ex)
+      }
+    }
+
+    @ReactMethod
+    fun beginCheckout (data: Map<String, Any>) {
+      try {
+        DengageEvent.getInstance(reactApplicationContext).beginCheckout(data)
+      } catch (ex: Exception){
+        print(ex)
+      }
+    }
+
+    @ReactMethod
+    fun placeOrder (data: Map<String, Any>) {
+      try {
+        DengageEvent.getInstance(reactApplicationContext).order(data)
+      } catch (ex: Exception){
+        print(ex)
+      }
+    }
+
+    @ReactMethod
+    fun cancelOrder (data: Map<String, Any>) {
+      try {
+        DengageEvent.getInstance(reactApplicationContext).cancelOrder(data)
+      } catch (ex: Exception){
+        print(ex)
+      }
+    }
+
+    @ReactMethod
+    fun addToWishList (data: Map<String, Any>) {
+      try {
+        DengageEvent.getInstance(reactApplicationContext).addToWishList(data)
+      } catch (ex: Exception){
+        print(ex)
+      }
+    }
+
+    @ReactMethod
+    fun removeFromWishList (data: Map<String, Any>) {
+      try {
+        DengageEvent.getInstance(reactApplicationContext).removeFromWishList(data)
+      } catch (ex: Exception){
+        print(ex)
+      }
+    }
+
+    @ReactMethod
+    fun search (data: Map<String, Any>) {
+      try {
+        DengageEvent.getInstance(reactApplicationContext).search(data)
+      } catch (ex: Exception){
+        print(ex)
+      }
+    }
+
+    @ReactMethod
+    fun sendDeviceEvent (tableName: String, data: Map<String, Any>) {
+      try {
+        DengageEvent.getInstance(reactApplicationContext).sendDeviceEvent(tableName, data)
+      } catch (ex: Exception){
+        print(ex)
+      }
+    }
 }

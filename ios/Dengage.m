@@ -46,6 +46,6 @@ RCT_EXTERN_METHOD(removeFromWishList:(NSDictionary *)data)
 
 RCT_EXTERN_METHOD(search:(NSDictionary *)data)
 
-RCT_EXTERN_METHOD(SendDeviceEvent:(NSString *)tableName withData:(NSDictionary *)withData)
+RCT_EXTERN_METHOD(sendDeviceEvent:(NSString *)tableName withData:(NSDictionary *)withData)
 
 @end
