@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.RemoteViews;
 
 import androidx.core.app.NotificationCompat;
@@ -169,5 +170,21 @@ public class MyReceiver extends NotificationReceiver {
     notification.flags |= Notification.FLAG_ONLY_ALERT_ONCE;
     NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
     notificationManager.notify(message.getMessageSource(), message.getMessageId(), notification);
+  }
+
+  @Override
+  protected void onActionClick(Context context, Intent intent) {
+    Bundle extras = intent.getExtras();
+    if(extras != null)
+    {
+      String actionId = extras.getString("id");
+      int notificationId = extras.getInt("notificationId");
+      String targetUrl = extras.getString("targetUrl");
+
+      Log.d("DenPush", actionId +" is clicked");
+    }
+
+    // Remove if you prefer to handle targetUrl which is actually correspond a deeplink.
+    super.onActionClick(context, intent);
   }
 }
