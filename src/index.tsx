@@ -28,6 +28,9 @@ type DengageType = {
   search(params: object): void;
   sendDeviceEvent(tableName: string, data: object): void;
   getSubscription(): Promise<object | null | undefined>; // android only yet. for iOS use getContactKey
+  getInboxMessages(offset: number, limit: number): Promise<[object] | null>
+  deleteInboxMessage(id: string): Promise<object | null>
+  setInboxMessageAsClicked(id: string): Promise<object | null>
 };
 
 const { DengageRN } = NativeModules;

@@ -1,13 +1,11 @@
 package com.reactnativedengage
 
 import com.dengage.sdk.DengageEvent
-import com.facebook.react.bridge.ReactApplicationContext
-import com.facebook.react.bridge.ReactContextBaseJavaModule
-import com.facebook.react.bridge.ReactMethod
-import com.facebook.react.bridge.Promise
+import com.dengage.sdk.callback.DengageCallback
+import com.dengage.sdk.models.DengageError
+import com.dengage.sdk.models.InboxMessage
+import com.facebook.react.bridge.*
 import com.google.gson.Gson
-import java.lang.Exception
-import java.util.*
 
 class DengageModule(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext) {
 
@@ -97,101 +95,146 @@ class DengageModule(reactContext: ReactApplicationContext) : ReactContextBaseJav
     }
 
     @ReactMethod
-    fun pageView (data: Map<String, Any>) {
+    fun pageView (data: ReadableMap) {
       try {
-        DengageEvent.getInstance(reactApplicationContext).pageView(data)
+        DengageEvent.getInstance(reactApplicationContext).pageView(MapUtil.toMap(data))
       } catch (ex: Exception){
         print(ex)
       }
     }
 
     @ReactMethod
-    fun addToCart (data: Map<String, Any>) {
+    fun addToCart (data: ReadableMap) {
       try {
-        DengageEvent.getInstance(reactApplicationContext).addToCart(data)
+        DengageEvent.getInstance(reactApplicationContext).addToCart(MapUtil.toMap(data))
       } catch (ex: Exception){
         print(ex)
       }
     }
 
     @ReactMethod
-    fun removeFromCart (data: Map<String, Any>) {
+    fun removeFromCart (data: ReadableMap) {
       try {
-        DengageEvent.getInstance(reactApplicationContext).removeFromCart(data)
+        DengageEvent.getInstance(reactApplicationContext).removeFromCart(MapUtil.toMap(data))
       } catch (ex: Exception){
         print(ex)
       }
     }
 
     @ReactMethod
-    fun viewCart (data: Map<String, Any>) {
+    fun viewCart (data: ReadableMap) {
       try {
-        DengageEvent.getInstance(reactApplicationContext).viewCart(data)
+        DengageEvent.getInstance(reactApplicationContext).viewCart(MapUtil.toMap(data))
       } catch (ex: Exception){
         print(ex)
       }
     }
 
     @ReactMethod
-    fun beginCheckout (data: Map<String, Any>) {
+    fun beginCheckout (data: ReadableMap) {
       try {
-        DengageEvent.getInstance(reactApplicationContext).beginCheckout(data)
+        DengageEvent.getInstance(reactApplicationContext).beginCheckout(MapUtil.toMap(data))
       } catch (ex: Exception){
         print(ex)
       }
     }
 
     @ReactMethod
-    fun placeOrder (data: Map<String, Any>) {
+    fun placeOrder (data: ReadableMap) {
       try {
-        DengageEvent.getInstance(reactApplicationContext).order(data)
+        DengageEvent.getInstance(reactApplicationContext).order(MapUtil.toMap(data))
       } catch (ex: Exception){
         print(ex)
       }
     }
 
     @ReactMethod
-    fun cancelOrder (data: Map<String, Any>) {
+    fun cancelOrder (data: ReadableMap) {
       try {
-        DengageEvent.getInstance(reactApplicationContext).cancelOrder(data)
+        DengageEvent.getInstance(reactApplicationContext).cancelOrder(MapUtil.toMap(data))
       } catch (ex: Exception){
         print(ex)
       }
     }
 
     @ReactMethod
-    fun addToWishList (data: Map<String, Any>) {
+    fun addToWishList (data: ReadableMap) {
       try {
-        DengageEvent.getInstance(reactApplicationContext).addToWishList(data)
+        DengageEvent.getInstance(reactApplicationContext).addToWishList(MapUtil.toMap(data))
       } catch (ex: Exception){
         print(ex)
       }
     }
 
     @ReactMethod
-    fun removeFromWishList (data: Map<String, Any>) {
+    fun removeFromWishList (data: ReadableMap) {
       try {
-        DengageEvent.getInstance(reactApplicationContext).removeFromWishList(data)
+        DengageEvent.getInstance(reactApplicationContext).removeFromWishList(MapUtil.toMap(data))
       } catch (ex: Exception){
         print(ex)
       }
     }
 
     @ReactMethod
-    fun search (data: Map<String, Any>) {
+    fun search (data: ReadableMap) {
       try {
-        DengageEvent.getInstance(reactApplicationContext).search(data)
+        DengageEvent.getInstance(reactApplicationContext).search(MapUtil.toMap(data))
       } catch (ex: Exception){
         print(ex)
       }
     }
 
     @ReactMethod
-    fun sendDeviceEvent (tableName: String, data: Map<String, Any>) {
+    fun sendDeviceEvent (tableName: String, data: ReadableMap) {
       try {
-        DengageEvent.getInstance(reactApplicationContext).sendDeviceEvent(tableName, data)
+        DengageEvent.getInstance(reactApplicationContext).sendDeviceEvent(tableName, MapUtil.toMap(data))
       } catch (ex: Exception){
         print(ex)
+      }
+    }
+
+    @ReactMethod
+    fun getInboxMessages (offset: Int, limit: Int, promise: Promise) {
+      try {
+        val callback = object : DengageCallback<List<InboxMessage>> {
+          override fun onError(error: DengageError) {
+            promise.reject(Error(error.errorMessage))
+          }
+
+          override fun onResult(result: List<InboxMessage>) {
+            promise.resolve(Gson().toJson(result))
+          }
+        }
+        DengageRNCoordinator.sharedInstance.dengageManager?.getInboxMessages(limit, offset, callback)
+      } catch (ex: Exception) {
+        promise.reject(ex)
+      }
+    }
+
+
+    @ReactMethod
+    fun deleteInboxMessage (id: String, promise: Promise) {
+      try {
+        DengageRNCoordinator.sharedInstance.dengageManager?.deleteInboxMessage(id)
+        val map = Arguments.createMap()
+        map.putBoolean("success", true)
+        map.putString("id", id)
+        promise.resolve(map)
+      } catch (ex: Exception) {
+        promise.reject(ex)
+      }
+    }
+
+    @ReactMethod
+    fun setInboxMessageAsClicked (id: String, promise: Promise) {
+      try {
+        DengageRNCoordinator.sharedInstance.dengageManager?.setInboxMessageAsClicked(id)
+        val map = Arguments.createMap()
+        map.putBoolean("success", true)
+        map.putString("id", id)
+        promise.resolve(map)
+      } catch (ex: Exception) {
+        promise.reject(ex)
       }
     }
 }

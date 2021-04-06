@@ -88,6 +88,21 @@ export default function App() {
     Dengage.viewCart(cartItems)
   }
 
+  const appInboxExamples = async () => {
+    const inboxMessages = await Dengage.getInboxMessages(10, 20)
+      .catch(err => err)
+    console.log("inboxMessages", inboxMessages)
+
+    const delResponse = await Dengage.deleteInboxMessage("your-message-id-here")
+      .catch(res => res)
+    console.log("deleteInboxMessage: ", delResponse);
+
+    const messageSetAsInboxRes = await Dengage.setInboxMessageAsClicked("your-message-id-here")
+      .catch(res => res)
+    console.log("messageSetAsInboxRes: ", messageSetAsInboxRes);
+
+  }
+
   React.useEffect(() => {
     if (Platform.OS === 'ios') {
       Dengage.promptForPushNotificationsWitCallback(async (hasPermission) => {
@@ -108,6 +123,7 @@ export default function App() {
           pageViewExample()
           addToCartExample()
           removeFromCartExample()
+          appInboxExamples()
         }
       })
     } else {
@@ -120,6 +136,10 @@ export default function App() {
         setContactKey(await Dengage.getContactKey())
         const subscription = await Dengage.getSubscription()
         console.log("subscription", subscription)
+        pageViewExample()
+        addToCartExample()
+        removeFromCartExample()
+        appInboxExamples()
       }
       invokeIt()
     }

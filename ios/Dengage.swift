@@ -349,4 +349,53 @@ class DengageRN: NSObject {
 //        }
     }
 
+    @objc(getInboxMessages:limit:resolve:reject:)
+    func getInboxMessages(offset: Int = 10, limit: Int = 20, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock){
+        Dengage.getInboxMessages(offset: offset, limit: limit) { (result) in
+            switch result {
+                case .success(let resultType): // do something with the result
+                    do {
+                        let encodedData = try JSONEncoder().encode(resultType)
+                        let jsonString = String(data: encodedData,
+                                                encoding: .utf8)
+                        resolve(jsonString)
+                    } catch {
+                        reject("error", error.localizedDescription , error)
+                    }
+                    break;
+                case .failure(let error): // Handle the error
+                    reject("error", error.localizedDescription , error)
+                    break;
+            }
+        }
+    }
+    
+    @objc(deleteInboxMessage:resolve:reject:)
+    func deleteInboxMessage(id: NSString, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock){
+        Dengage.deleteInboxMessage(with: id as String) { (result) in
+            switch result {
+                case .success:
+                    resolve(["success": true, "id": id])
+                    break;
+                case .failure (let error):
+                    reject("error", error.localizedDescription , error)
+                    break;
+            }
+        }
+    }
+
+    @objc(setInboxMessageAsClicked:resolve:reject:)
+    func setInboxMessageAsClicked(id: NSString, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock){
+        Dengage.setInboxMessageAsClicked(with: id as String) { (result) in
+            switch result {
+                case .success:
+                    resolve(["success": true, "id": id])
+                    break;
+                case .failure (let error):
+                    reject("error", error.localizedDescription , error)
+                    break;
+            }
+        }
+    }
+
 }
