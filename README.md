@@ -539,34 +539,34 @@ import dEngage from 'react-native-dengage'
 
 
 // Home page view
-dEngage.sharedEvents.pageView({
+dEngage.pageView({
     "page_type":"home"
     // ... extra columns in page_view_events table, can be added here
 })
 
 // Category page view
-dEngage.sharedEvents.pageView({
+dEngage.pageView({
     "page_type":"category",
     "category_id":"1"
     // ... extra columns in page_view_events table, can be added here
 })
 
 // Product page view
-dEngage.sharedEvents.pageView({
+dEngage.pageView({
     "page_type":"product",
     "product_id":"1"
     // ... extra columns in page_view_events table, can be added here
 })
 
 //promotion page view
-dEngage.sharedEvents.pageView({
+dEngage.pageView({
     "page_type":"promotion",
     "promotion_id":"1"
     // ... extra columns in page_view_events table, can be added here
 })
 
 //custom page view
-dEngage.sharedEvents.pageView({
+dEngage.pageView({
     "page_type":"custom"
     // ... extra columns in page_view_events table, can be added here
 })
@@ -608,7 +608,7 @@ const addParams = {
     // ... extra columns in shopping_cart_events table, can be added here
     "cartItems":cartItems // all items in cart
 }
-dEngage.sharedEvents.addToCart(addParams)
+dEngage.addToCart(addParams)
 
 // ....
 // Remove from cart action
@@ -621,21 +621,21 @@ const removeParams = {
     // ... extra columns in shopping_cart_events table, can be added here
     "cartItems":cartItems // all items in cart
 }
-dEngage.sharedEvents.removeFromCart(removeParams)
+dEngage.removeFromCart(removeParams)
 
 // view cart action
 const viewParams = {
     // ... extra columns in shopping_cart_events table, can be added here
     "cartItems":cartItems
 }
-dEngage.sharedEvents.viewCart(viewParams)
+dEngage.viewCart(viewParams)
 
 // begin checkout action
 var checkoutParams = {
     // ... extra columns in shopping_cart_events table, can be added here
     "cartItems":cartItems
 }
-dEngage.sharedEvents.beginCheckout(checkoutParams)
+dEngage.beginCheckout(checkoutParams)
 ```
 
 ### Order Events <a name="order-events" />
@@ -672,7 +672,7 @@ const placeOrderParams = {
     // ... extra columns in order_events table, can be added here
     "cartItems":cartItems //ordered items
 }
-dEngage.sharedEvents.order(placeOrderParams)
+dEngage.placeOrder(placeOrderParams)
 
 // Cancel order action
 const cancelParams = {
@@ -683,7 +683,7 @@ const cancelParams = {
     // ... extra columns in order_events table, can be added here
     "cartItems":cartItems // // canceled items 
 }
-dEngage.sharedEvents.cancelOrder(cancelParams)
+dEngage.cancelOrder(cancelParams)
 ```
 
 ### Wishlist Event <a name="wishlist-events" />
@@ -708,7 +708,7 @@ There are 2 wishlist event functions. `addToWishlist`, `removeFromWishlist`. In 
       // ... extra columns in wishlist_events table, can be added here
       "items": wishlistItems // current items
   ]
-  dEngage.sharedEvents.addToWishList(params)
+  dEngage.addToWishList(params)
 
   // Remove from wishlist action
   const removeParams = [
@@ -716,7 +716,7 @@ There are 2 wishlist event functions. `addToWishlist`, `removeFromWishlist`. In 
       // ... extra columns in wishlist_events table, can be added here
       "items": wishlistItems // current items
   ]
-  dEngage.sharedEvents.removeFromWishList(removeParams)
+  dEngage.removeFromWishList(removeParams)
 ```
 
 ### Search Event <a name="search-event"/>
@@ -729,7 +729,7 @@ Search events will be stored in `search_events` table.
       "filters":"" //you can send extra filters selected by user here. Formating is not specified
       // ... extra columns in search_events table, can be added here
   }
-  dEngage.sharedEvents.search(params)
+  dEngage.search(params)
 ```
 
 ### 2.1 Custom Events
@@ -744,7 +744,7 @@ const params = {
     "event_name": "page_view", 
     "product_id": "1234",
 }
-dEngage.customEvents.SendDeviceEvent(toEventTable: 'events', andWithEventDetails: params, (err, res) => {
+dEngage.SendDeviceEvent(toEventTable: 'events', andWithEventDetails: params, (err, res) => {
   // handle error or success response.
 })
 ```
