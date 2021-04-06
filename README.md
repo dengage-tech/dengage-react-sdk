@@ -767,19 +767,22 @@ Inbox messages are kept in the memory storage of the phone until app is complete
   
   - To get app inbox messages from the server
     ```
-      dEngage.getInboxMessages(offset, limit, onComplete)
-      // where offset: Int, limit: Int = 20, onComplete: ([DengageMessage], Error>) -> Void
+      const inboxMessages = await dEngage.getInboxMessages(offset, limit).catch(err => err)
+      // where offset: Int, limit: Int = 20
+      // inboxMessages now either have array of Inbox messages or an error.
     ```
   - To delete a specific message from the inbox.
     ```
-      dEngage.deleteInboxMessage(id, onComplete)
-      // where id: String, onComplete: (Result<Void, Error>) -> Void
+      const delMsgResponse = await dEngage.deleteInboxMessage(id).catch(err => err)
+      // where id: String
+      // delMsgResponse now either have {success: true, id: "id-of-msg-deleted"} or an error
     ```
 
   - to mark a specific message as clicked.
     ```
-      dEngage.setInboxMessageAsClicked(id, onComplete)
-      // where id: String, onComplete: (Result<Void, Error>) -> Void
+      const msgSetAsClicked = await dEngage.setInboxMessageAsClicked(id).catch(err => err)
+      // where id: String &
+      // msgSetAsClicked now either have {success: true, id: "id-of-msg-deleted"} or an error
     ```
 
 ### In-App Messaging
