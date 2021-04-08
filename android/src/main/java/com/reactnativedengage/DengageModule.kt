@@ -5,6 +5,7 @@ import com.dengage.sdk.callback.DengageCallback
 import com.dengage.sdk.models.DengageError
 import com.dengage.sdk.models.InboxMessage
 import com.facebook.react.bridge.*
+import com.facebook.react.modules.core.DeviceEventManagerModule
 import com.google.gson.Gson
 
 class DengageModule(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext) {
@@ -235,6 +236,22 @@ class DengageModule(reactContext: ReactApplicationContext) : ReactContextBaseJav
         promise.resolve(map)
       } catch (ex: Exception) {
         promise.reject(ex)
+      }
+    }
+
+    @ReactMethod
+    fun setNavigation () {
+      // DengageRNCoordinator.sharedInstance.dengageManager.set
+    }
+
+    companion object {
+      var reactContext: ReactApplicationContext? = null
+      fun sendEvent (eventName: String, data: WritableMap) {
+        if (reactContext != null) {
+          reactContext
+            ?.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+            ?.emit(eventName, data)
+        }
       }
     }
 }

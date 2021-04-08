@@ -54,4 +54,8 @@ RCT_EXTERN_METHOD(deleteInboxMessage:(NSString *)id resolve:(RCTPromiseResolveBl
 
 RCT_EXTERN_METHOD(setInboxMessageAsClicked:(NSString *)id resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
 
+RCT_EXTERN_METHOD(setNavigation)
+
+RCT_EXTERN_METHOD(setNavigationWithName:(NSString *)screenName)
+
 @end

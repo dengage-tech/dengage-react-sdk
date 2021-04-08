@@ -398,4 +398,13 @@ class DengageRN: NSObject {
         }
     }
 
+    @objc(setNavigation)
+    func setNavigation(){
+        Dengage.setNavigation()
+    }
+    
+    @objc(setNavigationWithName:)
+    func setNavigationWithName(screenName: NSString) {
+        Dengage.setNavigation(screenName: screenName as String)
+    }
 }

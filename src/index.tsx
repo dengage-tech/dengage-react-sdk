@@ -31,6 +31,8 @@ type DengageType = {
   getInboxMessages(offset: number, limit: number): Promise<[object] | null>
   deleteInboxMessage(id: string): Promise<object | null>
   setInboxMessageAsClicked(id: string): Promise<object | null>
+  setNavigation(): void;
+  setNavigationWithName(screenName: string): void;
 };
 
 const { DengageRN } = NativeModules;
