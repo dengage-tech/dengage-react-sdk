@@ -24,7 +24,7 @@ public class MainActivity extends ReactActivity {
     coordinator.injectReactInstanceManager(getReactInstanceManager());
     coordinator.setupDengage(
       true,
-      "YOURE_FIREBASE_KEY_HERE",
+      "m8yFy8Alhxzz0_s_l_wrAxFLJy3uHM7iX_p_l_8wN3qVbZuTcq21qjEGfM2502y_p_l_K5qT7XGgHHCkoMF4N_p_l_UdyKcwS5mIJdKtO0_s_l_cK3C6BHu6k_p_l_DJnETfFL6taM1vTtl2AjXbEol_s_l_",
       "YOURE_HUAWEI_KEY_HERE",
       getApplicationContext()
     );

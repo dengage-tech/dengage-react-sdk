@@ -1,8 +1,10 @@
 import * as React from 'react';
 
-import { StyleSheet, View, Text, Platform } from 'react-native';
+import { StyleSheet, View, Text, Platform, Button } from 'react-native';
 import Dengage from 'react-native-dengage';
 import { DengageTypes } from '../../src/types';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { BaseButton } from 'react-native-gesture-handler';
 
 export default function App() {
   const [result, setResult] = React.useState<string>('checking...');
@@ -138,8 +140,9 @@ export default function App() {
         console.log("subscription", subscription)
         pageViewExample()
         addToCartExample()
-        removeFromCartExample()
+        // removeFromCartExample()
         appInboxExamples()
+        seNavigation()
       }
       invokeIt()
     }
@@ -154,6 +157,13 @@ export default function App() {
 
   }, []);
 
+  const navigation = useNavigation()
+  useFocusEffect(
+    React.useCallback(() => {
+      Dengage.setNavigation();
+    }, [])
+  );
+
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>HasPermission</Text>
@@ -163,6 +173,11 @@ export default function App() {
       <Text style={styles.heading}>Contact Key</Text>
       <Text>{contactKey}</Text>
 
+      <Button
+        onPress={() => navigation.navigate('SecondScreen')}
+        title={"go to second screen"}
+      />
+      <Text>Note: On Navigation to second screen, setNavigationWithName is called.</Text>
     </View>
   );
 }
@@ -171,6 +186,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
+    alignItems: 'center',
     padding: 20,
   },
   box: {
@@ -181,5 +197,5 @@ const styles = StyleSheet.create({
   heading: {
     fontWeight: 'bold',
     marginTop: 20
-  }
+  },
 });

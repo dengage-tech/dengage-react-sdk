@@ -2,10 +2,13 @@ package com.example.reactnativedengage;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.media.AudioAttributes;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,12 +17,17 @@ import android.widget.RemoteViews;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import com.dengage.sdk.Constants;
 import com.dengage.sdk.NotificationReceiver;
 import com.dengage.sdk.Utils;
 import com.dengage.sdk.models.CarouselItem;
 import com.dengage.sdk.models.Message;
 
+import java.util.List;
+import java.util.UUID;
+
 public class MyReceiver extends NotificationReceiver {
+  String channelId = null;
   @Override
   protected void onCarouselRender(Context context, Intent intent, Message message) {
     // accessing to carousel items with its own images.
@@ -67,12 +75,29 @@ public class MyReceiver extends NotificationReceiver {
     carouselView.setOnClickPendingIntent(R.id.den_carousel_left_image, carouselLeftIntent);
     carouselView.setOnClickPendingIntent(R.id.den_carousel_right_image, carouselRightIntent);
 
-    // create channel
-    String channelId = null;
+    Uri soundUri = Utils.getSound(context, message.getSound());
+    // generate new channel id for different sounds
+    channelId = UUID.randomUUID().toString();
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-      NotificationChannel notificationChannel = getNotificationChannel();
-      createNotificationChannel(context, notificationChannel);
-      channelId = notificationChannel.getId();
+      NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+      // delete old notification channels
+      List<NotificationChannel> channels = notificationManager.getNotificationChannels();
+      if (channels != null && channels.size() > 0) {
+        for (NotificationChannel channel : channels) {
+          notificationManager.deleteNotificationChannel(channel.getId());
+        }
+      }
+      NotificationChannel notificationChannel = new NotificationChannel(
+        channelId,
+        Constants.CHANNEL_NAME,
+        NotificationManager.IMPORTANCE_DEFAULT
+      );
+      AudioAttributes audioAttributes = new AudioAttributes.Builder()
+        .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+        .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+        .build();
+      notificationChannel.setSound(soundUri, audioAttributes);
+      notificationManager.createNotificationChannel(notificationChannel);
     }
 
     // build notification with the layout.
@@ -149,11 +174,11 @@ public class MyReceiver extends NotificationReceiver {
     carouselView.setOnClickPendingIntent(R.id.den_carousel_right_image, carouselRightIntent);
 
     // create channel
-    String channelId = null;
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-      NotificationChannel notificationChannel = getNotificationChannel();
-      createNotificationChannel(context, notificationChannel);
-      channelId = notificationChannel.getId();
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && channelId == null) {
+      channelId = UUID.randomUUID().toString();
+      NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+      NotificationChannel notificationChannel = notificationManager.getNotificationChannel(channelId);
+      notificationManager.createNotificationChannel(notificationChannel);
     }
 
     // build notification with the layout.
