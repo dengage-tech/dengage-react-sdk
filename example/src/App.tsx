@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { StyleSheet, View, Text, Platform, Button } from 'react-native';
+import { StyleSheet, View, Text, Platform, Button, TextInput } from 'react-native';
 import Dengage from 'react-native-dengage';
 import { DengageTypes } from '../../src/types';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
@@ -112,7 +112,6 @@ export default function App() {
         Dengage.setUserPermission(hasPermission)
         setResult(String(hasPermission))
         if (hasPermission) {
-          Dengage.setContactKey("Your-contact-key-here.");
           const token = await Dengage.getToken()
           console.log("tokenIs: ", token)
           setToken(token)
@@ -129,20 +128,18 @@ export default function App() {
         }
       })
     } else {
-      Dengage.setContactKey("Your-contact-key-here.");
       const invokeIt = async () => {
         const hasPermissions = await Dengage.getUserPermission()
         setResult(String(hasPermissions))
         const token = await Dengage.getToken()
         setToken(token);
-        setContactKey(await Dengage.getContactKey())
+        setContactKey((await Dengage.getContactKey()) ?? "")
         const subscription = await Dengage.getSubscription()
         console.log("subscription", subscription)
         pageViewExample()
         addToCartExample()
         // removeFromCartExample()
         appInboxExamples()
-        seNavigation()
       }
       invokeIt()
     }
@@ -170,13 +167,37 @@ export default function App() {
       <Text>{result}</Text>
       <Text style={styles.heading}>Token</Text>
       <Text>{token}</Text>
-      <Text style={styles.heading}>Contact Key</Text>
-      <Text>{contactKey}</Text>
 
-      <Button
-        onPress={() => navigation.navigate('SecondScreen')}
-        title={"go to second screen"}
-      />
+      <Text>Enter Contact Key:</Text>
+      <TextInput
+        value={contactKey}
+        onChangeText={(val) => setContactKey(val)}
+        style={styles.input}/>
+
+      <View style={styles.btnContainer}>
+        <Button
+          onPress={async () => {
+            await Dengage.setContactKey(contactKey)
+          }}
+          title={"update Contact Key"}
+        />
+      </View>
+
+      <View style={styles.btnContainer}>
+        <Button
+          onPress={async () => {
+            alert("contactKey: " + await Dengage.getContactKey())
+          }}
+          title={"show Contact Key"}
+        />
+      </View>
+
+      <View style={styles.btnContainer}>
+        <Button
+          onPress={() => navigation.navigate('SecondScreen')}
+          title={"go to second screen"}
+        />
+      </View>
       <Text>Note: On Navigation to second screen, setNavigationWithName is called.</Text>
     </View>
   );
@@ -198,4 +219,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginTop: 20
   },
+  input: {
+    borderWidth: 1,
+    width: 250,
+    borderColor: 'black'
+  },
+  btnContainer: {
+    margin: 10
+  }
 });

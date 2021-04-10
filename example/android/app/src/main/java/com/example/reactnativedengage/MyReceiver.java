@@ -88,9 +88,9 @@ public class MyReceiver extends NotificationReceiver {
         }
       }
       NotificationChannel notificationChannel = new NotificationChannel(
-        channelId,
+        Constants.CHANNEL_ID,
         Constants.CHANNEL_NAME,
-        NotificationManager.IMPORTANCE_DEFAULT
+        NotificationManager.IMPORTANCE_HIGH
       );
       AudioAttributes audioAttributes = new AudioAttributes.Builder()
         .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)

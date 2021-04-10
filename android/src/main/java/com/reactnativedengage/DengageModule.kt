@@ -1,5 +1,7 @@
 package com.reactnativedengage
 
+import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import com.dengage.sdk.DengageEvent
 import com.dengage.sdk.callback.DengageCallback
 import com.dengage.sdk.models.DengageError
@@ -241,7 +243,12 @@ class DengageModule(reactContext: ReactApplicationContext) : ReactContextBaseJav
 
     @ReactMethod
     fun setNavigation () {
-      // DengageRNCoordinator.sharedInstance.dengageManager.set
+      DengageRNCoordinator.sharedInstance.dengageManager?.setNavigation(currentActivity as AppCompatActivity)
+    }
+
+    @ReactMethod
+    fun setNavigationWithName (screenName: String) {
+      DengageRNCoordinator.sharedInstance.dengageManager?.setNavigation(currentActivity as AppCompatActivity, screenName)
     }
 
     companion object {
