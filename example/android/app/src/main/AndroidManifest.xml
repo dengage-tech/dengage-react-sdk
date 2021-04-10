@@ -30,7 +30,7 @@
           <action  android:name="com.google.firebase.MESSAGING_EVENT"/>
         </intent-filter>
       </service>
-      <receiver android:name=".MyReceiver"
+      <receiver android:name="com.dengage.sdk.NotificationReceiver"
         android:exported="false">
         <intent-filter>
           <action android:name="com.dengage.push.intent.RECEIVE" />
@@ -44,11 +44,13 @@
 
     <meta-data
       android:name="den_event_api_url"
-      android:value="https://eventdev.dengage.com" />
+      android:value="https://event.dengage.com" />
+<!--      android:value="https://eventdev.dengage.com" />-->
 
     <meta-data
       android:name="den_push_api_url"
-      android:value="https://pushdev.dengage.com" />
+      android:value="https://push.dengage.com" />
+<!--    android:value="https://pushdev.dengage.com" />-->
 
   </application>
 
