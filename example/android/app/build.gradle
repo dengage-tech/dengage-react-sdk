@@ -217,7 +217,7 @@ dependencies {
 
     implementation project(':reactnativedengage')
     //  implementation 'com.github.whitehorse-technology:dengage.android.sdk:+' // 3.2.4
-    //  implementation 'com.github.whitehorse-technology:dengage.android.sdk:feature~in-app-message-SNAPSHOT' // pre-release with in-app-messaging functionality
+    implementation 'com.github.whitehorse-technology:dengage.android.sdk:feature~in-app-message-SNAPSHOT' // pre-release with in-app-messaging functionality
 }
 
 // Run this once to be able to run the application with BUCK
