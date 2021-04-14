@@ -13,7 +13,7 @@ export default function SecondScreen() {
   );
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>Second Screen</Text>
+      <Text style={styles.heading}>-:Second Screen:-</Text>
       <Button title={"go back"} onPress={() => {
         navigation.goBack()
       }}/>
