@@ -207,6 +207,15 @@ In the ```AppDelegate.m```
 }
 ```
   
+  ### 5. Register for remote notification with device token
+  To register for remote notifications with device token, add following method and code inside your `AppDelegate.m` file:
+  ```
+  - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+  {
+    DengageRNCoordinator *coordinator = [DengageRNCoordinator staticInstance];
+    [coordinator registerForPushToken:deviceToken];
+  }
+  ```
 </details>
 
 <details>
