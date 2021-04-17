@@ -104,20 +104,13 @@ export default function App() {
 
   React.useEffect(() => {
     Dengage.setLogStatus(true);
-    if (Platform.OS === 'ios') {
-      Dengage.promptForPushNotificationsWitCallback(hasPermission => {
-        Dengage.setUserPermission(Boolean(hasPermission))
-        if (hasPermission) {
-          init()
-        }
-      })
-    } else {
-      init()
-    }
+    init()
   }, [])
 
   const init = async () => {
+    Dengage.registerForRemoteNotifications(true)
     setContactKey(await Dengage.getContactKey())
+    Dengage.setLogStatus(true)
   }
 
   const navigation = useNavigation()
@@ -147,7 +140,8 @@ export default function App() {
           <Button
             onPress={() => {
               Dengage.promptForPushNotificationsWitCallback(async (hasPermission) => {
-                Dengage.setUserPermission(hasPermission)
+                console.log("hasPermission: " + hasPermission)
+                await Dengage.setUserPermission(Boolean(hasPermission))
               })
             }}
             title={"ask Permission"}

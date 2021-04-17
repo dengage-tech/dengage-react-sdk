@@ -14,6 +14,8 @@ RCT_EXTERN_METHOD(promptForPushNotificationsWitCallback:(RCTResponseSenderBlock)
 
 RCT_EXTERN_METHOD(setUserPermission:(BOOL)permission)
 
+RCT_EXTERN_METHOD(registerForRemoteNotifications:(BOOL)enable)
+
 RCT_EXTERN_METHOD(getToken:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
 
 RCT_EXTERN_METHOD(getContactKey:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)

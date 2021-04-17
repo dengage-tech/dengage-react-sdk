@@ -29,6 +29,11 @@ class DengageRN: NSObject {
     func setUserPermission(permission: Bool) {
         Dengage.setUserPermission(permission: permission)
     }
+    
+    @objc(registerForRemoteNotifications:)
+    func registerForRemoteNotifications(enable: Bool) {
+        Dengage.registerForRemoteNotifications(enable: enable)
+    }
 
     // _ before resolve here is neccessary, need to revisit rn docs about why.
     @objc

@@ -68,4 +68,9 @@ static void InitializeFlipper(UIApplication *application) {
 #endif
 }
 
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+{
+  DengageRNCoordinator *coordinator = [DengageRNCoordinator staticInstance];
+  [coordinator registerForPushToken:deviceToken];
+}
 @end
