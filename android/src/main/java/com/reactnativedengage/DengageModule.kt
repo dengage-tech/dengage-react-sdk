@@ -243,12 +243,16 @@ class DengageModule(reactContext: ReactApplicationContext) : ReactContextBaseJav
 
     @ReactMethod
     fun setNavigation () {
-      DengageRNCoordinator.sharedInstance.dengageManager?.setNavigation(currentActivity as AppCompatActivity)
+      // todo: setNavigation is not yet published
+      // todo: enable this code when setNavigation is available
+      // DengageRNCoordinator.sharedInstance.dengageManager?.setNavigation(currentActivity as AppCompatActivity)
     }
 
     @ReactMethod
     fun setNavigationWithName (screenName: String) {
-      DengageRNCoordinator.sharedInstance.dengageManager?.setNavigation(currentActivity as AppCompatActivity, screenName)
+      // todo: setNavigation is not yet published
+      // todo: enable this code when setNavigation is available
+      // DengageRNCoordinator.sharedInstance.dengageManager?.setNavigation(currentActivity as AppCompatActivity, screenName)
     }
 
     companion object {

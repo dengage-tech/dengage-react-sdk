@@ -43,7 +43,7 @@ static void InitializeFlipper(UIApplication *application) {
 
   DengageRNCoordinator *coordinator = [DengageRNCoordinator staticInstance];
   [coordinator setValue:launchOptions forKey:@"launchOptions"];
-  [coordinator setupDengage:@"YOUR-INTEGERATION-KEY-HERE" launchOptions:launchOptions];
+  [coordinator setupDengage:@"xW2e7nTs7kdcS_p_l_Xk_s_l_29k5GXVI9CCufihuYCdUkjKX26_p_l_JEa02OqjTqr4Bn2_p_l_yysrGD2cbS7xVJHA1TuQuQqKYvEWR4hdPFJUrdPmJ2BQpVqhdFYzApkqD4_s_l_GJKaVBBxX" launchOptions:launchOptions];
 
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
                                                    moduleName:@"DengageExample"

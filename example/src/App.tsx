@@ -108,7 +108,9 @@ export default function App() {
   }, [])
 
   const init = async () => {
-    Dengage.registerForRemoteNotifications(true)
+    if (Platform.OS === 'ios') {
+      Dengage.registerForRemoteNotifications(true)
+    }
     setContactKey(await Dengage.getContactKey())
     Dengage.setLogStatus(true)
   }
@@ -197,6 +199,17 @@ export default function App() {
           title={'Show/Hide Current Subscription'}
         />
         {!subscriptionHidden && <Text>{`subscription: ${subscription}`}</Text>}
+      </View>
+
+      <View style={styles.btnContainer}>
+        <View style={styles.btnContainer}>
+          <Button
+            onPress={async () => {
+              const res = await Dengage.sendDeviceEvent('ky_device_event', {"test_event": "this is test device event."})
+            }}
+            title={"send Device Event"}
+          />
+        </View>
       </View>
 
       <View style={styles.btnContainer}>
