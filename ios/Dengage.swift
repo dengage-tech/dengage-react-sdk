@@ -331,11 +331,11 @@ class DengageRN: NSObject {
         }
     }
 
-    @objc(SendDeviceEvent:withData:)
-    func sendDeviceEvent (_ tableName: String, withData: NSDictionary) -> Void {
+    @objc(sendDeviceEvent:withData:)
+    func sendDeviceEvent (_ tableName: NSString, withData: NSDictionary) -> Void {
         do {
             print(withData)
-            try Dengage.SendDeviceEvent(toEventTable: tableName, andWithEventDetails: withData as! NSMutableDictionary)
+            try Dengage.SendDeviceEvent(toEventTable: tableName as String, andWithEventDetails: withData as! NSMutableDictionary)
         } catch {
             print("Unexpected search error: \(error)")
         }
