@@ -257,14 +257,14 @@ In the ```AppDelegate.m```
     // import statement
     import com.reactnativedengage.DengageRNCoordinator;
     
-    // ...
-    // NOTE: `YOURE_FIREBASE_KEY_HERE` and `YOURE_HUAWEI_KEY_HERE` are the Integeration Keys Received from dEngage Dashbaord, while creating Application.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
       // These three lines need to be added
       DengageRNCoordinator coordinator = DengageRNCoordinator.Companion.getSharedInstance();
       coordinator.injectReactInstanceManager(getReactInstanceManager());
+
+      // NOTE: YOURE_FIREBASE_KEY_HERE and YOURE_HUAWEI_KEY_HERE are the Integeration Keys Received from dEngage Dashbaord, while creating Application.
       coordinator.setupDengage(
         true, // it is LogStatus & could be true OR false
         "YOURE_FIREBASE_KEY_HERE", // null in case no firebase key, NOTE: This is the IntegerationKey Received from dEngage Dashbaord, while create application.
