@@ -1,5 +1,5 @@
 {
-  "name": "react-native-dengage",
+  "name": "@dengage-tech/react-native-dengage",
   "version": "0.1.0",
   "description": "dEngage Customer Driven Marketing Platform (CDMP) serves as a customer data platform (CDP) with built-in omnichannel marketing features. It replaces your marketing automation and cross-channel campaign management. This package makes it easy to integrate your native React-Native iOS and/or Android apps with dEngage.",
   "main": "lib/commonjs/index",
@@ -36,13 +36,16 @@
     "ios",
     "android"
   ],
-  "repository": "https://github.com/KamranKhankhail/react-native-dengage",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dengage-tech/dengage-react-sdk.git"
+  },
   "author": "Kamran Younis <join.kamran92@gmail.com> (https://github.com/KamranKhankhail)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/KamranKhankhail/react-native-dengage/issues"
+    "url": "https://github.com/dengage-tech/dengage-react-sdk/issues"
   },
-  "homepage": "https://github.com/KamranKhankhail/react-native-dengage#readme",
+  "homepage": "https://github.com/dengage-tech/dengage-react-sdk#readme",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
@@ -149,5 +152,8 @@
         }
       ]
     ]
+  },
+  "directories": {
+    "example": "example"
   }
 }

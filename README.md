@@ -8,31 +8,31 @@ This package makes it easy to integrate, D·engage, with your React-Native iOS a
 ## Installation
 
 ```sh
-npm install react-native-dengage
+npm install @dengage-tech/react-native-dengage
 ```
 
 or using ```yarn```
 
 ```sh
-yarn add react-native-dengage
+yarn add @dengage-tech/react-native-dengage
 ```
 
 ## Linking
 
 <details>
   <summary> iOS Linking </summary>
-  
+
   #### React Native 0.60 and above
   Run npx ```pod-install```. Linking is not required in React Native 0.60 and above.
-  
+
   #### React Native 0.59 and below
-  Run ```react-native link react-native-dengage``` to link the react-native-dengage library.
+  Run ```react-native link @dengage-tech/react-native-dengage``` to link the react-native-dengage library.
 
 </details>
 
 <details>
   <summary> android Linking </summary>
-  
+
   Linking is NOT required in React Native 0.60 and above. If your project is using React Native < 0.60, run ```react-native link react-native-dengage``` to link the react-native-dengage library.
 
 Or if you have trouble, make the following additions to the given files manually:
@@ -80,7 +80,7 @@ Following extra steps after the installation of the react-native-dengage SDK are
 
 <details>
   <summary> iOS Specific Extra steps </summary>
-  
+
   #### Requirements
   - D·engage Integration Key
   - iOS Push Cerificate
@@ -88,10 +88,10 @@ Following extra steps after the installation of the react-native-dengage SDK are
   - A mac with latest Xcode
 
   ### Steps
-  
+
   #### 1. Endpoint Configuration in PInfo.list
   For initial setup, if you have given URL addresses by D·engage Support team, you need to setup url address by using ```Info.plist``` file. Otherwise you don’t need to add anything to ```Info.plist``` file. Following screenshot for the keys in ```Info.plist``` file.
-  
+
   ![Info.plist screenshot](https://raw.githubusercontent.com/whitehorse-technology/Dengage.Framework/master/docs/img/Screen%20Shot%202020-09-25%20at%2015.41.27.png)
 
 > Note: Please see API Endpoints by Datacenter documentation in this section for end points. [here is link](https://dev.dengage.com/mobile-sdk/api-endpoints)
@@ -101,60 +101,60 @@ Following extra steps after the installation of the react-native-dengage SDK are
   <summary> screenshot 1 </summary>
 
   ![push notifications](https://files.readme.io/17798af-dengage_push_Step1.png)
-  
+
   <summary> screenshot 2 </summary>
-  
+
   ![background modes](https://files.readme.io/badc90e-dengage_push_step2.png)
 
   #### 3. Add Notification Service Extension (required only if using rich notifications)
   The ```DengageNotificationServiceExtension``` allows your application to receive rich notifications with images and/or buttons, and to report analytics about which notifications users receive.
   3.1 In Xcode Select ```File``` > ```New``` > ```Target```
   3.2 Select ```Notification Service Extension``` then press ```Next```
-  
+
   ![step 3.2 screenshot](https://github.com/whitehorse-technology/Dengage.Framework/raw/master/docs/img/extension.png)
-  
+
   3.3 Enter the product name as ```DengageNotificationServiceExtension``` and press ```Finish```.
-  
+
   > Do NOT press "Activate" on the dialog shown after this.
-  
+
   ![step 3.3 screenshot](https://github.com/whitehorse-technology/Dengage.Framework/raw/master/docs/img/settings.png)
-  
+
   3.4 Press ```Cancel``` on the Activate scheme prompt.
-  
+
   ![step 3.4 screenshot](https://github.com/whitehorse-technology/Dengage.Framework/raw/master/docs/img/activate.png)
 
   > By canceling, you are keeping Xcode debugging your app, instead of just the extension. If you activate by accident, you can always switch back to debug your app within Xcode (next to the play button).
-  
+
   3.5 In the ***Project Navigator***, select the top-level project directory and select the ```DengageNotificationServiceExtension``` target in the ***project and targets list***. Ensure the ```Deployment Target``` is set to ```iOS 10``` for maximum platform compatibility.
-  
+
   ![step 3_5 screenshot](https://files.readme.io/c834169-step3_5_iOS_version.png)
 
   3.6 Finish Notification Service Extension Setup
-  
+
   If you did not use ***Cocoapods***, follow [these steps](google.com).
-  
+
   > Note: non-cocoapods steps yet to be determined.
-  
+
   Otherwise, continue with the following setup:
   - In your ```Project Root``` > ```iOS``` > ```Podfile```, add the notification service extension outside the main target (should be at the same level as your main target):
-  
+
   ```Ruby
     target 'DengageNotificationServiceExtension' do
       pod 'Dengage.Framework',‘~> 2.5’
     end
   ```
-  
+
   Close Xcode. While still in the ```ios``` directory, run ```pod install``` again.
-  
+
   - Open the ```.xcworkspace``` file in Xcode. In the ```DengageNotificationServiceExtension directory``` > ```NotificationService.swift``` file, replace the whole file contents with the code below:
-  
+
   ```Swift
       override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
         self.contentHandler = contentHandler
         bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
-         
+
         if let bestAttemptContent = bestAttemptContent {
-            
+
             // add this line of code
             Dengage.didReceiveNotificationExtentionRequest(receivedRequest: request, with: bestAttemptContent)
             contentHandler(bestAttemptContent)
@@ -162,7 +162,7 @@ Following extra steps after the installation of the react-native-dengage SDK are
     }
   ```
   > Ignore any build errors at this point, we will resolve these later by importing the D·engage library.
-  
+
   ![NotificationService.swift screenshot](https://files.readme.io/56a0fd9-3_6_NotificationService_screenshot.png)
 
   ### 4. Setup Dengage SDK (it include two steps of the iOS native SDK. 1. Setting Integration Key  2. Initialization with Launch Options)
@@ -189,9 +189,9 @@ In the ```AppDelegate.m```
 
   DengageRNCoordinator *coordinator = [DengageRNCoordinator staticInstance];
   [coordinator setupDengage:@"YOUR_INTEGERATION_KEY_HERE" launchOptions:launchOptions];
-  
+
   /**** Dengage Setup code ends here ********/
-  
+
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
                                                    moduleName:@"DengageExample"
                                             initialProperties:nil];
@@ -206,7 +206,7 @@ In the ```AppDelegate.m```
   return YES;
 }
 ```
-  
+
   ### 5. Register for remote notification with device token
   To register for remote notifications with device token, add following method and code inside your `AppDelegate.m` file:
   ```
@@ -220,24 +220,24 @@ In the ```AppDelegate.m```
 
 <details>
   <summary> android Specific Extra Steps </summary>
-  
+
   ### Firebase SDK Setup (Follow these steps only if you're using firebase for push, for Huawei [follow these steps](#huawei-sdk-setup))<a name="firebase-sdk-setup" />
-  
+
   #### Requirements
   - Google Firebase App Configuration
   - Android Studio
   - Android Device or Emulator
-  
+
   D·engage Android SDK provides an interface which handles push notification messages easily. Optionally, It also gives to send event functionality such as open and subscription to dEngage Platform.
 
   Supports Android API level 4.1.x or higher.
 
   For detailed steps for firebase SDK setup and it's integeration with D·engage, [click here](https://dev.dengage.com/mobile-sdk/android/firebase)
-  
+
   ### Huawei SDK Setup (Note: use these steps only if you're using HUAWEI Messaging Service for push, if using firebase, [follow these steps](#firebase-sdk-setup))<a name="huawei-sdk-setup" />
-  
+
   #### Requirements
-  
+
   - Huawei Developer Account
   - Java JDK installation package
   - Android SDK package
@@ -246,17 +246,17 @@ In the ```AppDelegate.m```
   - Huawei Device or Huawei Cloud Debugging
 
   Supports Android API level 4.4 or higher. (Note that Huawei AdID service requires min target SDK version 19)
-  
+
   **D·engage Huawei SDK** provides an interface which handles push notification messages that delivered by `Huawei Messaging Service (HMS)`. It is similar to Firebase but has a bit different configuration process that contains [steps mentioned here.](https://dev.dengage.com/mobile-sdk/android/huawei)
-  
+
   ### Create DengageManager instance
-  
+
   First, you need to create DengageManager instance in your main or launcher activity.
-  
+
   ```Java
     // import statement
     import com.reactnativedengage.DengageRNCoordinator;
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
@@ -270,51 +270,51 @@ In the ```AppDelegate.m```
         "YOURE_FIREBASE_KEY_HERE", // null in case no firebase key, NOTE: This is the IntegerationKey Received from dEngage Dashbaord, while create application.
         "YOURE_HUAWEI_KEY_HERE", // null in case no huawei key
         getApplicationContext()
-      );    
+      );
     }
   ```
-  
+
   After these steps, You will be able to send a push notification message to your app.
-  
+
   ### Change Subscription Api Endpoint
-  You can change subscription api endpoint by adding following metadata tag in `YourProject/android/src/main/AndroidManifest.xml` 
-  
+  You can change subscription api endpoint by adding following metadata tag in `YourProject/android/src/main/AndroidManifest.xml`
+
   ```
   <meta-data
     android:name="den_push_api_url"
     android:value="https://your_push_api_endpoint" />
   ```
-  
+
   Note: Please see API Endpoints By Datacenter to set your subscription end point.
-  
+
   ### Changing Event Api Endpoint
-  similar to subscription endpoints, you can change event api endpoints by setting following metadata tag in `YourProject/android/src/main/AndroidManifest.xml` 
+  similar to subscription endpoints, you can change event api endpoints by setting following metadata tag in `YourProject/android/src/main/AndroidManifest.xml`
   ```
   <meta-data
     android:name="den_push_api_url"
     android:value="https://your_push_api_endpoint" />
   ```
-  
+
   Note: Please see API Endpoints By Datacenter to set your event end point.
 
   Now you can setContactKey like mentioned [here](#setting-contact-key)
 </details>
 
-## Supported Versions 
+## Supported Versions
 
 <details>
   <summary> iOS </summary>
-  
+
   D·engage Mobile SDK for IOS supports version IOS 10 and later.
 </details>
 
 <details>
   <summary> android </summary>
-  
+
   D·engage Mobile SDK for Android supports version 4.4 (API Level 19) and later.
 
   <summary> Huawei </summary>
-  
+
   D·engage Mobile SDK for Huawei supports all new versions.
 </details>
 
@@ -340,7 +340,7 @@ If in your application, you want to get UserNotification permissions explicitly,
 
 ```Javascript
 // At the top import
-import dEngage from 'react-native-dengage'
+import dEngage from '@dengage-tech/react-native-dengage'
 
 // somewhere in your javascript/typescript code
 dEngage.promptForPushNotifications()
@@ -350,7 +350,7 @@ OR
 
 ```Javascript
 // At the top import
-import dEngage from 'react-native-dengage'
+import dEngage from '@dengage-tech/react-native-dengage'
 
 // somewhere in your javascript/typescript code
 dEngage.promptForPushNotificationsWitCallback((hasPermission: Boolean) => {
@@ -368,7 +368,7 @@ To track devices by their contacts you need to set contact key on SDK.
 
 ```
 // import statement
-import dEngage from 'react-native-dengage'
+import dEngage from '@dengage-tech/react-native-dengage'
 
 // in js/ts code
 dEngage.setContactKey(userId: String)
@@ -385,7 +385,7 @@ If you need to get current token or if you are managing token subscription proce
 
 ```Javascript
 // At the top import
-import dEngage from 'react-native-dengage'
+import dEngage from '@dengage-tech/react-native-dengage'
 
 // somewhere in your javascript/typescript code
 const token = await dEngage.getToken()
@@ -399,7 +399,7 @@ dEngage.setToken(token)
 If you manage your own user permission states on your application you may send user permission by using `setUserPermission` method.
 ```Javascript
 // At the top import
-import dEngage from 'react-native-dengage'
+import dEngage from '@dengage-tech/react-native-dengage'
 
 // somewhere in your javascript/typescript code
 dEngage.setUserPermission(true)
@@ -432,17 +432,17 @@ SDK supports URL schema deeplink. If target url has a valid link, it will redire
 Please see related links below about deeplinking.
 <details>
   <summary> iOS Specific Links </summary>
-  
-  
+
+
    [Apple Url Scheme Links](https://developer.apple.com/documentation/xcode/allowing_apps_and_websites_to_link_to_your_content/defining_a_custom_url_scheme_for_your_app)
-  
+
    [Apple Universal Link](https://developer.apple.com/documentation/xcode/allowing_apps_and_websites_to_link_to_your_content)
 </details>
 
 <details>
   <summary> android Specific Links </summary>
-  
-  
+
+
    [Create a deep link for a destination](https://developer.android.com/guide/navigation/navigation-deep-link)
 
    [Create Deep Links to App Content](https://developer.android.com/training/app-links/deep-linking)
@@ -464,7 +464,7 @@ Carousel Push is a notification type which has a different UI than Rich Notifica
 
 <details>
   <summary> iOS </summary>
-  
+
   ### Requirements
   - iOS 10 or higher
   - Notification Service Extension
@@ -476,10 +476,10 @@ Carousel Push is a notification type which has a different UI than Rich Notifica
 
 <details>
   <summary> android </summary>
-  
+
   ### Requirements
   - Android SDK 2.0.0+
-  
+
   to setup Carousel Push on android you can follow [this link](https://dev.dengage.com/mobile-sdk/android/carousel-push)
 </details>
 
@@ -505,7 +505,7 @@ If user logged in set user id. This is important for identifying your users. You
 to get the current user information from SDK getContactKey method can be used.
 ```Javascript
 // in imports
-import dEngage from 'react-native-dengage'
+import dEngage from '@dengage-tech/react-native-dengage'
 
 // in the code, where user information required
 const userId = await dEngage.getContactKey()
@@ -522,13 +522,13 @@ There are standard ecommerce events in D·engage SDK.
   - Product page view
   - Category page view
   - Promotion page view
-  
+
 - [**Shopping Cart Events**](#shopping-cart-events)
   - Add to cart
   - Remove from cart
   - View Cart
   - Begin Checkout
-  
+
 - [**Order Events**](#order-events)
   - Order
   - Cancel order
@@ -545,7 +545,7 @@ For these event there are related tables in your account. Following are the deta
 Page view events will be sent to `page_view_events` table. If you add new columns to this table. You can send these in the event data.
 ```Javascript
 // import at top
-import dEngage from 'react-native-dengage'
+import dEngage from '@dengage-tech/react-native-dengage'
 ...
 
 
@@ -592,7 +592,7 @@ For example: If there is one item in cart and item id is 5. And after that, an a
 
 ```Javascript
 // import statement
-import dEngage from 'react-native-dengage'
+import dEngage from '@dengage-tech/react-native-dengage'
 
 // All items currently exists in shopping cart must be added to an array
 const cartItem = {}, // cartItem will be an object with key:value types as String:Any
@@ -605,8 +605,8 @@ cartItem["discounted_price"] = 9.99
 // ... extra columns in shopping_cart_events_detail table, can be added in cartItem
 
 let cartItems = []
-cartItems.push(cartItem) 
-cartItems.push(cartItem2) 
+cartItems.push(cartItem)
+cartItems.push(cartItem2)
 
 
 // Add to cart action
@@ -654,7 +654,7 @@ Orders events will be sent to order_events and order_events_detail tables.
 ```Javascript
 // Ordered items or canceled items must be added to an array
 // import statement
-import dEngage from 'react-native-dengage'
+import dEngage from '@dengage-tech/react-native-dengage'
 
 const cartItem = {}
 
@@ -666,8 +666,8 @@ cartItem["discounted_price"] = 9.99
 // ... extra columns in order_events_detail table, can be added in cartItem
 
 const cartItems = []
-cartItems.push(cartItem) 
-cartItems.push(cartItem2) 
+cartItems.push(cartItem)
+cartItems.push(cartItem2)
 // ... ordered or canceled items must be added
 
 
@@ -692,18 +692,18 @@ const cancelParams = {
     "total_amount":1, // canceled item's total price
     "discounted_price":9.99, // use total price if there is no discount
     // ... extra columns in order_events table, can be added here
-    "cartItems":cartItems // // canceled items 
+    "cartItems":cartItems // // canceled items
 }
 dEngage.cancelOrder(cancelParams)
 ```
 
 ### Wishlist Event <a name="wishlist-events" />
-These events will be stored in `wishlist_events` and `wishlist_events_detail`. 
+These events will be stored in `wishlist_events` and `wishlist_events_detail`.
 There are 2 wishlist event functions. `addToWishlist`, `removeFromWishlist`. In every event call, you can send all items in wishlist. It makes it easy to track current items in wishlist.
 
 ```Javascript
-  // import statement 
-  import dEngage from 'react-native-dengage'
+  // import statement
+  import dEngage from '@dengage-tech/react-native-dengage'
 
   // Current items in wishlist
   const wishListItem = {}
@@ -752,7 +752,7 @@ You can use `sendDeviceEvent` function for sending events for the device. Events
 // you just have to send the columns except "key" and "event_date", because those columns sent by the SDK
 // methodSignature => dengage(‘sendDeviceEvent’, tableName: String, dataObject, callback);
 const params = {
-    "event_name": "page_view", 
+    "event_name": "page_view",
     "product_id": "1234",
 }
 dEngage.SendDeviceEvent(toEventTable: 'events', andWithEventDetails: params, (err, res) => {
@@ -775,7 +775,7 @@ Inbox messages are kept in the memory storage of the phone until app is complete
 
   #### Methods
   There are 3 methods to manage App Inbox Messages
-  
+
   - To get app inbox messages from the server
     ```
       const inboxMessages = await dEngage.getInboxMessages(offset, limit).catch(err => err)
@@ -805,7 +805,7 @@ In-app message is a type of mobile message where the notification is displayed w
 
   #### Methods
   > Experimental in react-native and this functionality requires proper verification with react-native navigations libs like `react-navigation`, `react-native-router-flux` etc.
-  
+
   Created messages will be stored in D·engage backend and will be served to mobile SDKs. If you integrated mobile SDK correctly for push messages, for using in-app features you just have to add setNavigtion function to every page navigation.
 If you want to use screen name filter, you should send screen name to setNavigation function in every page navigation.
 
@@ -825,7 +825,7 @@ If you want to use screen name filter, you should send screen name to setNavigat
   //
   // (Coming soon)
   // Scheduled: April 2021
-  // if you have extra information 
+  // if you have extra information
   // you can send them to use screen data filters.
   const screenData = {productId: "~hs7674", price: 1200}
   dEngage.setNavigation('product', screenData)
