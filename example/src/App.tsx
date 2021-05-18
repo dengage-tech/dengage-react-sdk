@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { Button, Dimensions, Platform, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
-import Dengage from 'react-native-dengage';
+import Dengage from '@dengage-tech/react-native-dengage';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
 export default function App() {
@@ -118,7 +118,7 @@ export default function App() {
   const navigation = useNavigation()
   useFocusEffect(
     React.useCallback(() => {
-      Dengage.setNavigation();
+      Dengage.setNavigationWithName("AppScreen")
     }, [])
   );
 

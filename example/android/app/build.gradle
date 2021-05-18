@@ -214,9 +214,7 @@ dependencies {
     } else {
         implementation jscFlavor
     }
-
-    implementation project(':reactnativedengage')
-    implementation 'com.github.whitehorse-technology:dengage.android.sdk:3.2.4' // 3.2.4
+    implementation 'com.github.whitehorse-technology:dengage.android.sdk:4.0.1'
     // implementation 'com.github.whitehorse-technology:dengage.android.sdk:feature~in-app-message-SNAPSHOT' // pre-release with in-app-messaging functionality
 }
 

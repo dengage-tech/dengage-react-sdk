@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { StyleSheet, Text, View, Button } from 'react-native';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import Dengage from 'react-native-dengage';
+import Dengage from '@dengage-tech/react-native-dengage';
 
 export default function SecondScreen() {
   const navigation = useNavigation()

@@ -172,12 +172,29 @@ public class MyReceiver extends NotificationReceiver {
     carouselView.setOnClickPendingIntent(R.id.den_carousel_left_image, carouselLeftIntent);
     carouselView.setOnClickPendingIntent(R.id.den_carousel_right_image, carouselRightIntent);
 
-    // create channel
-    String channelId = null;
+    Uri soundUri = Utils.getSound(context, message.getSound());
+    // generate new channel id for different sounds
+    String channelId = UUID.randomUUID().toString();
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-      NotificationChannel notificationChannel = getNotificationChannel();
-      createNotificationChannel(context, notificationChannel);
-      channelId = notificationChannel.getId();
+      NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+      // delete old notification channels
+      List<NotificationChannel> channels = notificationManager.getNotificationChannels();
+      if (channels != null && channels.size() > 0) {
+        for (NotificationChannel channel : channels) {
+          notificationManager.deleteNotificationChannel(channel.getId());
+        }
+      }
+      NotificationChannel notificationChannel = new NotificationChannel(
+        channelId,
+        Constants.CHANNEL_NAME,
+        NotificationManager.IMPORTANCE_DEFAULT
+      );
+      AudioAttributes audioAttributes = new AudioAttributes.Builder()
+        .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+        .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+        .build();
+      notificationChannel.setSound(soundUri, audioAttributes);
+      notificationManager.createNotificationChannel(notificationChannel);
     }
 
     // build notification with the layout.
