@@ -91,9 +91,13 @@ Following extra steps after the installation of the react-native-dengage SDK are
 
   #### 1. Create Objective-C Bridging if your iOS project is in Objective-C
   After the pods are installed, open your project's .xcworkspace file in Xcode. If you have an Objective-C project, add a blank Swift file to your project (File -> New -> Swift File), with a bridging header (it will prompt you to auto-create one).
+  
   1.1. right click on project's name directory & select new file.
+  
   1.2. select swift file & click next
+  
   1.3. give name to your file & click Create
+  
   1.4. select Create Bridging Header
   
   #### 2a. Endpoint Configuration in PInfo.list
