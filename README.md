@@ -96,7 +96,7 @@ Following extra steps after the installation of the react-native-dengage SDK are
   
   1.2. select swift file & click next
   
-  1.3. give name to your file & click Create
+  1.3. give name to your file e.g. 'Empty.swift' & click Create
   
   1.4. select Create Bridging Header
   
