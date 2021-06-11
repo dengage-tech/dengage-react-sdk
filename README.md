@@ -89,14 +89,21 @@ Following extra steps after the installation of the react-native-dengage SDK are
 
   ### Steps
 
-  #### 1. Endpoint Configuration in PInfo.list
+  #### 1. Create Objective-C Bridging if your iOS project is in Objective-C
+  After the pods are installed, open your project's .xcworkspace file in Xcode. If you have an Objective-C project, add a blank Swift file to your project (File -> New -> Swift File), with a bridging header (it will prompt you to auto-create one).
+  1.1. right click on project's name directory & select new file.
+  1.2. select swift file & click next
+  1.3. give name to your file & click Create
+  1.4. select Create Bridging Header
+  
+  #### 2a. Endpoint Configuration in PInfo.list
   For initial setup, if you have given URL addresses by D·engage Support team, you need to setup url address by using ```Info.plist``` file. Otherwise you don’t need to add anything to ```Info.plist``` file. Following screenshot for the keys in ```Info.plist``` file.
 
   ![Info.plist screenshot](https://raw.githubusercontent.com/whitehorse-technology/Dengage.Framework/master/docs/img/Screen%20Shot%202020-09-25%20at%2015.41.27.png)
 
 > Note: Please see API Endpoints by Datacenter documentation in this section for end points. [here is link](https://dev.dengage.com/mobile-sdk/api-endpoints)
 
-  #### 2. Add Required Capabilities
+  #### 2b. Add Required Capabilities
   In Xcode, select the root project and main app target. In ***Signing & Capabilities***, select ***All*** and ***+ Capability***. Add "Push Notifications" and ***Background Modes***
   <summary> screenshot 1 </summary>
 
