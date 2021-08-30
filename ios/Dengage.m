@@ -2,6 +2,11 @@
 
 @interface RCT_EXTERN_MODULE(DengageRN, NSObject)
 
+- (NSArray<NSString *> *)supportedEvents
+{
+  return @[@"onNotificationClicked"];
+}
+
 RCT_EXTERN_METHOD(multiply:(float)a withB:(float)b
                  withResolver:(RCTPromiseResolveBlock)resolve
                  withRejecter:(RCTPromiseRejectBlock)reject)
@@ -27,6 +32,8 @@ RCT_EXTERN_METHOD(setLogStatus:(BOOL)isVisible)
 RCT_EXTERN_METHOD(setContactKey:(NSString *)contactKey)
 
 RCT_EXTERN_METHOD(handleNotificationActionBlock:(RCTResponseSenderBlock)callback)
+
+RCT_EXTERN_METHOD(registerNotificationListeners)
 
 RCT_EXTERN_METHOD(pageView:(NSDictionary *)data)
 

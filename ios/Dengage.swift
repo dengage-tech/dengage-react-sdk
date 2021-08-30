@@ -1,7 +1,7 @@
 import Dengage_Framework
 
 @objc(DengageRN)
-class DengageRN: NSObject {
+class DengageRN: RCTEventEmitter {
 
     @objc(multiply:withB:withResolver:withRejecter:)
     func multiply(a: Float, b: Float, resolve:RCTPromiseResolveBlock,reject:RCTPromiseRejectBlock) -> Void {
@@ -29,7 +29,7 @@ class DengageRN: NSObject {
     func setUserPermission(permission: Bool) {
         Dengage.setUserPermission(permission: permission)
     }
-    
+
     @objc(registerForRemoteNotifications:)
     func registerForRemoteNotifications(enable: Bool) {
         Dengage.registerForRemoteNotifications(enable: enable)
@@ -71,6 +71,63 @@ class DengageRN: NSObject {
     @objc(setContactKey:)
     func setContactKey(contactKey: String) {
         Dengage.setContactKey(contactKey: contactKey)
+    }
+
+    @objc(registerNotificationListeners)
+    func registerNotificationListeners () {
+        Dengage.handleNotificationActionBlock { (notificationResponse) in
+            var response = [String:Any?]();
+            response["actionIdentifier"] = notificationResponse.actionIdentifier
+
+            var notification = [String:Any?]()
+            notification["date"] = notificationResponse.notification.date.description
+
+            var notificationReq = [String:Any?]()
+            notificationReq["identifier"] = notificationResponse.notification.request.identifier
+
+            if (notificationResponse.notification.request.trigger?.repeats != nil) {
+                var notificationReqTrigger = [String:Any?]()
+                notificationReqTrigger["repeats"] = notificationResponse.notification.request.trigger?.repeats ?? nil
+                notificationReq["trigger"] = notificationReqTrigger
+            }
+
+            var reqContent = [String:Any?]()
+            var contentAttachments = [Any]()
+            for attachement in notificationResponse.notification.request.content.attachments {
+                var contentAttachment = [String:Any?]()
+                contentAttachment["identifier"] = attachement.identifier
+                contentAttachment["url"] = attachement.url
+                contentAttachment["type"] = attachement.type
+                contentAttachments.append(contentAttachment)
+            }
+            reqContent["badge"] = notificationResponse.notification.request.content.badge
+            reqContent["body"] = notificationResponse.notification.request.content.body
+            reqContent["categoryIdentifier"] = notificationResponse.notification.request.content.categoryIdentifier
+            reqContent["launchImageName"] = notificationResponse.notification.request.content.launchImageName
+            // @NSCopying open var sound: UNNotificationSound? { get }
+            //reqContent["sound"] = notificationResponse.notification.request.content.sound // this yet ignored, will include later.
+            reqContent["subtitle"] = notificationResponse.notification.request.content.subtitle
+            reqContent["threadIdentifier"] = notificationResponse.notification.request.content.threadIdentifier
+            reqContent["title"] = notificationResponse.notification.request.content.title
+            reqContent["userInfo"] = notificationResponse.notification.request.content.userInfo // todo: make sure it is RCTCovertible & doesn't break the code
+            if #available(iOS 12.0, *) {
+                reqContent["summaryArgument"] = notificationResponse.notification.request.content.summaryArgument
+                reqContent["summaryArgumentCount"] = notificationResponse.notification.request.content.summaryArgumentCount
+            }
+            if #available(iOS 13.0, *) {
+                reqContent["targetContentIdentifier"] = notificationResponse.notification.request.content.targetContentIdentifier
+            }
+
+
+            reqContent["attachments"] = contentAttachments
+            notificationReq["content"] = reqContent
+            notification["request"] = notificationReq
+            response["notification"] = notification
+
+            super.sendEvent(withName: "onNotificationClicked", body: [response])
+
+//            callback([response])
+        }
     }
 
     @objc(handleNotificationActionBlock:)
@@ -374,7 +431,7 @@ class DengageRN: NSObject {
             }
         }
     }
-    
+
     @objc(deleteInboxMessage:resolve:reject:)
     func deleteInboxMessage(id: NSString, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock){
         Dengage.deleteInboxMessage(with: id as String) { (result) in
@@ -407,7 +464,7 @@ class DengageRN: NSObject {
     func setNavigation(){
         Dengage.setNavigation()
     }
-    
+
     @objc(setNavigationWithName:)
     func setNavigationWithName(screenName: NSString) {
         Dengage.setNavigation(screenName: screenName as String)
