@@ -1,14 +1,23 @@
 package com.reactnativedengage
 
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.dengage.sdk.DengageEvent
+import com.dengage.sdk.NotificationReceiver
 import com.dengage.sdk.callback.DengageCallback
 import com.dengage.sdk.models.DengageError
 import com.dengage.sdk.models.InboxMessage
+import com.dengage.sdk.models.Message
 import com.facebook.react.bridge.*
 import com.facebook.react.modules.core.DeviceEventManagerModule
 import com.google.gson.Gson
+import com.reactnativedengage.MapUtil.convertJsonToMap
+import com.reactnativedengage.MapUtil.toMap
+import org.json.JSONObject
+
 
 class DengageModule(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext) {
 
@@ -100,7 +109,7 @@ class DengageModule(reactContext: ReactApplicationContext) : ReactContextBaseJav
     @ReactMethod
     fun pageView (data: ReadableMap) {
       try {
-        DengageEvent.getInstance(reactApplicationContext).pageView(MapUtil.toMap(data))
+        DengageEvent.getInstance(reactApplicationContext).pageView(toMap(data))
       } catch (ex: Exception){
         print(ex)
       }
@@ -109,7 +118,7 @@ class DengageModule(reactContext: ReactApplicationContext) : ReactContextBaseJav
     @ReactMethod
     fun addToCart (data: ReadableMap) {
       try {
-        DengageEvent.getInstance(reactApplicationContext).addToCart(MapUtil.toMap(data))
+        DengageEvent.getInstance(reactApplicationContext).addToCart(toMap(data))
       } catch (ex: Exception){
         print(ex)
       }
@@ -118,7 +127,7 @@ class DengageModule(reactContext: ReactApplicationContext) : ReactContextBaseJav
     @ReactMethod
     fun removeFromCart (data: ReadableMap) {
       try {
-        DengageEvent.getInstance(reactApplicationContext).removeFromCart(MapUtil.toMap(data))
+        DengageEvent.getInstance(reactApplicationContext).removeFromCart(toMap(data))
       } catch (ex: Exception){
         print(ex)
       }
@@ -127,7 +136,7 @@ class DengageModule(reactContext: ReactApplicationContext) : ReactContextBaseJav
     @ReactMethod
     fun viewCart (data: ReadableMap) {
       try {
-        DengageEvent.getInstance(reactApplicationContext).viewCart(MapUtil.toMap(data))
+        DengageEvent.getInstance(reactApplicationContext).viewCart(toMap(data))
       } catch (ex: Exception){
         print(ex)
       }
@@ -136,7 +145,7 @@ class DengageModule(reactContext: ReactApplicationContext) : ReactContextBaseJav
     @ReactMethod
     fun beginCheckout (data: ReadableMap) {
       try {
-        DengageEvent.getInstance(reactApplicationContext).beginCheckout(MapUtil.toMap(data))
+        DengageEvent.getInstance(reactApplicationContext).beginCheckout(toMap(data))
       } catch (ex: Exception){
         print(ex)
       }
@@ -145,7 +154,7 @@ class DengageModule(reactContext: ReactApplicationContext) : ReactContextBaseJav
     @ReactMethod
     fun placeOrder (data: ReadableMap) {
       try {
-        DengageEvent.getInstance(reactApplicationContext).order(MapUtil.toMap(data))
+        DengageEvent.getInstance(reactApplicationContext).order(toMap(data))
       } catch (ex: Exception){
         print(ex)
       }
@@ -154,7 +163,7 @@ class DengageModule(reactContext: ReactApplicationContext) : ReactContextBaseJav
     @ReactMethod
     fun cancelOrder (data: ReadableMap) {
       try {
-        DengageEvent.getInstance(reactApplicationContext).cancelOrder(MapUtil.toMap(data))
+        DengageEvent.getInstance(reactApplicationContext).cancelOrder(toMap(data))
       } catch (ex: Exception){
         print(ex)
       }
@@ -163,7 +172,7 @@ class DengageModule(reactContext: ReactApplicationContext) : ReactContextBaseJav
     @ReactMethod
     fun addToWishList (data: ReadableMap) {
       try {
-        DengageEvent.getInstance(reactApplicationContext).addToWishList(MapUtil.toMap(data))
+        DengageEvent.getInstance(reactApplicationContext).addToWishList(toMap(data))
       } catch (ex: Exception){
         print(ex)
       }
@@ -172,7 +181,7 @@ class DengageModule(reactContext: ReactApplicationContext) : ReactContextBaseJav
     @ReactMethod
     fun removeFromWishList (data: ReadableMap) {
       try {
-        DengageEvent.getInstance(reactApplicationContext).removeFromWishList(MapUtil.toMap(data))
+        DengageEvent.getInstance(reactApplicationContext).removeFromWishList(toMap(data))
       } catch (ex: Exception){
         print(ex)
       }
@@ -181,7 +190,7 @@ class DengageModule(reactContext: ReactApplicationContext) : ReactContextBaseJav
     @ReactMethod
     fun search (data: ReadableMap) {
       try {
-        DengageEvent.getInstance(reactApplicationContext).search(MapUtil.toMap(data))
+        DengageEvent.getInstance(reactApplicationContext).search(toMap(data))
       } catch (ex: Exception){
         print(ex)
       }
@@ -190,7 +199,7 @@ class DengageModule(reactContext: ReactApplicationContext) : ReactContextBaseJav
     @ReactMethod
     fun sendDeviceEvent (tableName: String, data: ReadableMap) {
       try {
-        DengageEvent.getInstance(reactApplicationContext).sendDeviceEvent(tableName, MapUtil.toMap(data))
+        DengageEvent.getInstance(reactApplicationContext).sendDeviceEvent(tableName, toMap(data))
       } catch (ex: Exception){
         print(ex)
       }
@@ -251,13 +260,58 @@ class DengageModule(reactContext: ReactApplicationContext) : ReactContextBaseJav
       DengageRNCoordinator.sharedInstance.dengageManager?.setNavigation(currentActivity as AppCompatActivity, screenName)
     }
 
+    @ReactMethod
+    fun registerNotificationListeners () {
+
+        Log.d("den/react-native", "RegisteringNotificationListeners.")
+
+        val filter = IntentFilter()
+        filter.addAction("com.dengage.push.intent.RECEIVE")
+        filter.addAction("com.dengage.push.intent.OPEN")
+        val notifReceiver = NotifReciever(reactApplicationContext)
+        reactApplicationContext.currentActivity!!.registerReceiver(notifReceiver, filter)
+    }
+
+    class NotifReciever(reactAppContext: ReactApplicationContext) : NotificationReceiver() {
+        var reactApplicationContext: ReactApplicationContext? = reactAppContext
+
+        override fun onReceive(context: Context?, intent: Intent) {
+            val intentAction = intent.action
+            if (intentAction != null) {
+                when (intentAction.hashCode()) {
+                    -825236177 -> {
+                        if (intentAction == "com.dengage.push.intent.RECEIVE") {
+                            Log.d("den/react-native", "received new push.")
+                            val message: Message = intent.getExtras()?.let { Message(it) }!!
+                            sendEvent("onNotificationReceived", convertJsonToMap(JSONObject(Gson().toJson(message)))!!, reactApplicationContext)
+                        }
+                    }
+                    -520704162 -> {
+                        // intentAction == "com.dengage.push.intent.RECEIVE"
+                        Log.d("den/react-native", "push is clicked.")
+                        val message: Message = intent.getExtras()?.let { Message(it) }!!
+                        sendEvent("onNotificationClicked", convertJsonToMap(JSONObject(Gson().toJson(message)))!!, reactApplicationContext)
+                    }
+                }
+            }
+        }
+    }
+
     companion object {
       var reactContext: ReactApplicationContext? = null
-      fun sendEvent (eventName: String, data: WritableMap) {
+
+      fun sendEvent (eventName: String, data: WritableMap, reactAppContext: ReactApplicationContext? = null) {
+          Log.d("sendingEvent", eventName)
         if (reactContext != null) {
           reactContext
             ?.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
             ?.emit(eventName, data)
+        } else if (reactAppContext != null) {
+            reactAppContext
+                    ?.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+                    ?.emit(eventName, data)
+        } else {
+            Log.d("no reactContext.", "unable to have a react context.")
         }
       }
     }

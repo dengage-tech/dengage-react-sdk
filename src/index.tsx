@@ -16,7 +16,8 @@ type DengageType = {
   getToken(): Promise<string | any>;
   setToken(token: String): void;
   setLogStatus(isVisible: boolean): void;
-  handleNotificationActionBlock(callback: (notificationAction: DengageTypes["NotificationAction"]) => void): void; // iOS only
+  handleNotificationActionBlock(callback: (notificationAction: DengageTypes["NotificationAction"]) => void): void; // iOS only,
+  registerNotificationListeners(): void; // End Developer No Need to call this, we're calling it ourself, to register for events like `onNotificationReceived` & `onNotificationClicked`
   pageView(params: object): void;
   addToCart(params: object): void;
   removeFromCart(params: object): void;
@@ -37,5 +38,7 @@ type DengageType = {
 };
 
 const { DengageRN } = NativeModules;
+
+DengageRN?.registerNotificationListeners?.()
 
 export default DengageRN as DengageType;
