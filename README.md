@@ -91,15 +91,15 @@ Following extra steps after the installation of the react-native-dengage SDK are
 
   #### 1. Create Objective-C Bridging if your iOS project is in Objective-C
   After the pods are installed, open your project's .xcworkspace file in Xcode. If you have an Objective-C project, add a blank Swift file to your project (File -> New -> Swift File), with a bridging header (it will prompt you to auto-create one).
-  
+
   1.1. right click on project's name directory & select new file.
-  
+
   1.2. select swift file & click next
-  
+
   1.3. give name to your file. For example `Empty.swift` & click Create
-  
+
   1.4. select Create Bridging Header
-  
+
   #### 2a. Endpoint Configuration in PInfo.list
   For initial setup, if you have given URL addresses by D·engage Support team, you need to setup url address by using ```Info.plist``` file. Otherwise you don’t need to add anything to ```Info.plist``` file. Following screenshot for the keys in ```Info.plist``` file.
 
@@ -433,9 +433,24 @@ dEngage.setLogStatus(isVisible)
 SDK provides a method if you want to get and parse payload manually for custom parameters or etc.
 
 ```
-dEngage.handleNotificationActionBlock((notificationResponse: Object) => {
-  // handle notification Response here.
-})
+// in imports
+import {NativeEventEmitter, NativeModules} from 'react-native';
+
+// in code
+    React.useEffect(() => {
+        // adding Listeners for new notification payload & it's on click handling.
+        const eventEmitter = new NativeEventEmitter(NativeModules.DengageRN);
+        const eventListener = eventEmitter.addListener('onNotificationClicked', (event) => {
+            // handle notification here.
+            console.log("onNotificationClicked")
+            console.log(event)
+        });
+
+        return () => {
+            eventListener?.remove?.();
+        }
+    }, [])
+
 ```
 
 ### DeepLinking
