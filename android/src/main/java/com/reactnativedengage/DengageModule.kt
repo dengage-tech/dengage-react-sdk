@@ -269,7 +269,7 @@ class DengageModule(reactContext: ReactApplicationContext) : ReactContextBaseJav
         filter.addAction("com.dengage.push.intent.RECEIVE")
         filter.addAction("com.dengage.push.intent.OPEN")
         val notifReceiver = NotifReciever(reactApplicationContext)
-        reactApplicationContext.currentActivity!!.registerReceiver(notifReceiver, filter)
+        reactApplicationContext.currentActivity?.registerReceiver(notifReceiver, filter)
     }
 
     class NotifReciever(reactAppContext: ReactApplicationContext) : NotificationReceiver() {
