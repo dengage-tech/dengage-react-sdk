@@ -1,6 +1,6 @@
 buildscript {
   // Buildscript is evaluated before everything else so we can't use getExtOrDefault
-  def kotlin_version = rootProject.ext.has('kotlinVersion') ? rootProject.ext.get('kotlinVersion') : project.properties['Dengage_kotlinVersion']
+  def kotlin_version = "1.6.0"
 
   repositories {
     google()
@@ -8,8 +8,8 @@ buildscript {
   }
 
   dependencies {
-    classpath 'com.android.tools.build:gradle:3.2.1'
-    // noinspection DifferentKotlinGradleVersion
+    classpath 'com.android.tools.build:gradle:4.1.2'
+     // noinspection DifferentKotlinGradleVersion
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
   }
 }
@@ -26,11 +26,10 @@ def getExtOrIntegerDefault(name) {
 }
 
 android {
-  compileSdkVersion getExtOrIntegerDefault('compileSdkVersion')
-  buildToolsVersion getExtOrDefault('buildToolsVersion')
-  defaultConfig {
+  compileSdkVersion 32
+   defaultConfig {
     minSdkVersion 19
-    targetSdkVersion getExtOrIntegerDefault('targetSdkVersion')
+    targetSdkVersion 32
     versionCode 1
     versionName "1.0"
 
@@ -127,7 +126,12 @@ dependencies {
   // noinspection GradleDynamicVersion
   api 'com.facebook.react:react-native:+'
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-  implementation 'com.google.code.gson:gson:+'
-  implementation 'com.github.whitehorse-technology:dengage.android.sdk:4.0.1'
+  implementation 'com.google.code.gson:gson:2.8.6'
+  implementation 'com.github.whitehorse-technology:dengage.android.sdk:4.3.4'
+
+  implementation 'com.google.firebase:firebase-core:20.0.0'
+  implementation "com.google.firebase:firebase-messaging:23.0.0"
+  implementation 'com.google.firebase:firebase-analytics:20.0.0'
+
 //  implementation 'com.github.whitehorse-technology:dengage.android.sdk:feature~in-app-message-SNAPSHOT' // pre-release with in-app-messaging functionality
 }

@@ -35,6 +35,7 @@ type DengageType = {
   setInboxMessageAsClicked(id: string): Promise<object | null>
   setNavigation(): void;
   setNavigationWithName(screenName: string): void;
+  onMessageRecieved(params: object): void;
 };
 
 const { DengageRN } = NativeModules;

@@ -272,6 +272,16 @@ class DengageModule(reactContext: ReactApplicationContext) : ReactContextBaseJav
         reactApplicationContext.currentActivity?.registerReceiver(notifReceiver, filter)
     }
 
+   @ReactMethod
+    fun onMessageRecieved (data: ReadableMap) {
+      try {
+           DengageManager.getInstance(reactApplicationContext).onMessageReceived(convertMapToJson(data)?.getJSONObject("data")
+               ?.let { toMap(it) } as MutableMap<String, String>?)
+      } catch (ex: Exception){
+        print(ex)
+      }
+    }
+
     class NotifReciever(reactAppContext: ReactApplicationContext) : NotificationReceiver() {
         var reactApplicationContext: ReactApplicationContext? = reactAppContext
 
