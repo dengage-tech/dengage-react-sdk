@@ -4,7 +4,6 @@ import {Button, Dimensions, Platform, ScrollView, StyleSheet, Text, TextInput, V
 import Dengage from '@dengage-tech/react-native-dengage';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {NativeEventEmitter, NativeModules} from 'react-native';
-import messaging from '@react-native-firebase/messaging';
 export default function App() {
     const [contactKey, setContactKey] = React.useState<string>('checking...');
     const [subscription, setSubscription] = React.useState<string>('');
@@ -107,12 +106,7 @@ export default function App() {
     React.useEffect(() => {
         Dengage.setLogStatus(true);
         init()
-        messaging().onMessage(async remoteMessage => {
-            //alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
-            console.log("messageSetAsInboxRes: ", JSON.stringify(remoteMessage));
-            Dengage.viewCart(remoteMessage);
-
-          });
+       
         
 
         // adding Listeners for new notification payload & it's on click handling.
