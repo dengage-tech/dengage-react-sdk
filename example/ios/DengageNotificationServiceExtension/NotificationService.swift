@@ -6,7 +6,7 @@
 //
 
 import UserNotifications
-import Dengage_Framework
+import Dengage
 
 class NotificationService: UNNotificationServiceExtension {
 
@@ -17,7 +17,9 @@ class NotificationService: UNNotificationServiceExtension {
           self.contentHandler = contentHandler
           bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
           if let bestAttemptContent = bestAttemptContent {
-            Dengage.didReceiveNotificationExtentionRequest(receivedRequest: request, withNotificationContent: bestAttemptContent)
+            
+            Dengage.didReceiveNotificationRequest(bestAttemptContent, withContentHandler: contentHandler)
+            
             contentHandler(bestAttemptContent)
           }
       }

@@ -11,6 +11,7 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 
+
 @import react_native_dengage;
 
 #ifdef FB_SONARKIT_ENABLED
@@ -31,7 +32,7 @@ static void InitializeFlipper(UIApplication *application) {
 }
 #endif
 
-@implementation AppDelegate
+@implementation AppDelegate 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -43,19 +44,23 @@ static void InitializeFlipper(UIApplication *application) {
 
   DengageRNCoordinator *coordinator = [DengageRNCoordinator staticInstance];
   [coordinator setValue:launchOptions forKey:@"launchOptions"];
-  [coordinator setupDengage:@"xW2e7nTs7kdcS_p_l_Xk_s_l_29k5GXVI9CCufihuYCdUkjKX26_p_l_JEa02OqjTqr4Bn2_p_l_yysrGD2cbS7xVJHA1TuQuQqKYvEWR4hdPFJUrdPmJ2BQpVqhdFYzApkqD4_s_l_GJKaVBBxX" launchOptions:launchOptions];
+  [coordinator setupDengage:@"BWUdMrMrI3YqDvJx_p_l_kkev8JcCFSHM5rkRCpwQdnvEWvMaRp7n_s_l_5olQe0RW_p_l_mI8BtHeFvsOBEYqR_s_l_YeZK6Cfr2DyN9nVJi2faUgyGgYdoeRHALe_p_l_ROuJxm0V5eBFKdZg9H7ULjDr4tU2Q0VJsgzqaRQ_e_q__e_q_" launchOptions:launchOptions application:application];
 
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
                                                    moduleName:@"DengageExample"
                                             initialProperties:nil];
 
   rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
-
+  
+  UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+  center.delegate = self;
+  
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
   UIViewController *rootViewController = [UIViewController new];
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
+  
   return YES;
 }
 
@@ -73,4 +78,22 @@ static void InitializeFlipper(UIApplication *application) {
   DengageRNCoordinator *coordinator = [DengageRNCoordinator staticInstance];
   [coordinator registerForPushToken:deviceToken];
 }
+
+
+-(void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler
+{
+ 
+  completionHandler(UNAuthorizationOptionSound | UNAuthorizationOptionAlert | UNAuthorizationOptionBadge);
+
+
+}
+
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler
+{
+  DengageRNCoordinator *coordinator = [DengageRNCoordinator staticInstance];
+  [coordinator didReceivePush:center response:response withCompletionHandler:completionHandler];
+
+}
+
+
 @end

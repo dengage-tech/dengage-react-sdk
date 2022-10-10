@@ -1,4 +1,4 @@
-import Dengage_Framework
+import Dengage
 
 @objc(DengageRN)
 class DengageRN: RCTEventEmitter {
@@ -32,14 +32,15 @@ class DengageRN: RCTEventEmitter {
 
     @objc(registerForRemoteNotifications:)
     func registerForRemoteNotifications(enable: Bool) {
-        Dengage.registerForRemoteNotifications(enable: enable)
+        Dengage.set(permission: true)
+        Dengage.promptForPushNotifications()
     }
 
     // _ before resolve here is neccessary, need to revisit rn docs about why.
     @objc
     func getToken(_ resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
         do {
-            let currentToken = try Dengage.getToken()
+            let currentToken = try Dengage.getDeviceToken()
             resolve(currentToken)
         } catch {
             print("Unexpected getTOken error: \(error)")
@@ -292,7 +293,7 @@ class DengageRN: RCTEventEmitter {
     @objc(pageView:)
     func pageView (_ data: NSDictionary) -> Void {
         do {
-            try DengageEvent.shared.pageView(params: data as! NSMutableDictionary)
+            try Dengage.pageView(parameters: data as! [String:Any])
         } catch {
             print("Unexpected pageView error: \(error)")
         }
@@ -302,7 +303,7 @@ class DengageRN: RCTEventEmitter {
     func addToCart (_ data: NSDictionary) -> Void {
         do {
             print(data)
-            try DengageEvent.shared.addToCart(params: data as! NSMutableDictionary)
+            try Dengage.addToCart(parameters: data as! [String:Any])
         } catch {
             print("Unexpected addToCart error: \(error)")
         }
@@ -312,7 +313,7 @@ class DengageRN: RCTEventEmitter {
     func removeFromCart (_ data: NSDictionary) -> Void {
         do {
             print(data)
-            try DengageEvent.shared.removeFromCart(params: data as! NSMutableDictionary)
+            try Dengage.removeFromCart(parameters: data as! [String:Any])
         } catch {
             print("Unexpected removeFromCart error: \(error)")
         }
@@ -322,7 +323,7 @@ class DengageRN: RCTEventEmitter {
     func viewCart (_ data: NSDictionary) -> Void {
         do {
             print(data)
-            try DengageEvent.shared.viewCart(params: data as! NSMutableDictionary)
+            try Dengage.viewCart(parameters: data as! [String:Any])
         } catch {
             print("Unexpected viewCart error: \(error)")
         }
@@ -332,7 +333,7 @@ class DengageRN: RCTEventEmitter {
     func beginCheckout (_ data: NSDictionary) -> Void {
         do {
             print(data)
-            try DengageEvent.shared.beginCheckout(params: data as! NSMutableDictionary)
+            try Dengage.beginCheckout(parameters: data as! [String:Any])
         } catch {
             print("Unexpected beginCheckout error: \(error)")
         }
@@ -342,7 +343,7 @@ class DengageRN: RCTEventEmitter {
     func placeOrder (_ data: NSDictionary) -> Void {
         do {
             print(data)
-            try DengageEvent.shared.order(params: data as! NSMutableDictionary)
+            try Dengage.order(parameters: data as! [String : Any])
         } catch {
             print("Unexpected placeOrder error: \(error)")
         }
@@ -352,7 +353,8 @@ class DengageRN: RCTEventEmitter {
     func cancelOrder (_ data: NSDictionary) -> Void {
         do {
             print(data)
-            try DengageEvent.shared.cancelOrder(params: data as! NSMutableDictionary)
+            try Dengage.cancelOrder(parameters: data as! [String : Any])
+            
         } catch {
             print("Unexpected cancelOrder error: \(error)")
         }
@@ -362,7 +364,7 @@ class DengageRN: RCTEventEmitter {
     func addToWishList (_ data: NSDictionary) -> Void {
         do {
             print(data)
-            try DengageEvent.shared.addToWithList(params: data as! NSMutableDictionary)
+            try Dengage.addToWithList(parameters: data as! [String : Any])
         } catch {
             print("Unexpected addToWishList error: \(error)")
         }
@@ -372,7 +374,7 @@ class DengageRN: RCTEventEmitter {
     func removeFromWishList (_ data: NSDictionary) -> Void {
         do {
             print(data)
-            try DengageEvent.shared.removeFromWithList(params: data as! NSMutableDictionary)
+            try Dengage.removeFromWithList(parameters: data as! [String : Any])
         } catch {
             print("Unexpected removeFromWishList error: \(error)")
         }
@@ -382,7 +384,7 @@ class DengageRN: RCTEventEmitter {
     func search (_ data: NSDictionary) -> Void {
         do {
             print(data)
-            try DengageEvent.shared.search(params: data as! NSMutableDictionary)
+            try Dengage.search(parameters: data as! [String : Any])
         } catch {
             print("Unexpected search error: \(error)")
         }
@@ -392,7 +394,7 @@ class DengageRN: RCTEventEmitter {
     func sendDeviceEvent (_ tableName: NSString, withData: NSDictionary) -> Void {
         do {
             print(withData)
-            try Dengage.SendDeviceEvent(toEventTable: tableName as String, andWithEventDetails: withData as! NSMutableDictionary)
+            try Dengage.sendCustomEvent(eventTable: tableName as String, parameters: withData as! [String:Any])
         } catch {
             print("Unexpected search error: \(error)")
         }

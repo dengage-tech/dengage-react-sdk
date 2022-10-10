@@ -9,9 +9,7 @@ target 'DengageExample' do
   use_react_native!(:path => config["reactNativePath"])
 
 #  pod 'react-native-dengage', :path => '../..'
-  pod 'Dengage.Framework', '4.1.9'
-  pod 'Dengage.Framework.Extensions','1.0.10'
-
+pod 'Dengage', :git => 'https://github.com/dengage-tech/dengage-ios-sdk.git', :branch => 'version/5.1.1'
 
   
   # Enables Flipper.
@@ -21,8 +19,7 @@ target 'DengageExample' do
   
 end
 target 'DengageNotificationServiceExtension' do
-  pod 'Dengage.Framework'
-  pod 'Dengage.Framework.Extensions'
+  pod 'Dengage', :git => 'https://github.com/dengage-tech/dengage-ios-sdk.git', :branch => 'version/5.1.1'
   
 end
 
