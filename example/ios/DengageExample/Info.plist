@@ -26,6 +26,8 @@
 	<string>https://dev-push.dengage.com</string>
 	<key>DengageEventApiUrl</key>
 	<string>https://dev-event.dengage.com</string>
+	<key>DengageGeofenceApiUrl</key>
+	<string>https://dev-push.dengage.com/geoapi</string>
 	<key>LSApplicationCategoryType</key>
 	<string></string>
 	<key>LSRequiresIPhoneOS</key>
