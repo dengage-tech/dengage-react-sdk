@@ -5,13 +5,14 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import com.dengage.sdk.DengageEvent
+import com.dengage.sdk.Dengage
 import com.dengage.sdk.DengageManager
-import com.dengage.sdk.NotificationReceiver
 import com.dengage.sdk.callback.DengageCallback
-import com.dengage.sdk.models.DengageError
-import com.dengage.sdk.models.InboxMessage
-import com.dengage.sdk.models.Message
+import com.dengage.sdk.callback.DengageError
+import com.dengage.sdk.domain.inboxmessage.model.InboxMessage
+import com.dengage.sdk.domain.push.model.Message
+import com.dengage.sdk.push.NotificationReceiver
+
 import com.facebook.react.bridge.*
 import com.facebook.react.modules.core.DeviceEventManagerModule
 import com.google.gson.Gson
@@ -113,7 +114,7 @@ class DengageModule(reactContext: ReactApplicationContext) :
   @ReactMethod
   fun pageView(data: ReadableMap) {
     try {
-      DengageEvent.getInstance(reactApplicationContext).pageView(toMap(data))
+       Dengage.pageView(toMap(data) as HashMap<String, Any>)
     } catch (ex: Exception) {
       print(ex)
     }
@@ -122,7 +123,7 @@ class DengageModule(reactContext: ReactApplicationContext) :
   @ReactMethod
   fun addToCart(data: ReadableMap) {
     try {
-      DengageEvent.getInstance(reactApplicationContext).addToCart(toMap(data))
+      Dengage.addToCart(toMap(data) as HashMap<String, Any>)
     } catch (ex: Exception) {
       print(ex)
     }
@@ -131,7 +132,7 @@ class DengageModule(reactContext: ReactApplicationContext) :
   @ReactMethod
   fun removeFromCart(data: ReadableMap) {
     try {
-      DengageEvent.getInstance(reactApplicationContext).removeFromCart(toMap(data))
+      Dengage.removeFromCart(toMap(data) as HashMap<String, Any>)
     } catch (ex: Exception) {
       print(ex)
     }
@@ -140,7 +141,7 @@ class DengageModule(reactContext: ReactApplicationContext) :
   @ReactMethod
   fun viewCart(data: ReadableMap) {
     try {
-      DengageEvent.getInstance(reactApplicationContext).viewCart(toMap(data))
+      Dengage.viewCart(toMap(data) as HashMap<String, Any>)
     } catch (ex: Exception) {
       print(ex)
     }
@@ -149,7 +150,7 @@ class DengageModule(reactContext: ReactApplicationContext) :
   @ReactMethod
   fun beginCheckout(data: ReadableMap) {
     try {
-      DengageEvent.getInstance(reactApplicationContext).beginCheckout(toMap(data))
+      Dengage.beginCheckout(toMap(data) as HashMap<String, Any>)
     } catch (ex: Exception) {
       print(ex)
     }
@@ -158,7 +159,7 @@ class DengageModule(reactContext: ReactApplicationContext) :
   @ReactMethod
   fun placeOrder(data: ReadableMap) {
     try {
-      DengageEvent.getInstance(reactApplicationContext).order(toMap(data))
+       Dengage.order(toMap(data) as HashMap<String, Any>)
     } catch (ex: Exception) {
       print(ex)
     }
@@ -167,7 +168,7 @@ class DengageModule(reactContext: ReactApplicationContext) :
   @ReactMethod
   fun cancelOrder(data: ReadableMap) {
     try {
-      DengageEvent.getInstance(reactApplicationContext).cancelOrder(toMap(data))
+       Dengage.cancelOrder(toMap(data) as HashMap<String, Any>)
     } catch (ex: Exception) {
       print(ex)
     }
@@ -176,7 +177,7 @@ class DengageModule(reactContext: ReactApplicationContext) :
   @ReactMethod
   fun addToWishList(data: ReadableMap) {
     try {
-      DengageEvent.getInstance(reactApplicationContext).addToWishList(toMap(data))
+      Dengage.addToWishList(toMap(data) as HashMap<String, Any>)
     } catch (ex: Exception) {
       print(ex)
     }
@@ -185,7 +186,7 @@ class DengageModule(reactContext: ReactApplicationContext) :
   @ReactMethod
   fun removeFromWishList(data: ReadableMap) {
     try {
-      DengageEvent.getInstance(reactApplicationContext).removeFromWishList(toMap(data))
+      Dengage.removeFromWishList(toMap(data) as HashMap<String, Any>)
     } catch (ex: Exception) {
       print(ex)
     }
@@ -194,7 +195,7 @@ class DengageModule(reactContext: ReactApplicationContext) :
   @ReactMethod
   fun search(data: ReadableMap) {
     try {
-      DengageEvent.getInstance(reactApplicationContext).search(toMap(data))
+      Dengage.search(toMap(data) as HashMap<String, Any>)
     } catch (ex: Exception) {
       print(ex)
     }
@@ -203,7 +204,7 @@ class DengageModule(reactContext: ReactApplicationContext) :
   @ReactMethod
   fun sendDeviceEvent(tableName: String, data: ReadableMap) {
     try {
-      DengageEvent.getInstance(reactApplicationContext).sendDeviceEvent(tableName, toMap(data))
+      Dengage.sendDeviceEvent(tableName,toMap(data) as HashMap<String, Any>)
     } catch (ex: Exception) {
       print(ex)
     }
@@ -293,14 +294,14 @@ class DengageModule(reactContext: ReactApplicationContext) :
   class NotifReciever(reactAppContext: ReactApplicationContext) : NotificationReceiver() {
     var reactApplicationContext: ReactApplicationContext? = reactAppContext
 
-    override fun onReceive(context: Context?, intent: Intent) {
-      val intentAction = intent.action
+    override fun onReceive(context: Context, intent: Intent?) {
+      val intentAction = intent?.action
       if (intentAction != null) {
         when (intentAction.hashCode()) {
           -825236177 -> {
             if (intentAction == "com.dengage.push.intent.RECEIVE") {
               Log.d("den/react-native", "received new push.")
-              val message: Message = intent.getExtras()?.let { Message(it) }!!
+              val message: Message = intent.getExtras()?.let { Message.createFromIntent(it) }!!
               sendEvent(
                 "onNotificationReceived",
                 convertJsonToMap(JSONObject(Gson().toJson(message)))!!,
@@ -311,7 +312,7 @@ class DengageModule(reactContext: ReactApplicationContext) :
           -520704162 -> {
             // intentAction == "com.dengage.push.intent.RECEIVE"
             Log.d("den/react-native", "push is clicked.")
-            val message: Message = intent.getExtras()?.let { Message(it) }!!
+            val message: Message = intent.getExtras()?.let { Message.createFromIntent(it) }!!
             sendEvent(
               "onNotificationClicked",
               convertJsonToMap(JSONObject(Gson().toJson(message)))!!,

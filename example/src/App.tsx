@@ -131,6 +131,9 @@ export default function App() {
         }
         setContactKey(await Dengage.getContactKey())
         Dengage.setLogStatus(true)
+
+        addToCartExample()
+        pageViewExample()
     }
 
     const navigation = useNavigation()
