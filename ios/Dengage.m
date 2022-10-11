@@ -71,4 +71,6 @@ RCT_EXTERN_METHOD(stopGeofence)
 
 RCT_EXTERN_METHOD(requestLocationPermissions)
 
+RCT_EXTERN_METHOD(startGeofence)
+
 @end

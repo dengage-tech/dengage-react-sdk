@@ -471,4 +471,19 @@ class DengageRN: RCTEventEmitter {
     func setNavigationWithName(screenName: NSString) {
         Dengage.setNavigation(screenName: screenName as String)
     }
+    
+    @objc(stopGeofence)
+    func stopGeofence(){
+        Dengage.stopGeofence()
+    }
+    
+    @objc(stopGeofence)
+    func requestLocationPermissions(){
+        Dengage.requestLocationPermissions()
+    }
+    
+    @objc(startGeofence)
+    func startGeofence(){
+        Dengage.startGeofence()
+    }
 }
