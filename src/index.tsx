@@ -36,6 +36,9 @@ type DengageType = {
   setNavigation(): void;
   setNavigationWithName(screenName: string): void;
   onMessageRecieved(params: object): void;
+  stopGeofence(): void;
+  requestLocationPermissions(): void;
+  startGeofence(): void;
 };
 
 const { DengageRN } = NativeModules;
