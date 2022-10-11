@@ -18,15 +18,26 @@ public class DengageRNCoordinator: NSObject {
     @objc var integerationKey: String?
     @objc var launchOptions: [UIApplication.LaunchOptionsKey: Any]?
 
-    @objc(setupDengage:launchOptions:application:)
-    public func setupDengage(key:NSString, launchOptions:NSDictionary?, application : UIApplication) {
+    @objc(setupDengage:launchOptions:application:askNotificaionPermission:enableGeoFence:)
+    public func setupDengage(key:NSString, launchOptions:NSDictionary?, application : UIApplication,askNotificaionPermission:DarwinBoolean,enableGeoFence:DarwinBoolean) {
         Dengage.setIntegrationKey(key: key as String)
         if (launchOptions != nil) {
             Dengage.initWithLaunchOptions(application: application, withLaunchOptions: launchOptions as! [UIApplication.LaunchOptionsKey : Any])
         } else {
             Dengage.initWithLaunchOptions(application: application, withLaunchOptions: [:])
         }
-        Dengage.promptForPushNotifications()
+        
+        if askNotificaionPermission.boolValue
+        {
+            Dengage.promptForPushNotifications()
+
+        }
+        
+        if (enableGeoFence.boolValue == true)
+        {
+            Dengage.requestLocationPermissions()
+        }
+        
     }
     
     @objc(registerForPushToken:)
