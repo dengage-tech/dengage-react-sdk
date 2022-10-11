@@ -131,6 +131,7 @@ export default function App() {
         }
         setContactKey(await Dengage.getContactKey())
         Dengage.setLogStatus(true)
+       // Dengage.startGeofence()
     }
 
     const navigation = useNavigation()
