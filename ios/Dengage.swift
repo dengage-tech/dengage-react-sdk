@@ -477,13 +477,13 @@ class DengageRN: RCTEventEmitter {
         Dengage.stopGeofence()
     }
     
-    @objc(stopGeofence)
+    @objc(requestLocationPermissions)
     func requestLocationPermissions(){
         Dengage.requestLocationPermissions()
     }
     
     @objc(startGeofence)
     func startGeofence(){
-        Dengage.startGeofence()
+        Dengage.requestLocationPermissions()
     }
 }
