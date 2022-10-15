@@ -346,5 +346,14 @@ class DengageModule(reactContext: ReactApplicationContext) :
       }
     }
   }
+
+  @ReactMethod
+  fun resetAppBadge() {
+    try {
+      AppUtils.resetBadgeCounterOfPushMessages(context = reactApplicationContext)
+    } catch (ex: Exception) {
+      print(ex)
+    }
+  }
 }
 

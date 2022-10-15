@@ -36,6 +36,7 @@ type DengageType = {
   setNavigation(): void;
   setNavigationWithName(screenName: string): void;
   onMessageRecieved(params: object): void;
+  resetAppBadge():void; // android only
 };
 
 const { DengageRN } = NativeModules;
