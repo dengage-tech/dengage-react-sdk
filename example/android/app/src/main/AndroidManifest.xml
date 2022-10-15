@@ -33,17 +33,17 @@
           <action  android:name="com.google.firebase.MESSAGING_EVENT"/>
         </intent-filter>
       </service>
-      <receiver android:name=".PushNotificationReceiver"
-        android:exported="false">
-        <intent-filter>
-          <action android:name="com.dengage.push.intent.RECEIVE" />
-          <action android:name="com.dengage.push.intent.OPEN" />
-          <action android:name="com.dengage.push.intent.DELETE" />
-          <action android:name="com.dengage.push.intent.ITEM_CLICK" /> <!-- add this line-->
-          <action android:name="com.dengage.push.intent.CAROUSEL_ITEM_CLICK" /><!-- add this line-->
-          <action android:name="com.dengage.push.intent.ACTION_CLICK" />
-        </intent-filter>
-      </receiver>
+    <receiver android:name="com.dengage.sdk.push.NotificationReceiver"
+      android:exported="true">
+      <intent-filter>
+        <action android:name="com.dengage.push.intent.RECEIVE" />
+        <action android:name="com.dengage.push.intent.OPEN" />
+        <action android:name="com.dengage.push.intent.DELETE" />
+        <action android:name="com.dengage.push.intent.ITEM_CLICK" /> <!-- add this line-->
+        <action android:name="com.dengage.push.intent.CAROUSEL_ITEM_CLICK" /><!-- add this line-->
+        <action android:name="com.dengage.push.intent.ACTION_CLICK" />
+      </intent-filter>
+    </receiver>
 
     <meta-data
       android:name="den_event_api_url"

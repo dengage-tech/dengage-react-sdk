@@ -38,6 +38,7 @@ type DengageType = {
   stopGeofence(): void;
   requestLocationPermissions(): void;
   startGeofence(): void;
+  resetAppBadge():void; // android only
 };
 
 const { DengageRN } = NativeModules;
