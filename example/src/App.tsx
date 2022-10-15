@@ -136,6 +136,10 @@ export default function App() {
         pageViewExample()
         Dengage.requestLocationPermissions()
         //Dengage.stopGeofence()
+
+        const inboxMessages = await Dengage.getInboxMessages(9, 29).catch((err: any) => err)
+
+        console.log(inboxMessages)
     }
 
     const navigation = useNavigation()
