@@ -4,7 +4,6 @@ import { DengageTypes } from './types';
 type DengageType = {
   multiply(a: number, b: number): Promise<number>;
   setIntegerationKey(key: string): void; // iOS only
-  setHuaweiIntegrationKey(key: string): void; // android only
   setFirebaseIntegrationKey(key: string): void; // android only
   setContactKey(key: string): void;
   getContactKey(): Promise<string | null | undefined>;
