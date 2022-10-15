@@ -25,7 +25,6 @@ public class MainActivity extends ReactActivity {
     coordinator.setupDengage(
       true,
       "hQvYUaYWvQq5CO4n5T_s_l_JjrPc1YJQdQ32k1X_p_l_nQfsNTp9klnfZuDyklQlJU1eB3WZqEP_s_l_Az2LtM5OZYGBc3Hlj1_p_l__s_l_9o_s_l_kDyNLQERuwTsDm14PZ_s_l_xnvObV_s_l_lFY_p_l_hHbw5RfbSizp5pdPXYdqeykE41F5g_e_q__e_q_",
-      "YOURE_HUAWEI_KEY_HERE",
       getApplicationContext()
     );
   }

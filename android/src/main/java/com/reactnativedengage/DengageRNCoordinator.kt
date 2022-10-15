@@ -29,32 +29,19 @@ class DengageRNCoordinator private constructor() {
       })
   }
 
-  fun setupDengage (logStatus: Boolean, firebaseKey: String?, huaweiKey: String?, context: Context) {
-    if (firebaseKey == null && huaweiKey == null) {
-      throw Error("Both firebase key and huawei key can't be null at the same time.");
+  fun setupDengage (logStatus: Boolean, firebaseKey: String?, context: Context) {
+    if (firebaseKey == null ) {
+      throw Error("Firebase key can't be null");
     }
 
-    when {
-        huaweiKey == null -> {
+
+
           dengageManager = DengageManager.getInstance(context)
             .setLogStatus(logStatus)
             .setFirebaseIntegrationKey(firebaseKey)
             .init()
-        }
-        firebaseKey == null -> {
-          dengageManager = DengageManager.getInstance(context)
-            .setLogStatus(logStatus)
-            .setHuaweiIntegrationKey(huaweiKey)
-            .init()
-        }
-        else -> {
-          dengageManager = DengageManager.getInstance(context)
-            .setLogStatus(logStatus)
-            .setHuaweiIntegrationKey(huaweiKey)
-            .setFirebaseIntegrationKey(firebaseKey)
-            .init()
-        }
-    }
+
+
   }
 
   companion object {

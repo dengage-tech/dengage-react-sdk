@@ -37,11 +37,6 @@ class DengageModule(reactContext: ReactApplicationContext) :
   }
 
   @ReactMethod
-  fun setHuaweiIntegrationKey(key: String) {
-    DengageRNCoordinator.sharedInstance.dengageManager?.setHuaweiIntegrationKey(key)
-  }
-
-  @ReactMethod
   fun setFirebaseIntegrationKey(key: String) {
     DengageRNCoordinator.sharedInstance.dengageManager?.setFirebaseIntegrationKey(key)
   }
