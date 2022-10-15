@@ -33,7 +33,7 @@ class DengageRN: RCTEventEmitter {
     @objc(registerForRemoteNotifications:)
     func registerForRemoteNotifications(enable: Bool) {
         Dengage.set(permission: true)
-        Dengage.promptForPushNotifications()
+        //Dengage.promptForPushNotifications()
     }
 
     // _ before resolve here is neccessary, need to revisit rn docs about why.
