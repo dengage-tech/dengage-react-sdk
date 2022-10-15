@@ -134,6 +134,11 @@ export default function App() {
 
         addToCartExample()
         pageViewExample()
+
+        const inboxMessages = await Dengage.getInboxMessages(9, 29).catch((err: any) => err)
+
+        console.log(inboxMessages)
+ 
     }
 
     const navigation = useNavigation()
