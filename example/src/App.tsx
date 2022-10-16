@@ -108,7 +108,7 @@ export default function App() {
         init()
        
         
-
+        Dengage.registerNotificationListeners()
         // adding Listeners for new notification payload & it's on click handling.
         // NOTE: Make sure to call registerNotificationListeners before this. to make sure to receive these events.
         const eventEmitter = new NativeEventEmitter(NativeModules.DengageRN);
@@ -134,10 +134,10 @@ export default function App() {
 
         addToCartExample()
         pageViewExample()
-
+var token = await Dengage.getToken()
         const inboxMessages = await Dengage.getInboxMessages(9, 29).catch((err: any) => err)
 
-        console.log(inboxMessages)
+       console.log(token)
  
     }
 
