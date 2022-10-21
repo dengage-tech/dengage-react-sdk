@@ -25,6 +25,7 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		4C39C56BAD484C67AA576FFA /* libPods-DengageExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CA3E69C5B9553B26FBA2DF04 /* libPods-DengageExample.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		D6163841290300C9009409BD /* DengageCoordinatorHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D6163840290300C9009409BD /* DengageCoordinatorHelper.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,6 +90,8 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = DengageExample/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9498C64F975CC14B6B37909E /* Pods-DengageNotificationServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DengageNotificationServiceExtension.release.xcconfig"; path = "Target Support Files/Pods-DengageNotificationServiceExtension/Pods-DengageNotificationServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
 		CA3E69C5B9553B26FBA2DF04 /* libPods-DengageExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DengageExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D616383F290300C8009409BD /* DengageCoordinatorHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DengageCoordinatorHelper.h; sourceTree = "<group>"; };
+		D6163840290300C9009409BD /* DengageCoordinatorHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DengageCoordinatorHelper.m; sourceTree = "<group>"; };
 		E00ACF0FDA8BF921659E2F9A /* Pods-DengageExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DengageExample.release.xcconfig"; path = "Target Support Files/Pods-DengageExample/Pods-DengageExample.release.xcconfig"; sourceTree = "<group>"; };
 		E0DF7C758E4407707CA9CD1D /* libPods-DengageNotificationServiceExtension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DengageNotificationServiceExtension.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -163,6 +166,8 @@
 				049A3FF525FF396A00776F12 /* DengageExample.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
+				D616383F290300C8009409BD /* DengageCoordinatorHelper.h */,
+				D6163840290300C9009409BD /* DengageCoordinatorHelper.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
@@ -488,6 +493,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D6163841290300C9009409BD /* DengageCoordinatorHelper.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				0430F7F626064B83008BF50F /* empty.swift in Sources */,
