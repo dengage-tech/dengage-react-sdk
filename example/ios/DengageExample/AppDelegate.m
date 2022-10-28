@@ -11,8 +11,9 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 
+#import "DengageCoordinatorHelper.h"
 
-@import react_native_dengage;
+//@import react_native_dengage;
 
 #ifdef FB_SONARKIT_ENABLED
 #import <FlipperKit/FlipperClient.h>
@@ -42,9 +43,12 @@ static void InitializeFlipper(UIApplication *application) {
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
 
 
-  DengageRNCoordinator *coordinator = [DengageRNCoordinator staticInstance];
-  [coordinator setValue:launchOptions forKey:@"launchOptions"];
-  [coordinator setupDengage:@"BWUdMrMrI3YqDvJx_p_l_kkev8JcCFSHM5rkRCpwQdnvEWvMaRp7n_s_l_5olQe0RW_p_l_mI8BtHeFvsOBEYqR_s_l_YeZK6Cfr2DyN9nVJi2faUgyGgYdoeRHALe_p_l_ROuJxm0V5eBFKdZg9H7ULjDr4tU2Q0VJsgzqaRQ_e_q__e_q_" launchOptions:launchOptions application:application askNotificaionPermission:false];
+  //DengageRNCoordinator *coordinator = [DengageRNCoordinator staticInstance];
+ // [coordinator setValue:launchOptions forKey:@"launchOptions"];
+ // [coordinator setupDengage:@"BWUdMrMrI3YqDvJx_p_l_kkev8JcCFSHM5rkRCpwQdnvEWvMaRp7n_s_l_5olQe0RW_p_l_mI8BtHeFvsOBEYqR_s_l_YeZK6Cfr2DyN9nVJi2faUgyGgYdoeRHALe_p_l_ROuJxm0V5eBFKdZg9H7ULjDr4tU2Q0VJsgzqaRQ_e_q__e_q_" launchOptions:launchOptions application:application askNotificaionPermission:false];
+  
+  [DengageCoordinatorHelper handleDengageIntialization:application didFinishLaunchingWithOptions:launchOptions];
+
 
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
                                                    moduleName:@"DengageExample"
@@ -75,8 +79,11 @@ static void InitializeFlipper(UIApplication *application) {
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
-  DengageRNCoordinator *coordinator = [DengageRNCoordinator staticInstance];
-  [coordinator registerForPushToken:deviceToken];
+ // DengageRNCoordinator *coordinator = [DengageRNCoordinator staticInstance];
+  //[coordinator registerForPushToken:deviceToken];
+  
+  [DengageCoordinatorHelper registerDeviceToken:deviceToken];
+
 }
 
 
@@ -90,8 +97,11 @@ static void InitializeFlipper(UIApplication *application) {
 
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler
 {
-  DengageRNCoordinator *coordinator = [DengageRNCoordinator staticInstance];
-  [coordinator didReceivePush:center response:response withCompletionHandler:completionHandler];
+//  DengageRNCoordinator *coordinator = [DengageRNCoordinator staticInstance];
+ // [coordinator didReceivePush:center response:response withCompletionHandler:completionHandler];
+  
+  [DengageCoordinatorHelper userNotification:center notificationResponse:response withCompletionHandler:completionHandler];
+
 
 }
 
