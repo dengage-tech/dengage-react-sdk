@@ -38,6 +38,12 @@ type DengageType = {
   onMessageRecieved(params: object): void;
   resetAppBadge():void; // android only
   setPartnerDeviceId(adid: string): void;
+  showRealTimeInApp(screenName: string, data: object): void;
+  setCity(city: string): void;
+  setState(state: string): void;
+  setCartAmount(amount: string): void;
+  setCartItemCount(count: string): void;
+  setCategoryPath(path: string): void;
 };
 
 const { DengageRN } = NativeModules;
