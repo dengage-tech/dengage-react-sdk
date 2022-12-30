@@ -67,4 +67,6 @@ RCT_EXTERN_METHOD(setNavigation)
 
 RCT_EXTERN_METHOD(setNavigationWithName:(NSString *)screenName)
 
+RCT_EXTERN_METHOD(setPartnerDeviceId:(NSString *)adid)
+
 @end

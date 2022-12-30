@@ -136,7 +136,7 @@ export default function App() {
         pageViewExample()
 var token = await Dengage.getToken()
         const inboxMessages = await Dengage.getInboxMessages(9, 29).catch((err: any) => err)
-
+Dengage.setPartnerDeviceId("hasnainTestingReact")
        console.log(token)
  
     }

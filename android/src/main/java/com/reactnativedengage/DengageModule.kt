@@ -355,5 +355,14 @@ class DengageModule(reactContext: ReactApplicationContext) :
       print(ex)
     }
   }
+
+  @ReactMethod
+  fun setPartnerDeviceId(adid: String) {
+    try {
+      Dengage.setPartnerDeviceId(adid)
+    } catch (ex: Exception) {
+      print(ex)
+    }
+  }
 }
 

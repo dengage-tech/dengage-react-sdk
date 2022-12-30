@@ -402,4 +402,9 @@ class DengageRN: RCTEventEmitter {
     func setNavigationWithName(screenName: NSString) {
         Dengage.setNavigation(screenName: screenName as String)
     }
+    
+    @objc(setPartnerDeviceId:)
+    func setPartnerDeviceId(adid: NSString) {
+        Dengage.setPartnerDeviceId(adid: adid as String)
+    }
 }
