@@ -73,4 +73,16 @@ RCT_EXTERN_METHOD(requestLocationPermissions)
 
 RCT_EXTERN_METHOD(startGeofence)
 
+RCT_EXTERN_METHOD(showRealTimeInApp:(NSString *)screenName withData:(NSDictionary *)withData)
+
+RCT_EXTERN_METHOD(setCity:(NSString *)city)
+
+RCT_EXTERN_METHOD(setState:(NSString *)state)
+
+RCT_EXTERN_METHOD(setCartAmount:(NSString *)amount)
+
+RCT_EXTERN_METHOD(setCartItemCount:(NSString *)count)
+
+RCT_EXTERN_METHOD(setCategoryPath:(NSString *)path)
+
 @end

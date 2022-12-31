@@ -39,6 +39,12 @@ type DengageType = {
   requestLocationPermissions(): void;
   startGeofence(): void;
   resetAppBadge():void; // android only
+  showRealTimeInApp(screenName: string, data: object): void;
+  setCity(city: string): void;
+  setState(state: string): void;
+  setCartAmount(amount: string): void;
+  setCartItemCount(count: string): void;
+  setCategoryPath(path: string): void;
 };
 
 const { DengageRN } = NativeModules;

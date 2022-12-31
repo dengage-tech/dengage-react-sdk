@@ -419,4 +419,38 @@ class DengageRN: RCTEventEmitter {
     func startGeofence(){
         Dengage.requestLocationPermissions()
     }
+    
+    @objc(setCategoryPath:)
+      func setCategoryPath(path: NSString) {
+          Dengage.setCategory(path: path as String)
+      }
+      
+      @objc(setCartItemCount:)
+      func setCartItemCount(count: NSString) {
+          Dengage.setCart(itemCount: count as String)
+      }
+      
+      @objc(setCartAmount:)
+      func setCartAmount(amount: NSString) {
+          Dengage.setCart(amount: amount as String)
+      }
+      
+      @objc(setState:)
+      func setState(state: NSString) {
+          Dengage.setState(name: state as String)
+      }
+      
+      @objc(setCity:)
+      func setCity(city: NSString) {
+          Dengage.setCity(name: city as String)
+      }
+      
+      @objc(showRealTimeInApp:withData:)
+      func showRealTimeInApp (_ screenName: NSString, withData: NSDictionary) -> Void {
+          do {
+              Dengage.showRealTimeInApp(screenName: screenName as String , params: withData as? Dictionary<String, String> )
+          } catch {
+              print("Unexpected search error: \(error)")
+          }
+      }
 }
