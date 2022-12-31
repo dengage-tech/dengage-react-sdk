@@ -350,5 +350,50 @@ class DengageModule(reactContext: ReactApplicationContext) :
       print(ex)
     }
   }
+
+  @ReactMethod
+  fun setCartItemCount(count: String) {
+    Dengage.setCartItemCount(count)
+  }
+
+  /**
+   * Set cart amount for using in real time in app comparisons
+   */
+  @ReactMethod
+  fun setCartAmount(amount: String) {
+    Dengage.setCartAmount(amount)
+  }
+
+  /**
+   * Set state for using in real time in app comparisons
+   */
+  @ReactMethod
+  fun setState(name: String) {
+    Dengage.setState(name)
+  }
+
+  /**
+   * Set city for using in real time in app comparisons
+   */
+  @ReactMethod
+  fun setCity(name: String) {
+    Dengage.setCity(name)
+  }
+
+  @ReactMethod
+  fun showRealTimeInApp(
+    screenName: String ,
+    data: ReadableMap
+  ) {
+    Dengage.showRealTimeInApp(currentActivity as AppCompatActivity,screenName,toMap(data) as HashMap<String, String>)
+  }
+
+  /**
+   * Set category path for using in real time in app comparisons
+   */
+  @ReactMethod
+  fun setCategoryPath(path: String) {
+    Dengage.setCategoryPath(path)
+  }
 }
 
