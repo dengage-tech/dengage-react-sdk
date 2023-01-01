@@ -453,4 +453,9 @@ class DengageRN: RCTEventEmitter {
               print("Unexpected search error: \(error)")
           }
       }
+    
+    @objc(setPartnerDeviceId:)
+        func setPartnerDeviceId(adid: NSString) {
+            Dengage.setPartnerDeviceId(adid: adid as String)
+        }
 }

@@ -85,4 +85,6 @@ RCT_EXTERN_METHOD(setCartItemCount:(NSString *)count)
 
 RCT_EXTERN_METHOD(setCategoryPath:(NSString *)path)
 
+RCT_EXTERN_METHOD(setPartnerDeviceId:(NSString *)adid)
+
 @end
