@@ -46,6 +46,7 @@ type DengageType = {
   setCartAmount(amount: string): void;
   setCartItemCount(count: string): void;
   setCategoryPath(path: string): void;
+  setPartnerDeviceId(adid: string): void;
 };
 
 const { DengageRN } = NativeModules;
