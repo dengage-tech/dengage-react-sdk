@@ -395,5 +395,14 @@ class DengageModule(reactContext: ReactApplicationContext) :
   fun setCategoryPath(path: String) {
     Dengage.setCategoryPath(path)
   }
+
+  @ReactMethod
+  fun setPartnerDeviceId(adid: String) {
+    try {
+      Dengage.setPartnerDeviceId(adid)
+    } catch (ex: Exception) {
+      print(ex)
+    }
+  }
 }
 
