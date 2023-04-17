@@ -539,7 +539,7 @@
 				MARKETING_VERSION = 1.5;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.reactnativedengage.DengageNotificationServiceExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dengage.testiospriya.DengageNotificationServiceExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
@@ -573,7 +573,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MARKETING_VERSION = 1.5;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.reactnativedengage.DengageNotificationServiceExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dengage.testiospriya.DengageNotificationServiceExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_DISABLE_SAFETY_CHECKS = NO;
@@ -609,7 +609,7 @@
 				MARKETING_VERSION = 1.5;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.reactnativedengage.DengageContentExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dengage.testiospriya.DengageContentExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
@@ -646,7 +646,7 @@
 				);
 				MARKETING_VERSION = 1.5;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.reactnativedengage.DengageContentExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dengage.testiospriya.DengageContentExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
@@ -678,7 +678,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.reactnativedengage;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dengage.testiospriya;
 				PRODUCT_NAME = DengageExample;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_DISABLE_SAFETY_CHECKS = NO;
@@ -711,7 +711,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.reactnativedengage;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dengage.testiospriya;
 				PRODUCT_NAME = DengageExample;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_DISABLE_SAFETY_CHECKS = NO;

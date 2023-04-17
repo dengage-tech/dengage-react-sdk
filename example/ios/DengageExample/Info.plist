@@ -23,9 +23,11 @@
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>DengageApiUrl</key>
+	<string>https://us-push.dengage.com</string>
+	<key>DengageDeviceIdApiUrl</key>
 	<string>https://dev-push.dengage.com</string>
 	<key>DengageEventApiUrl</key>
-	<string>https://dev-event.dengage.com</string>
+	<string>https://us-event.dengage.com</string>
 	<key>LSApplicationCategoryType</key>
 	<string></string>
 	<key>LSRequiresIPhoneOS</key>
