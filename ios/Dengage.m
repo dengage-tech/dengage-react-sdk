@@ -81,4 +81,6 @@ RCT_EXTERN_METHOD(setCategoryPath:(NSString *)path)
 
 RCT_EXTERN_METHOD(setPartnerDeviceId:(NSString *)adid)
 
+RCT_EXTERN_METHOD(getLastPushPayload:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
+
 @end

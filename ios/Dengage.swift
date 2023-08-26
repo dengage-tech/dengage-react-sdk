@@ -441,4 +441,15 @@ class DengageRN: RCTEventEmitter {
         func setPartnerDeviceId(adid: NSString) {
             Dengage.setPartnerDeviceId(adid: adid as String)
         }
+    
+    @objc
+        func getLastPushPayload(_ resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
+            do {
+                let pushPayload = try Dengage.getLastPushPayload()
+                resolve(pushPayload)
+            } catch {
+                print("Unexpected pushPayload error: \(error)")
+                reject("UNABLE_TO_RETREIVE_payload", error.localizedDescription ?? "Something went wrong", error)
+            }
+        }
 }
