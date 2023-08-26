@@ -115,7 +115,7 @@ class DengageModule(reactContext: ReactApplicationContext) :
   @ReactMethod
   fun pageView(data: ReadableMap) {
     try {
-       Dengage.pageView(toMap(data) as HashMap<String, Any>)
+      Dengage.pageView(toMap(data) as HashMap<String, Any>)
     } catch (ex: Exception) {
       print(ex)
     }
@@ -160,7 +160,7 @@ class DengageModule(reactContext: ReactApplicationContext) :
   @ReactMethod
   fun placeOrder(data: ReadableMap) {
     try {
-       Dengage.order(toMap(data) as HashMap<String, Any>)
+      Dengage.order(toMap(data) as HashMap<String, Any>)
     } catch (ex: Exception) {
       print(ex)
     }
@@ -169,7 +169,7 @@ class DengageModule(reactContext: ReactApplicationContext) :
   @ReactMethod
   fun cancelOrder(data: ReadableMap) {
     try {
-       Dengage.cancelOrder(toMap(data) as HashMap<String, Any>)
+      Dengage.cancelOrder(toMap(data) as HashMap<String, Any>)
     } catch (ex: Exception) {
       print(ex)
     }
@@ -205,7 +205,7 @@ class DengageModule(reactContext: ReactApplicationContext) :
   @ReactMethod
   fun sendDeviceEvent(tableName: String, data: ReadableMap) {
     try {
-      Dengage.sendDeviceEvent(tableName,toMap(data) as HashMap<String, Any>)
+      Dengage.sendDeviceEvent(tableName, toMap(data) as HashMap<String, Any>)
     } catch (ex: Exception) {
       print(ex)
     }
@@ -332,7 +332,7 @@ class DengageModule(reactContext: ReactApplicationContext) :
     fun sendEvent(
       eventName: String,
       data: WritableMap,
-      reactAppContext: ReactApplicationContext? = null
+      reactAppContext: ReactApplicationContext? = null,
     ) {
       Log.d("sendingEvent", eventName)
       if (reactContext != null) {
@@ -398,21 +398,19 @@ class DengageModule(reactContext: ReactApplicationContext) :
 
   @ReactMethod
   fun showRealTimeInApp(
-    screenName: String ,
-    data: ReadableMap
+    screenName: String,
+    data: ReadableMap,
   ) {
-    Dengage.setDevelopmentStatus(true)
-    if((toMap(data) as HashMap<String, String>).isEmpty()) {
+    if ((toMap(data) as HashMap<String, String>).isEmpty()) {
       Dengage.showRealTimeInApp(currentActivity as AppCompatActivity,
         screenName,
         null)
-    }
-    else{
+    } else {
       Dengage.showRealTimeInApp(currentActivity as AppCompatActivity,
         screenName,
         toMap(data) as HashMap<String, String>)
     }
-    }
+  }
 
   /**
    * Set category path for using in real time in app comparisons
@@ -423,11 +421,11 @@ class DengageModule(reactContext: ReactApplicationContext) :
   }
 
   @ReactMethod
-  private fun getLastPushPayload (promise: Promise) {
+  private fun getLastPushPayload(promise: Promise) {
     try {
       val pushPayload = Dengage.getLastPushPayload()
       promise.resolve(pushPayload)
-return
+      return
     } catch (ex: Exception) {
       promise.resolve(ex.message)
     }
