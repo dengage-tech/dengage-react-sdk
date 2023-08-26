@@ -305,6 +305,7 @@ class DengageModule(reactContext: ReactApplicationContext) :
             }
           }
           -520704162 -> {
+            Dengage.getLastPushPayload()
             // intentAction == "com.dengage.push.intent.RECEIVE"
             Log.d("den/react-native", "push is clicked.")
             val message: Message = intent.getExtras()?.let { Message.createFromIntent(it) }!!
@@ -414,7 +415,16 @@ class DengageModule(reactContext: ReactApplicationContext) :
     screenName: String ,
     data: ReadableMap
   ) {
-    Dengage.showRealTimeInApp(currentActivity as AppCompatActivity,screenName,toMap(data) as HashMap<String, String>)
+    if((toMap(data) as HashMap<String, String>).isEmpty()) {
+      Dengage.showRealTimeInApp(currentActivity as AppCompatActivity,
+        screenName,
+        null)
+    }
+    else{
+      Dengage.showRealTimeInApp(currentActivity as AppCompatActivity,
+        screenName,
+        toMap(data) as HashMap<String, String>)
+    }
   }
 
   /**
@@ -431,6 +441,17 @@ class DengageModule(reactContext: ReactApplicationContext) :
       Dengage.setPartnerDeviceId(adid)
     } catch (ex: Exception) {
       print(ex)
+    }
+  }
+
+  @ReactMethod
+  private fun getLastPushPayload (promise: Promise) {
+    try {
+      val pushPayload = Dengage.getLastPushPayload()
+      promise.resolve(pushPayload)
+      return
+    } catch (ex: Exception) {
+      promise.resolve(ex.message)
     }
   }
 }
