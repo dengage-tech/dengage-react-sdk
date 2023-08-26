@@ -416,7 +416,7 @@ class DengageModule(reactContext: ReactApplicationContext) :
   }
 
   @ReactMethod
-  private fun getLastPushPayload (promise: Promise) {
+   fun getLastPushPayload (promise: Promise) {
     try {
       val pushPayload = Dengage.getLastPushPayload()
       promise.resolve(pushPayload)
