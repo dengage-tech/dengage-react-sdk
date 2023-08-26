@@ -106,9 +106,15 @@ export default function App() {
     React.useEffect(() => {
         Dengage.setLogStatus(true);
         init()
-       
-        
+        const cartItem = {}
+        cartItem["product_id"] = 1
+        cartItem["product_variant_id"] = 1
+        cartItem["quantity"] = 1
+        cartItem["unit_price"] = 10.00
+        cartItem["discounted_price"] = 9.99
+        //Dengage.showRealTimeInApp("kj",{})
         Dengage.registerNotificationListeners()
+        
         // adding Listeners for new notification payload & it's on click handling.
         // NOTE: Make sure to call registerNotificationListeners before this. to make sure to receive these events.
         const eventEmitter = new NativeEventEmitter(NativeModules.DengageRN);
@@ -135,6 +141,8 @@ export default function App() {
         addToCartExample()
         pageViewExample()
 var token = await Dengage.getToken()
+var a =await Dengage.getLastPushPayload();
+console.log(a);
         const inboxMessages = await Dengage.getInboxMessages(9, 29).catch((err: any) => err)
 Dengage.setPartnerDeviceId("hasnainTestingReact")
        console.log(token)
@@ -144,7 +152,8 @@ Dengage.setPartnerDeviceId("hasnainTestingReact")
     const navigation = useNavigation()
     useFocusEffect(
         React.useCallback(() => {
-            Dengage.setNavigationWithName("AppScreen")
+           // Dengage.setNavigationWithName("AppScreen")
+           //Dengage.showRealTimeInApp("kj",{})
         }, [])
     );
 

@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.util.Log
+import androidx.annotation.NonNull
 import androidx.appcompat.app.AppCompatActivity
 import com.dengage.sdk.Dengage
 import com.dengage.sdk.DengageManager
@@ -310,6 +311,7 @@ class DengageModule(reactContext: ReactApplicationContext) :
             }
           }
           -520704162 -> {
+            Dengage.getLastPushPayload()
             // intentAction == "com.dengage.push.intent.RECEIVE"
             Log.d("den/react-native", "push is clicked.")
             val message: Message = intent.getExtras()?.let { Message.createFromIntent(it) }!!
@@ -399,8 +401,18 @@ class DengageModule(reactContext: ReactApplicationContext) :
     screenName: String ,
     data: ReadableMap
   ) {
-    Dengage.showRealTimeInApp(currentActivity as AppCompatActivity,screenName,toMap(data) as HashMap<String, String>)
-  }
+    Dengage.setDevelopmentStatus(true)
+    if((toMap(data) as HashMap<String, String>).isEmpty()) {
+      Dengage.showRealTimeInApp(currentActivity as AppCompatActivity,
+        screenName,
+        null)
+    }
+    else{
+      Dengage.showRealTimeInApp(currentActivity as AppCompatActivity,
+        screenName,
+        toMap(data) as HashMap<String, String>)
+    }
+    }
 
   /**
    * Set category path for using in real time in app comparisons
@@ -408,6 +420,17 @@ class DengageModule(reactContext: ReactApplicationContext) :
   @ReactMethod
   fun setCategoryPath(path: String) {
     Dengage.setCategoryPath(path)
+  }
+
+  @ReactMethod
+  private fun getLastPushPayload (promise: Promise) {
+    try {
+      val pushPayload = Dengage.getLastPushPayload()
+      promise.resolve(pushPayload)
+return
+    } catch (ex: Exception) {
+      promise.resolve(ex.message)
+    }
   }
 
 
