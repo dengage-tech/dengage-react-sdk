@@ -4,7 +4,7 @@
 
 - (NSArray<NSString *> *)supportedEvents
 {
-  return @[@"onNotificationClicked"];
+    return @[@"onNotificationClicked",@"retrieveInAppLink"];
 }
 
 RCT_EXTERN_METHOD(multiply:(float)a withB:(float)b
@@ -82,5 +82,7 @@ RCT_EXTERN_METHOD(setCategoryPath:(NSString *)path)
 RCT_EXTERN_METHOD(setPartnerDeviceId:(NSString *)adid)
 
 RCT_EXTERN_METHOD(getLastPushPayload:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(registerInAppListener)
 
 @end
