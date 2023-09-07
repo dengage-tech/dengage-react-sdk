@@ -469,4 +469,15 @@ class DengageRN: RCTEventEmitter {
                    reject("UNABLE_TO_RETREIVE_payload", error.localizedDescription ?? "Something went wrong", error)
                }
            }
+
+        @objc(registerInAppListener)
+       func registerInAppListener ()
+       {Dengage.handleInAppDeeplink{ url in
+                   var response = [String:Any?]();
+                   response["targetUrl"] = url
+                   print(url)
+                   super.sendEvent(withName: "retrieveInAppLink", body: [response])
+
+           }
+       }
 }
