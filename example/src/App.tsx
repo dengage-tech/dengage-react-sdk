@@ -113,7 +113,8 @@ export default function App() {
         cartItem["unit_price"] = 10.00
         cartItem["discounted_price"] = 9.99
         //Dengage.showRealTimeInApp("kj",{})
-        Dengage.registerNotificationListeners()
+        Dengage.registerNotificationListeners();
+        Dengage.registerInAppListener();
         
         // adding Listeners for new notification payload & it's on click handling.
         // NOTE: Make sure to call registerNotificationListeners before this. to make sure to receive these events.
@@ -126,8 +127,17 @@ export default function App() {
             alert("onNotificationClicked")
         });
 
+        eventListener2 = eventEmitter.addListener('retrieveInAppLink', (event) => {
+            console.log("--------------------")
+            console.log("retrieveInAppLink")
+            console.log(event)
+            console.log("--------------------")
+            alert("nnn")
+        });
+
         return () => {
             eventListener?.remove?.();
+            eventListener2?.remove?.();
         }
     }, [])
 

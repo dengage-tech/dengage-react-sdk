@@ -8,8 +8,8 @@ export default function SecondScreen() {
   const navigation = useNavigation()
   useFocusEffect(
     React.useCallback(() => {
-      //Dengage.setNavigationWithName('SecondScreen');
-      Dengage.showRealTimeInApp("kj",{});
+      Dengage.setNavigation();
+      //Dengage.showRealTimeInApp("kj",{});
     }, [])
   );
   return (
