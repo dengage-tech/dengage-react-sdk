@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.util.Log
+import androidx.annotation.NonNull
 import androidx.appcompat.app.AppCompatActivity
 import com.dengage.sdk.Dengage
 import com.dengage.sdk.DengageManager
@@ -11,6 +12,7 @@ import com.dengage.sdk.callback.DengageCallback
 import com.dengage.sdk.callback.DengageError
 import com.dengage.sdk.domain.inboxmessage.model.InboxMessage
 import com.dengage.sdk.domain.push.model.Message
+import com.dengage.sdk.inapp.InAppBroadcastReceiver
 import com.dengage.sdk.push.NotificationReceiver
 
 import com.facebook.react.bridge.*
@@ -278,6 +280,16 @@ class DengageModule(reactContext: ReactApplicationContext) :
     filter.addAction("com.dengage.push.intent.OPEN")
     val notifReceiver = NotifReciever(reactApplicationContext)
     reactApplicationContext.currentActivity?.registerReceiver(notifReceiver, filter)
+
+  }
+
+  @ReactMethod
+  fun registerInAppListener() {
+    val inappFilter = IntentFilter()
+    inappFilter.addAction("com.dengage.inapp.LINK_RETRIEVAL")
+    val inappReceiver = InAppReciever(reactApplicationContext)
+    reactApplicationContext.currentActivity?.registerReceiver(inappReceiver, inappFilter)
+
   }
 
   @ReactMethod
@@ -323,6 +335,20 @@ class DengageModule(reactContext: ReactApplicationContext) :
         }
       }
     }
+  }
+  class InAppReciever(reactAppContext: ReactApplicationContext) : InAppBroadcastReceiver() {
+    var reactApplicationContext: ReactApplicationContext? = reactAppContext
+    override fun onReceive(context: Context?, intent: Intent?) {
+      //retrieveInAppLink
+      val jsonObject = JSONObject()
+      jsonObject.put("targetUrl",intent?.extras?.getString("targetUrl"))
+      sendEvent(
+        "retrieveInAppLink",
+        convertJsonToMap(jsonObject)!!,
+        reactApplicationContext
+      )
+    }
+
   }
 
   companion object {
