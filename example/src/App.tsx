@@ -115,6 +115,7 @@ export default function App() {
         //Dengage.showRealTimeInApp("kj",{})
         Dengage.registerNotificationListeners();
         Dengage.registerInAppListener();
+        Dengage.setInAppLinkConfiguration("dfsdf");
         
         // adding Listeners for new notification payload & it's on click handling.
         // NOTE: Make sure to call registerNotificationListeners before this. to make sure to receive these events.

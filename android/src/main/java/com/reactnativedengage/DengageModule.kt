@@ -456,6 +456,9 @@ class DengageModule(reactContext: ReactApplicationContext) :
     }
   }
 
-
+  @ReactMethod
+  fun setInAppLinkConfiguration(deeplink: String) {
+    Dengage.inAppLinkConfiguration(deeplink)
+  }
 }
 

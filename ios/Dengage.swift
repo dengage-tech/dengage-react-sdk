@@ -463,7 +463,10 @@ class DengageRN: RCTEventEmitter {
                 super.sendEvent(withName: "retrieveInAppLink", body: [response])
                
         }
-            
-        
+    }
+    
+    @objc(setInAppLinkConfiguration:)
+    func setInAppLinkConfiguration(deeplink: String) {
+        Dengage.inAppLinkConfiguration(deeplink: deeplink)
     }
 }

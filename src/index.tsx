@@ -46,6 +46,7 @@ type DengageType = {
   setCategoryPath(path: string): void;
   getLastPushPayload(): Promise<string | null | undefined>;
   registerInAppListener(): void;
+  setInAppLinkConfiguration(deeplink: String): void;
 };
 
 const { DengageRN } = NativeModules;
