@@ -85,4 +85,6 @@ RCT_EXTERN_METHOD(getLastPushPayload:(RCTPromiseResolveBlock)resolve reject:(RCT
 
 RCT_EXTERN_METHOD(registerInAppListener)
 
+RCT_EXTERN_METHOD(setInAppLinkConfiguration:(NSString *)deepLink)
+
 @end
