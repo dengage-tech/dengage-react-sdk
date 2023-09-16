@@ -486,4 +486,9 @@ class DengageModule(reactContext: ReactApplicationContext) :
       promise.resolve(ex.message)
     }
   }
+
+  @ReactMethod
+  fun setInAppLinkConfiguration(deeplink: String) {
+    Dengage.inAppLinkConfiguration(deeplink)
+  }
 }

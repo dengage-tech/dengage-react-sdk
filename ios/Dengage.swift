@@ -480,4 +480,9 @@ class DengageRN: RCTEventEmitter {
 
                }
            }
+    
+    @objc(setInAppLinkConfiguration:)
+        func setInAppLinkConfiguration(deeplink: String) {
+            Dengage.inAppLinkConfiguration(deeplink: deeplink)
+        }
 }
