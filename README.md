@@ -1,3 +1,3 @@
-For integration, one can consult this link
+For Integration please visit
 
-https://github.com/dengage-tech/dengage-react-sdk
+https://dev.dengage.com/reference/react-native
