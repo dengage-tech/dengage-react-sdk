@@ -1,6 +1,6 @@
 {
   "name": "@dengage-tech/react-native-dengage",
-  "version": "0.7.1",
+  "version": "0.7.5",
   "description": "dEngage Customer Driven Marketing Platform (CDMP) serves as a customer data platform (CDP) with built-in omnichannel marketing features. It replaces your marketing automation and cross-channel campaign management. This package makes it easy to integrate your native React-Native iOS and/or Android apps with dEngage.",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
