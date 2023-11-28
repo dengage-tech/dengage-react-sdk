@@ -31,6 +31,7 @@ public class DengageRNCoordinator: NSObject {
             Dengage.promptForPushNotifications()
 
         }
+        Dengage.setHybridAppEnvironment()
     }
     
     
