@@ -37,6 +37,7 @@ public class DengageRNCoordinator: NSObject {
         {
             Dengage.requestLocationPermissions()
         }
+        Dengage.setHybridAppEnvironment()
         
     }
     
