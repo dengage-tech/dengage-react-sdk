@@ -469,4 +469,15 @@ class DengageRN: RCTEventEmitter {
     func setInAppLinkConfiguration(deeplink: String) {
         Dengage.inAppLinkConfiguration(deeplink: deeplink)
     }
+    
+    @objc
+    func getDeviceId(_ resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
+        do {
+            let deviceId = try Dengage.getDeviceId()
+            resolve(deviceId)
+        } catch {
+            print("Unexpected getDeviceId error: \(error)")
+            reject("UNABLE_TO_RETREIVE_DEVICE_ID, error.localizedDescription ?? "Something went wrong", error)
+        }
+    }
 }

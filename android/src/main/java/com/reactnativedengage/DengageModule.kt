@@ -460,5 +460,15 @@ class DengageModule(reactContext: ReactApplicationContext) :
   fun setInAppLinkConfiguration(deeplink: String) {
     Dengage.inAppLinkConfiguration(deeplink)
   }
+
+  @ReactMethod
+  fun getDeviceId(promise: Promise) {
+    try {
+      val deviceId = DengageRNCoordinator.sharedInstance.dengageManager?.subscription?.getSafeDeviceId()
+      promise.resolve(deviceId)
+    } catch (ex: Exception) {
+      promise.reject(ex)
+    }
+  }
 }
 
