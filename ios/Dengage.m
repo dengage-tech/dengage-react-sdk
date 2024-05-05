@@ -93,4 +93,6 @@ RCT_EXTERN_METHOD(registerInAppListener)
 
 RCT_EXTERN_METHOD(setInAppLinkConfiguration:(NSString *)deepLink)
 
+RCT_EXTERN_METHOD(getDeviceId:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
+
 @end
