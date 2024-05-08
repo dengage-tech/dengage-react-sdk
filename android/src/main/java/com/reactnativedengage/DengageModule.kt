@@ -495,4 +495,13 @@ class DengageModule(reactContext: ReactApplicationContext) :
       promise.reject(ex)
     }
   }
+
+   @ReactMethod
+  fun setDevelopmentStatus(isDebug: Boolean) {
+    try {
+     Dengage.setDevelopmentStatus(isDebug)
+    } catch (ex: Exception) {
+      ex.printStackTrace()
+    }
+  }
 }

@@ -50,6 +50,7 @@ type DengageType = {
   registerInAppListener(): void;
   setInAppLinkConfiguration(deeplink: String): void;
   getDeviceId(): Promise<string | null | undefined>;
+  setDevelopmentStatus(isDebug: boolean): void;
 };
 
 const { DengageRN } = NativeModules;
