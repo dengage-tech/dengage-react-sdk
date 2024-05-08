@@ -479,4 +479,9 @@ class DengageRN: RCTEventEmitter {
             reject("UNABLE_TO_RETREIVE_DEVICE_ID, error.localizedDescription ?? "Something went wrong", error)
         }
     }
+
+      @objc(setDevelopmentStatus:)
+     func setDevelopmentStatus(isDebug: Bool) {
+    Dengage.setDevelopmentStatus(isDebug: isDebug)
+    }
 }
