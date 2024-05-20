@@ -1,6 +1,7 @@
 package com.reactnativedengage
 
 import android.content.Context
+import com.dengage.sdk.Dengage
 import com.dengage.sdk.DengageManager
 import com.facebook.react.ReactInstanceManager
 import com.facebook.react.bridge.ReactContext

@@ -1,6 +1,8 @@
 import * as React from 'react';
 
 import {Button, Dimensions, Platform, ScrollView, StyleSheet, Text, TextInput, View} from 'react-native';
+
+import MyCustomView from '@dengage-tech/react-native-dengage/src/CustomView';
 import Dengage from '@dengage-tech/react-native-dengage';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {NativeEventEmitter, NativeModules} from 'react-native';
@@ -47,6 +49,12 @@ export default function App() {
         }
         Dengage.addToCart(addParams)
         // addToCart action ends here.
+    }
+
+    const customParams = {
+        "priya": "priya",
+       
+       
     }
     const removeFromCartExample = () => {
         const cartItem = {}
@@ -116,7 +124,7 @@ export default function App() {
         Dengage.registerNotificationListeners();
         Dengage.registerInAppListener();
         Dengage.setInAppLinkConfiguration("dfsdf");
-        
+        var inboxMessages = Dengage.getI
         // adding Listeners for new notification payload & it's on click handling.
         // NOTE: Make sure to call registerNotificationListeners before this. to make sure to receive these events.
         const eventEmitter = new NativeEventEmitter(NativeModules.DengageRN);
@@ -154,7 +162,8 @@ export default function App() {
 var token = await Dengage.getToken()
 var a =await Dengage.getLastPushPayload();
 console.log(a);
-        const inboxMessages = await Dengage.getInboxMessages(9, 29).catch((err: any) => err)
+        const inboxMessages = await Dengage.getInboxMessages(0, 100).catch((err: any) => err)
+        console.log(inboxMessages)
 Dengage.setPartnerDeviceId("hasnainTestingReact")
        console.log(token)
  
@@ -206,6 +215,12 @@ Dengage.setPartnerDeviceId("hasnainTestingReact")
                     title={"get & show token"}
                 />
             </View>
+            <MyCustomView 
+              propertyId={"1122"}
+              screenName={"test"}
+              customParams={customParams}
+              style={{ width: 200, height: 500 }} 
+          />
 
             <View style={styles.btnContainer}>
                 <Button
