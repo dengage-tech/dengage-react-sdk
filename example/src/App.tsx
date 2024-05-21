@@ -216,7 +216,7 @@ Dengage.setPartnerDeviceId("hasnainTestingReact")
                 />
             </View>
             <MyCustomView 
-              propertyId={"1122"}
+              propertyId={"2233"}
               screenName={"test"}
               customParams={customParams}
               style={{ width: 200, height: 500 }} 

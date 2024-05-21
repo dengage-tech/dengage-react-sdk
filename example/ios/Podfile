@@ -18,10 +18,7 @@ pod 'Dengage', :git => 'https://github.com/dengage-tech/dengage-ios-sdk.git', :b
   # you should disable these next few lines.
   
 end
-target 'DengageNotificationServiceExtension' do
-  pod 'Dengage', :git => 'https://github.com/dengage-tech/dengage-ios-sdk.git', :branch => 'version/5.62.1'
-  
-end
+
 
 post_install do |installer|
   installer.pods_project.targets.each do |target|
