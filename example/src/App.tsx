@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import {Button, Dimensions, Platform, ScrollView, StyleSheet, Text, TextInput, View} from 'react-native';
 
-import MyCustomView from '@dengage-tech/react-native-dengage/src/CustomView';
+import MyCustomView from '@dengage-tech/react-native-dengage/src/InAppInlineView';
 import Dengage from '@dengage-tech/react-native-dengage';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {NativeEventEmitter, NativeModules} from 'react-native';
