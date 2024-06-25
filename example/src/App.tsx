@@ -53,8 +53,8 @@ export default function App() {
 
     const customParams = {
         "priya": "priya",
-       
-       
+
+
     }
     const removeFromCartExample = () => {
         const cartItem = {}
@@ -143,6 +143,7 @@ export default function App() {
             console.log("--------------------")
             alert("nnn")
         });
+        Dengage.setContactKey("hi")
 
         return () => {
             eventListener?.remove?.();
@@ -166,7 +167,7 @@ console.log(a);
         console.log(inboxMessages)
 Dengage.setPartnerDeviceId("hasnainTestingReact")
        console.log(token)
- 
+
     }
 
     const navigation = useNavigation()
@@ -215,11 +216,11 @@ Dengage.setPartnerDeviceId("hasnainTestingReact")
                     title={"get & show token"}
                 />
             </View>
-            <MyCustomView 
+            <MyCustomView
               propertyId={"2233"}
               screenName={"test"}
               customParams={customParams}
-              style={{ width: 200, height: 500 }} 
+              style={{ width: 200, height: 500 }}
           />
 
             <View style={styles.btnContainer}>
