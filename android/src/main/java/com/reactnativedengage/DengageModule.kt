@@ -3,8 +3,10 @@ package com.reactnativedengage
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.os.Build
 import android.util.Log
 import androidx.annotation.NonNull
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.dengage.sdk.Dengage
 import com.dengage.sdk.DengageManager
@@ -274,7 +276,13 @@ class DengageModule(reactContext: ReactApplicationContext) :
     filter.addAction("com.dengage.push.intent.RECEIVE")
     filter.addAction("com.dengage.push.intent.OPEN")
     val notifReceiver = NotifReciever(reactApplicationContext)
-    reactApplicationContext.currentActivity?.registerReceiver(notifReceiver, filter)
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+      reactApplicationContext.currentActivity?.registerReceiver(notifReceiver, filter,
+        Context.RECEIVER_EXPORTED)
+    }
+    else {
+      reactApplicationContext.currentActivity?.registerReceiver(notifReceiver, filter)
+    }
 
   }
 
@@ -283,8 +291,18 @@ class DengageModule(reactContext: ReactApplicationContext) :
     val inappFilter = IntentFilter()
     inappFilter.addAction("com.dengage.inapp.LINK_RETRIEVAL")
     val inappReceiver = InAppReciever(reactApplicationContext)
-    reactApplicationContext.currentActivity?.registerReceiver(inappReceiver, inappFilter)
 
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+      reactApplicationContext.currentActivity?.registerReceiver(
+        inappReceiver,
+        inappFilter,
+         Context.RECEIVER_EXPORTED
+      )
+    } else {
+
+      reactApplicationContext.currentActivity?.registerReceiver(inappReceiver, inappFilter)
+
+    }
   }
 
   @ReactMethod
