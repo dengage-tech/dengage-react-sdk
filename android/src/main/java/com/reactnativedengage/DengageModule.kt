@@ -528,4 +528,12 @@ class DengageModule(reactContext: ReactApplicationContext) :
       ex.printStackTrace()
     }
   }
+
+  fun setLanguage(language: String) {
+    try{
+      Dengage.setLanguage(language)
+    } catch (ex: Exception) {
+      ex.printStackTrace()
+    }
+  }
 }

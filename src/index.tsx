@@ -52,6 +52,7 @@ type DengageType = {
   setInAppLinkConfiguration(deeplink: String): void;
   getDeviceId(): Promise<string | null | undefined>;
   setDevelopmentStatus(isDebug: boolean): void;
+  setLanguage(language: string): void;
 };
 
 const { DengageRN } = NativeModules;
