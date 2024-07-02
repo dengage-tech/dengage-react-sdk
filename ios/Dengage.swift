@@ -501,4 +501,9 @@ class DengageRN: RCTEventEmitter {
      func setDevelopmentStatus(isDebug: Bool) {
     Dengage.setDevelopmentStatus(isDebug: isDebug)
     }
+    
+    @objc(setLanguage:)
+       func setLanguage(language: String) {
+           Dengage.setLanguage(language: language)
+       }
 }

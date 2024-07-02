@@ -97,4 +97,6 @@ RCT_EXTERN_METHOD(getDeviceId:(RCTPromiseResolveBlock)resolve reject:(RCTPromise
 
 RCT_EXTERN_METHOD(setDevelopmentStatus:(BOOL)isDebug)
 
+RCT_EXTERN_METHOD(setLanguage:(NSString *)language)
+
 @end
