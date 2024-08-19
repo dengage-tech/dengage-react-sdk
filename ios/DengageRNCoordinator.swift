@@ -18,13 +18,22 @@ public class DengageRNCoordinator: NSObject {
     @objc var integerationKey: String?
     @objc var launchOptions: [UIApplication.LaunchOptionsKey: Any]?
 
-    @objc(setupDengage:launchOptions:application:askNotificaionPermission:)
-    public func setupDengage(key:NSString, launchOptions:NSDictionary?, application : UIApplication, askNotificaionPermission:DarwinBoolean) {
+    @objc(setupDengage:launchOptions:application:askNotificaionPermission:disableOpenURL:)
+    public func setupDengage(key:NSString, launchOptions:NSDictionary?, application : UIApplication, askNotificaionPermission:DarwinBoolean,disableOpenURL:DarwinBoolean) {
+        
         Dengage.setIntegrationKey(key: key as String)
         if (launchOptions != nil) {
-            Dengage.initWithLaunchOptions(application: application, withLaunchOptions: launchOptions as! [UIApplication.LaunchOptionsKey : Any])
+            
+            let options = DengageOptions.init(disableOpenURL: disableOpenURL.boolValue, badgeCountReset: false, disableRegisterForRemoteNotifications: false)
+            
+            Dengage.initWithLaunchOptions(application: application, withLaunchOptions: launchOptions as! [UIApplication.LaunchOptionsKey : Any], dengageOptions: options)
+           
         } else {
-            Dengage.initWithLaunchOptions(application: application, withLaunchOptions: [:])
+                        
+            let options = DengageOptions.init(disableOpenURL: disableOpenURL.boolValue, badgeCountReset: false, disableRegisterForRemoteNotifications: false)
+
+            Dengage.initWithLaunchOptions(application: application, withLaunchOptions: [:], dengageOptions: options)
+            
         }
         if (askNotificaionPermission.boolValue == true)
         {
@@ -32,6 +41,17 @@ public class DengageRNCoordinator: NSObject {
 
         }
         Dengage.setHybridAppEnvironment()
+        
+        Dengage.handleNotificationActionBlock { notificationres in
+            
+            print(notificationres.notification.request.content.userInfo)
+        }
+        
+        Dengage.set(deviceId: "26150fdf76b50148dec1928@gmail")
+        
+        Dengage.set(contactKey: "1928@gmail")
+        
+        Dengage.setLog(isVisible: true)
     }
     
     
@@ -48,6 +68,9 @@ public class DengageRNCoordinator: NSObject {
         //sendToken(token)
         
         Dengage.register(deviceToken: deviceToken)
+        print("deviceToken \(deviceToken)")
+
+        Dengage.setLog(isVisible: true)
     }
     
     private func sendToken(_ token: String ){
