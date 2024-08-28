@@ -34,6 +34,7 @@ class DengageRNCoordinator private constructor() {
     firebaseKey: String?,
     enableGeofence: Boolean,
     context: Context,
+     disableOpenWelUrl:Boolean?=false
   ) {
     if (firebaseKey == null) {
       throw Error("Firebase key can't be null");
@@ -44,6 +45,7 @@ class DengageRNCoordinator private constructor() {
       .setLogStatus(logStatus)
       .setFirebaseIntegrationKey(firebaseKey)
       .setGeofenceStatus(enableGeofence)
+      .setDisableWebUrl(disableOpenWelUrl)
       .init()
 
 
