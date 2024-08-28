@@ -29,7 +29,7 @@ class DengageRNCoordinator private constructor() {
       })
   }
 
-  fun setupDengage (logStatus: Boolean, firebaseKey: String?, context: Context) {
+  fun setupDengage (logStatus: Boolean, firebaseKey: String?, context: Context , disableOpenWelUrl:Boolean?=false) {
     if (firebaseKey == null ) {
       throw Error("Firebase key can't be null");
     }
@@ -38,7 +38,7 @@ class DengageRNCoordinator private constructor() {
 
           dengageManager = DengageManager.getInstance(context)
             .setLogStatus(logStatus)
-            .setFirebaseIntegrationKey(firebaseKey)
+            .setFirebaseIntegrationKey(firebaseKey).setDisableWebUrl(disableOpenWelUrl)
             .init()
 
 

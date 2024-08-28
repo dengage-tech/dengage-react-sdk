@@ -1,9 +1,3 @@
-//
-//  DengageRNCoordinator.swift
-//  react-native-dengage
-//
-//  Created by Kamran Younis on 22/03/2021.
-//
 
 import Foundation
 import React
@@ -14,23 +8,23 @@ import UIKit
 public class DengageRNCoordinator: NSObject {
     @objc public static let staticInstance: DengageRNCoordinator = DengageRNCoordinator()
 
-    // todo: will remove in case not used.
+  
     @objc var integerationKey: String?
     @objc var launchOptions: [UIApplication.LaunchOptionsKey: Any]?
 
-    @objc(setupDengage:launchOptions:application:askNotificaionPermission:disableOpenURL:)
-    public func setupDengage(key:NSString, launchOptions:NSDictionary?, application : UIApplication, askNotificaionPermission:DarwinBoolean,disableOpenURL:DarwinBoolean) {
+    @objc(setupDengage:launchOptions:application:askNotificaionPermission:disableOpenURL:badgeCountReset:)
+    public func setupDengage(key:NSString, launchOptions:NSDictionary?, application : UIApplication, askNotificaionPermission:DarwinBoolean,disableOpenURL:DarwinBoolean,badgeCountReset:DarwinBoolean) {
         
         Dengage.setIntegrationKey(key: key as String)
         if (launchOptions != nil) {
             
-            let options = DengageOptions.init(disableOpenURL: disableOpenURL.boolValue, badgeCountReset: false, disableRegisterForRemoteNotifications: false)
+            let options = DengageOptions.init(disableOpenURL: disableOpenURL.boolValue, badgeCountReset: badgeCountReset.boolValue, disableRegisterForRemoteNotifications: false)
             
             Dengage.initWithLaunchOptions(application: application, withLaunchOptions: launchOptions as! [UIApplication.LaunchOptionsKey : Any], dengageOptions: options)
            
         } else {
                         
-            let options = DengageOptions.init(disableOpenURL: disableOpenURL.boolValue, badgeCountReset: false, disableRegisterForRemoteNotifications: false)
+            let options = DengageOptions.init(disableOpenURL: disableOpenURL.boolValue, badgeCountReset: badgeCountReset.boolValue, disableRegisterForRemoteNotifications: false)
 
             Dengage.initWithLaunchOptions(application: application, withLaunchOptions: [:], dengageOptions: options)
             
@@ -41,17 +35,6 @@ public class DengageRNCoordinator: NSObject {
 
         }
         Dengage.setHybridAppEnvironment()
-        
-        Dengage.handleNotificationActionBlock { notificationres in
-            
-            print(notificationres.notification.request.content.userInfo)
-        }
-        
-        Dengage.set(deviceId: "26150fdf76b50148dec1928@gmail")
-        
-        Dengage.set(contactKey: "1928@gmail")
-        
-        Dengage.setLog(isVisible: true)
     }
     
     
