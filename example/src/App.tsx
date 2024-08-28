@@ -11,10 +11,12 @@ export default function App() {
     const [subscription, setSubscription] = React.useState<string>('');
     const [subscriptionHidden, toggleSubscription] = React.useState<string>(false);
 
+
+
     const pageViewExample = () => {
         // pageView event example
         Dengage.pageView({
-            "product_id": 1,
+            "product_idsda": 1,
             "product_variant_id": 1,
             "quantity": 1,
             "unit_price": 10.00,

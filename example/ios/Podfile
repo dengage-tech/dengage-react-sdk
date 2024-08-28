@@ -9,7 +9,7 @@ target 'DengageExample' do
   use_react_native!(:path => config["reactNativePath"])
 
 #  pod 'react-native-dengage', :path => '../..'
-pod 'Dengage', :git => 'https://github.com/dengage-tech/dengage-ios-sdk.git', :branch => 'version/5.66.1'
+pod 'Dengage', :git => 'https://github.com/dengage-tech/dengage-ios-sdk.git', :branch => 'version/5.68.1'
 
   
   # Enables Flipper.

@@ -30,7 +30,7 @@ class DengageRNCoordinator private constructor() {
       })
   }
 
-  fun setupDengage (logStatus: Boolean, firebaseKey: String?, huaweiKey: String?, context: Context) {
+  fun setupDengage (logStatus: Boolean, firebaseKey: String?, huaweiKey: String?, context: Context,disableOpenWelUrl:Boolean?=false) {
     if (firebaseKey == null && huaweiKey == null) {
       throw Error("Both firebase key and huawei key can't be null at the same time.");
     }
@@ -39,20 +39,20 @@ class DengageRNCoordinator private constructor() {
         huaweiKey == null -> {
           dengageManager = DengageManager.getInstance(context)
             .setLogStatus(logStatus)
-            .setFirebaseIntegrationKey(firebaseKey)
+            .setFirebaseIntegrationKey(firebaseKey).setDisableWebUrl(disableOpenWelUrl)
             .init()
         }
         firebaseKey == null -> {
           dengageManager = DengageManager.getInstance(context)
             .setLogStatus(logStatus)
-            .setHuaweiIntegrationKey(huaweiKey)
+            .setHuaweiIntegrationKey(huaweiKey).setDisableWebUrl(disableOpenWelUrl)
             .init()
         }
         else -> {
           dengageManager = DengageManager.getInstance(context)
             .setLogStatus(logStatus)
             .setHuaweiIntegrationKey(huaweiKey)
-            .setFirebaseIntegrationKey(firebaseKey)
+            .setFirebaseIntegrationKey(firebaseKey).setDisableWebUrl(disableOpenWelUrl)
             .init()
         }
     }
