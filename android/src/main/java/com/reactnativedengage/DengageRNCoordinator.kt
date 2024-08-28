@@ -29,7 +29,7 @@ class DengageRNCoordinator private constructor() {
       })
   }
 
-  fun setupDengage (logStatus: Boolean, firebaseKey: String?, huaweiKey: String?, enableGeofence:Boolean,context: Context,) {
+  fun setupDengage (logStatus: Boolean, firebaseKey: String?, huaweiKey: String?, enableGeofence:Boolean,context: Context,disableOpenWelUrl:Boolean?=false) {
     if (firebaseKey == null && huaweiKey == null) {
       throw Error("Both firebase key and huawei key can't be null at the same time.");
     }
@@ -39,14 +39,14 @@ class DengageRNCoordinator private constructor() {
           dengageManager = DengageManager.getInstance(context)
             .setLogStatus(logStatus)
             .setFirebaseIntegrationKey(firebaseKey)
-            .setGeofenceStatus(enableGeofence)
+            .setGeofenceStatus(enableGeofence).setDisableWebUrl(disableOpenWelUrl)
             .init()
         }
         firebaseKey == null -> {
           dengageManager = DengageManager.getInstance(context)
             .setLogStatus(logStatus)
             .setHuaweiIntegrationKey(huaweiKey)
-            .setGeofenceStatus(enableGeofence)
+            .setGeofenceStatus(enableGeofence).setDisableWebUrl(disableOpenWelUrl)
             .init()
         }
         else -> {
@@ -54,7 +54,7 @@ class DengageRNCoordinator private constructor() {
             .setLogStatus(logStatus)
             .setHuaweiIntegrationKey(huaweiKey)
             .setFirebaseIntegrationKey(firebaseKey)
-            .setGeofenceStatus(enableGeofence)
+            .setGeofenceStatus(enableGeofence).setDisableWebUrl(disableOpenWelUrl)
             .init()
         }
     }

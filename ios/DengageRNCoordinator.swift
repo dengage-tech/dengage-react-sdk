@@ -18,13 +18,21 @@ public class DengageRNCoordinator: NSObject {
     @objc var integerationKey: String?
     @objc var launchOptions: [UIApplication.LaunchOptionsKey: Any]?
 
-    @objc(setupDengage:launchOptions:application:askNotificaionPermission:enableGeoFence:)
-    public func setupDengage(key:NSString, launchOptions:NSDictionary?, application : UIApplication,askNotificaionPermission:DarwinBoolean,enableGeoFence:DarwinBoolean) {
+    @objc(setupDengage:launchOptions:application:askNotificaionPermission:enableGeoFence:disableOpenURL:badgeCountReset:)
+    public func setupDengage(key:NSString, launchOptions:NSDictionary?, application : UIApplication,askNotificaionPermission:DarwinBoolean,enableGeoFence:DarwinBoolean ,disableOpenURL:DarwinBoolean,badgeCountReset:DarwinBoolean) {
         Dengage.setIntegrationKey(key: key as String)
         if (launchOptions != nil) {
-            Dengage.initWithLaunchOptions(application: application, withLaunchOptions: launchOptions as! [UIApplication.LaunchOptionsKey : Any])
+            
+            let options = DengageOptions.init(disableOpenURL: disableOpenURL.boolValue, badgeCountReset: badgeCountReset.boolValue, disableRegisterForRemoteNotifications: false)
+            
+            Dengage.initWithLaunchOptions(application: application, withLaunchOptions: launchOptions as! [UIApplication.LaunchOptionsKey : Any], dengageOptions: options)
+           
         } else {
-            Dengage.initWithLaunchOptions(application: application, withLaunchOptions: [:])
+                        
+            let options = DengageOptions.init(disableOpenURL: disableOpenURL.boolValue, badgeCountReset: badgeCountReset.boolValue, disableRegisterForRemoteNotifications: false)
+
+            Dengage.initWithLaunchOptions(application: application, withLaunchOptions: [:], dengageOptions: options)
+            
         }
         
         if askNotificaionPermission.boolValue
@@ -75,5 +83,6 @@ public class DengageRNCoordinator: NSObject {
         Dengage.didReceive(with: userInfo)
         
     }
+    
     
 }
