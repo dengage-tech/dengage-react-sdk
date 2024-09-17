@@ -168,6 +168,7 @@ console.log(a);
         const inboxMessages = await Dengage.getInboxMessages(0, 100).catch((err: any) => err)
         console.log(inboxMessages)
 Dengage.setPartnerDeviceId("hasnainTestingReact")
+Dengage.setDeviceId("323213123123123")
        console.log(token)
 
     }
