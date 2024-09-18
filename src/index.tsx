@@ -53,6 +53,7 @@ type DengageType = {
   getDeviceId(): Promise<string | null | undefined>;
   setDevelopmentStatus(isDebug: boolean): void;
   setLanguage(language: string): void;
+  setDeviceId(deviceId: string): void;
 };
 
 const { DengageRN } = NativeModules;

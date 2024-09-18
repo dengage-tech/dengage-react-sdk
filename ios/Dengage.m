@@ -6,10 +6,6 @@
 {
     return @[@"onNotificationClicked",@"retrieveInAppLink"];
 }
-    
-RCT_EXTERN_METHOD(multiply:(float)a withB:(float)b
-                 withResolver:(RCTPromiseResolveBlock)resolve
-                 withRejecter:(RCTPromiseRejectBlock)reject)
 
 RCT_EXTERN_METHOD(setIntegerationKey:(NSString *)key)
 
@@ -98,5 +94,7 @@ RCT_EXTERN_METHOD(getDeviceId:(RCTPromiseResolveBlock)resolve reject:(RCTPromise
 RCT_EXTERN_METHOD(setDevelopmentStatus:(BOOL)isDebug)
 
 RCT_EXTERN_METHOD(setLanguage:(NSString *)language)
+
+RCT_EXTERN_METHOD(setDeviceId:(NSString *)deviceId)
 
 @end
