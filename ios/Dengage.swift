@@ -3,11 +3,6 @@ import Dengage
 @objc(DengageRN)
 class DengageRN: RCTEventEmitter {
 
-    @objc(multiply:withB:withResolver:withRejecter:)
-    func multiply(a: Float, b: Float, resolve:RCTPromiseResolveBlock,reject:RCTPromiseRejectBlock) -> Void {
-        resolve(a*b)
-    }
-
     @objc(setIntegerationKey:)
     func setIntegerationKey(key: String) -> Void {
         Dengage.setIntegrationKey(key: key)
@@ -489,4 +484,9 @@ class DengageRN: RCTEventEmitter {
         func setLanguage(language: String) {
             Dengage.setLanguage(language: language)
         }
+  
+  @objc(setDeviceId:)
+     func setDeviceId(deviceId: String) {
+         Dengage.setDeviceId(applicationIdentifier: deviceId)
+     }
 }
