@@ -33,13 +33,6 @@ class DengageModule(reactContext: ReactApplicationContext) :
     return "DengageRN"
   }
 
-  // Example method
-  // See https://reactnative.dev/docs/native-modules-android
-  @ReactMethod
-  fun multiply(a: Int, b: Int, promise: Promise) {
-    promise.resolve(a * b)
-  }
-
   @ReactMethod
   fun setFirebaseIntegrationKey(key: String) {
     DengageRNCoordinator.sharedInstance.dengageManager?.setFirebaseIntegrationKey(key)
@@ -527,6 +520,15 @@ class DengageModule(reactContext: ReactApplicationContext) :
   fun setLanguage(language: String) {
     try{
       Dengage.setLanguage(language)
+    } catch (ex: Exception) {
+      ex.printStackTrace()
+    }
+  }
+
+  @ReactMethod
+  fun setDeviceId(deviceId: String) {
+    try{
+      Dengage.setDeviceId(deviceId)
     } catch (ex: Exception) {
       ex.printStackTrace()
     }

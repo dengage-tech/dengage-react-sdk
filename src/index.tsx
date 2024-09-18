@@ -2,7 +2,6 @@ import { NativeModules } from 'react-native';
 import { DengageTypes } from './types';
 
 type DengageType = {
-  multiply(a: number, b: number): Promise<number>;
   setIntegerationKey(key: string): void; // iOS only
   setFirebaseIntegrationKey(key: string): void; // android only
   setContactKey(key: string): void;
@@ -52,6 +51,7 @@ type DengageType = {
   getDeviceId(): Promise<string | null | undefined>;
   setDevelopmentStatus(isDebug: boolean): void;
   setLanguage(language: string): void;
+  setDeviceId(deviceId: string): void;
 };
 
 const { DengageRN } = NativeModules;
