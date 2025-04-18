@@ -1,0 +1,157 @@
+{
+  "name": "@dengage-tech/react-native-dengage",
+  "version": "1.1.0",
+  "description": "dEngage Customer Driven Marketing Platform (CDMP) serves as a customer data platform (CDP) with built-in omnichannel marketing features. It replaces your marketing automation and cross-channel campaign management. This package makes it easy to integrate your native React-Native iOS and/or Android apps with dEngage.",
+  "source": "./src/index.tsx",
+  "main": "./lib/commonjs/index.js",
+  "module": "./lib/module/index.js",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./lib/typescript/module/src/index.d.ts",
+        "default": "./lib/module/index.js"
+      },
+      "require": {
+        "types": "./lib/typescript/commonjs/src/index.d.ts",
+        "default": "./lib/commonjs/index.js"
+      }
+    }
+  },
+  "files": [
+    "src",
+    "lib",
+    "android",
+    "ios",
+    "cpp",
+    "*.podspec",
+    "react-native.config.js",
+    "!ios/build",
+    "!android/build",
+    "!android/gradle",
+    "!android/gradlew",
+    "!android/gradlew.bat",
+    "!android/local.properties",
+    "!**/__tests__",
+    "!**/__fixtures__",
+    "!**/__mocks__",
+    "!**/.*"
+  ],
+  "scripts": {
+    "example": "yarn workspace @dengage-tech/react-native-dengage-example",
+    "test": "jest",
+    "typecheck": "tsc",
+    "lint": "eslint \"**/*.{js,ts,tsx}\"",
+    "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
+    "prepare": "bob build",
+    "release": "release-it"
+  },
+  "keywords": [
+    "analytics",
+    "react-native",
+    "ios",
+    "android",
+    "dengage",
+    "notification",
+    "push",
+    "push notification"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dengage-tech/dengage-react-sdk.git"
+  },
+  "author": "dengage <egemengulkilik@gmail.com> (https://github.com/dengage-tech/dengage-react-sdk)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dengage-tech/dengage-react-sdk/issues"
+  },
+  "homepage": "https://github.com/dengage-tech/dengage-react-sdk#readme",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
+  "devDependencies": {
+    "@react-native-community/cli": ">=6.0.0",
+    "@react-native-community/eslint-config": "^2.0.0",
+    "@types/jest": ">=26.0.23",
+    "@types/react": ">=17.0.2",
+    "del-cli": ">=5.1.0",
+    "eslint": ">=7.32.0",
+    "eslint-config-prettier": ">=8.3.0",
+    "eslint-plugin-prettier": ">=4.0.0",
+    "jest": ">=26.6.3",
+    "prettier": ">=3.0.3",
+    "react": ">=17.0.2",
+    "react-native": ">=0.65.0",
+    "react-native-builder-bob": ">=0.35.2",
+    "turbo": ">=1.10.7",
+    "typescript": ">=5.0.4"
+  },
+  "peerDependencies": {
+    "react-native": ">=0.65.0"
+  },
+  "jest": {
+    "preset": "react-native",
+    "modulePathIgnorePatterns": [
+      "<rootDir>/example/node_modules",
+      "<rootDir>/lib/"
+    ]
+  },
+  "eslintConfig": {
+    "root": true,
+    "extends": [
+      "@react-native",
+      "prettier"
+    ],
+    "rules": {
+      "react/react-in-jsx-scope": "off",
+      "prettier/prettier": [
+        "error",
+        {
+          "quoteProps": "consistent",
+          "singleQuote": true,
+          "tabWidth": 2,
+          "trailingComma": "es5",
+          "useTabs": false
+        }
+      ]
+    }
+  },
+  "eslintIgnore": [
+    "node_modules/",
+    "lib/"
+  ],
+  "prettier": {
+    "quoteProps": "consistent",
+    "singleQuote": true,
+    "tabWidth": 2,
+    "trailingComma": "es5",
+    "useTabs": false
+  },
+  "react-native-builder-bob": {
+    "source": "src",
+    "output": "lib",
+    "targets": [
+      [
+        "commonjs",
+        {
+          "esm": true
+        }
+      ],
+      [
+        "module",
+        {
+          "esm": true
+        }
+      ],
+      [
+        "typescript",
+        {
+          "project": "tsconfig.build.json",
+          "esm": true
+        }
+      ]
+    ]
+  },
+  "dependencies": {
+    "debug": "^4.4.0"
+  }
+}
