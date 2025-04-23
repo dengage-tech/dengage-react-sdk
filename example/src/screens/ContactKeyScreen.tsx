@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -18,25 +18,28 @@ const ContactKeyScreen = () => {
   const [permission, setPermission] = useState<boolean>(false);
 
   useEffect(() => {
-    // Initialize fields from Dengage
-    const sub = Dengage.getSubscription?.();
-    if (sub?.contactKey) {
-      setContactKey(sub.contactKey);
-    }
-    const userPerm = Dengage.getUserPermission?.();
-    if (typeof userPerm === 'boolean') {
-      setPermission(userPerm);
-    }
+    Dengage.getSubscription?.()
+      .then((sub) => {
+        if (sub?.contactKey) {
+          setContactKey(sub.contactKey);
+        }
+        if (sub?.permission) {
+          setPermission(sub.permission);
+        }
+      })
+      .catch((err) => {
+        console.error('Error fetching subscription:', err);
+      });
   }, []);
 
   const saveContactKey = () => {
-    Dengage.setContactKey?.(contactKey.trim());
+    Dengage.setContactKey(contactKey.trim());
     Alert.alert('Saved', 'Contact key has been updated.');
   };
 
   const togglePermission = (value: boolean) => {
     setPermission(value);
-    Dengage.setUserPermission?.(value);
+    Dengage.setUserPermission(value);
   };
 
   return (
@@ -52,17 +55,12 @@ const ContactKeyScreen = () => {
           onChangeText={setContactKey}
           autoCapitalize="none"
         />
-
-        <View style={styles.buttonContainer}>
-          <Button title="Save" onPress={saveContactKey} />
-        </View>
-
         <View style={styles.permissionRow}>
           <Text style={styles.permissionLabel}>User Permission</Text>
-          <Switch
-            value={permission}
-            onValueChange={togglePermission}
-          />
+          <Switch value={permission} onValueChange={togglePermission} />
+        </View>
+        <View style={styles.buttonContainer}>
+          <Button title="Save" onPress={saveContactKey} />
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
@@ -97,6 +95,5 @@ const styles = StyleSheet.create({
     color: '#000',
   },
 });
-
 
 export default ContactKeyScreen;

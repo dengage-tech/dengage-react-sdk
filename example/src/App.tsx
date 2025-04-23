@@ -23,12 +23,11 @@ const App = () => {
         <Stack.Screen name="Notification" component={NotificationScreen} />
         <Stack.Screen name="DeviceInfo" component={DeviceInfoScreen} />
         <Stack.Screen name="ContactKey" component={ContactKeyScreen} />
-        <Stack.Screen name="InboxMessages" component={PlaceholderScreen} />
-        <Stack.Screen name="CustomEvent" component={PlaceholderScreen} />
+        {/* <Stack.Screen name="InboxMessages" component={PlaceholderScreen} /> */}
+        {/* <Stack.Screen name="CustomEvent" component={PlaceholderScreen} /> */}
         <Stack.Screen name="InAppMessages" component={PlaceholderScreen} />
         <Stack.Screen name="RealTimeInApp" component={PlaceholderScreen} />
-        <Stack.Screen name="SetTags" component={PlaceholderScreen} />
-        <Stack.Screen name="TestPage" component={PlaceholderScreen} />
+        {/* <Stack.Screen name="SetTags" component={PlaceholderScreen} /> */}
         <Stack.Screen name="Geofence" component={PlaceholderScreen} />
         <Stack.Screen name="InlineInApp" component={PlaceholderScreen} />
         <Stack.Screen name="AppStory" component={PlaceholderScreen} />

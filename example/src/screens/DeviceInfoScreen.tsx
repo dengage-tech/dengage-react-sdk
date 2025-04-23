@@ -45,9 +45,7 @@ const DeviceInfoScreen = () => {
       if (sub?.sdkVersion) {
         setSdkVersion(sub.sdkVersion);
       }
-      if (sub?.permission) {
-        setPermission(sub.permission ? 'true' : 'false');
-      }
+      setPermission(sub?.permission ? 'true' : 'false');
       if (sub?.sdkVersion) {
         setSdkVersion(sub.sdkVersion);
       }
