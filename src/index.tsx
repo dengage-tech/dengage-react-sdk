@@ -1,4 +1,5 @@
 import { NativeModules, Platform } from 'react-native';
+import type { DengageTypes, Subscription } from './types';
 
 const LINKING_ERROR =
   `The package '@dengage-tech/react-native-dengage' doesn't seem to be linked. Make sure: \n\n` +
@@ -20,6 +21,65 @@ const DengageRN = NativeModules.DengageRN
 export function multiply(a: number, b: number): Promise<number> {
   return DengageRN.multiply(a, b);
 }
-export function promptForPushNotifications(): void {
-  return DengageRN.promptForPushNotifications();
-}
+
+type DengageType = {
+  setIntegrationKey(key: string): void; // iOS only
+  setFirebaseIntegrationKey(key: string): void; // android only
+  setContactKey(key: string): void;
+  getContactKey(): Promise<string | null | undefined>;
+  promptForPushNotifications(): void; // iOS only
+  promptForPushNotificationsWitCallback(callback: (hasPermission: boolean) => void): void; // iOS only
+  setUserPermission(permission: boolean): void;
+  registerForRemoteNotifications(enable: boolean): void; // iOS only
+  getUserPermission(): Promise<boolean>; // android only, in iOS use promptForPushNotificationsWitCallback
+  getToken(): Promise<string | any>;
+  setToken(token: String): void;
+  setLogStatus(isVisible: boolean): void;
+  handleNotificationActionBlock(callback: (notificationAction: DengageTypes["NotificationAction"]) => void): void; // iOS only,
+  registerNotificationListeners(): void; // End Developer No Need to call this, we're calling it ourself, to register for events like `onNotificationReceived` & `onNotificationClicked`
+  pageView(params: object): void;
+  addToCart(params: object): void;
+  removeFromCart(params: object): void;
+  viewCart(params: object): void;
+  beginCheckout(params: object): void;
+  placeOrder(params: object): void;
+  cancelOrder(params: object): void;
+  addToWishList(params: object): void;
+  removeFromWishList(params: object): void;
+  search(params: object): void;
+  sendDeviceEvent(tableName: string, data: object): void;
+  getSubscription(): Promise<Subscription | null | undefined>; // android only yet. for iOS use getContactKey
+  getInboxMessages(offset: number, limit: number): Promise<[object] | null>
+  deleteInboxMessage(id: string): Promise<object | null>
+  setInboxMessageAsClicked(id: string): Promise<object | null>
+  setNavigation(): void;
+  setNavigationWithName(screenName: string): void;
+  onMessageReceived(params: object): void;
+  stopGeofence(): void;
+  requestLocationPermissions(): void;
+  startGeofence(): void;
+  resetAppBadge():void; // android only
+  showRealTimeInApp(screenName: string, data: object): void;
+  setCity(city: string): void;
+  setState(state: string): void;
+  setCartAmount(amount: string): void;
+  setCartItemCount(count: string): void;
+  setCategoryPath(path: string): void;
+  setPartnerDeviceId(adid: string): void;
+  getLastPushPayload(): Promise<string | null | undefined>;
+  registerInAppListener(): void;
+  setInAppLinkConfiguration(deeplink: String): void;
+  getDeviceId(): Promise<string | null | undefined>;
+  setDevelopmentStatus(isDebug: boolean): void;
+  setLanguage(language: string): void;
+  setDeviceId(deviceId: string): void;
+
+
+  // NEW
+  getSdkVersion(): Promise<string | null | undefined>;
+};
+
+DengageRN?.registerNotificationListeners?.()
+
+export default DengageRN as DengageType;
+

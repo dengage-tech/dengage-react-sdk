@@ -13,8 +13,8 @@ class ReactNativeDengage: RCTEventEmitter {
     resolve(a*b)
   }
   
-  @objc(setIntegerationKey:)
-  func setIntegerationKey(key: String) -> Void {
+  @objc(setIntegrationKey:)
+  func setIntegrationKey(key: String) -> Void {
     Dengage.setIntegrationKey(key: key)
   }
   
@@ -42,22 +42,13 @@ class ReactNativeDengage: RCTEventEmitter {
   
   @objc
   func getToken(_ resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
-    if let currentToken = Dengage.getDeviceToken() {
-      resolve(currentToken)
-    } else {
-      print("Unexpected getToken nil error:")
-      reject("UNABLE_TO_RETREIVE_TOKEN", "Something went wrong", nil)
-    }
+    resolve(Dengage.getDeviceToken())
   }
   
   @objc
   func getContactKey(_ resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
-    if let contactKey = Dengage.getContactKey() {
-      resolve(contactKey)
-    } else {
-      print("Unexpected getContactKey nil error:")
-      reject("UNABLE_TO_RETREIVE_CONTACT_KEY", "Something went wrong", nil)
-    }
+    let contactKey = Dengage.getContactKey()
+    resolve(contactKey)
   }
   
   @objc(setToken:)
@@ -300,17 +291,20 @@ class ReactNativeDengage: RCTEventEmitter {
     }
   }
   
-  @objc(getSubscription:withReject:)
+  @objc
   func getSubscription(_ resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock){
-    // this method is yet not available in iOS
-    reject("NO_NATIVE_METHOD_YET", "this method is yet not available in iOS", nil)
     
-    //        do {
-    //            let contactId = try Dengage.getContactKey()
-    //            resolve(contactId)
-    //        } catch {
-    //            reject("UNABLE_TO_RETREIVE_CONTACT_KEY", error.localizedDescription ?? "Something went wrong", error)
-    //        }
+    let subscription = Subscription(integrationKey: "", token: Dengage.getDeviceToken(), appVersion: "", sdkVersion: Dengage.getSdkVersion() ?? "", deviceId: Dengage.getDeviceId(), advertisingId: "", carrierId: "", contactKey: Dengage.getContactKey(), permission: Dengage.getPermission(), trackingPermission: false, tokenType: "", webSubscription: "", testGroup: "", country: "", language: "", timezone: "", partnerDeviceId: "", locationPermission: "")
+    
+    
+    do {
+      //let encodedData = try JSONSerialization.data(withJSONObject: subscription, options: .prettyPrinted)
+      //let jsonString = String(data: encodedData, encoding: .utf8)
+      resolve(subscription.toDictionary())
+    } catch {
+      reject("getSubscriptionError", error.localizedDescription, error)
+    }
+    
   }
   
   @objc(getInboxMessages:limit:resolve:reject:)
@@ -495,13 +489,8 @@ class ReactNativeDengage: RCTEventEmitter {
   
   @objc
   func getDeviceId(_ resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
-    do {
-      let deviceId = try Dengage.getDeviceId()
-      resolve(deviceId)
-    } catch {
-      print("Unexpected getDeviceId error: \(error)")
-      
-    }
+    let deviceId = Dengage.getDeviceId()
+    resolve(deviceId)
   }
   
   @objc(setDevelopmentStatus:)
@@ -517,6 +506,14 @@ class ReactNativeDengage: RCTEventEmitter {
   @objc(setDeviceId:)
   func setDeviceId(deviceId: String) {
     Dengage.setDeviceId(applicationIdentifier: deviceId)
+  }
+  
+  
+  // NEW
+  
+  @objc
+  func getSdkVersion(_ resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
+    resolve(Dengage.getSdkVersion())
   }
   
 }

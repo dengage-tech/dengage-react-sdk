@@ -18,13 +18,13 @@
   
 }
 
-+ (void)handleDengageIntialization:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
++ (void)handleDengageInitialization:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
   
   
   DengageRNCoordinator *coordinator = [DengageRNCoordinator staticInstance];
   [coordinator setValue:launchOptions forKey:@"launchOptions"];
   
-  [coordinator setupDengage:@"BWUdMrMrI3YqDvJx_p_l_kkev8JcCFSHM5rkRCpwQdnvEWvMaRp7n_s_l_5olQe0RW_p_l_mI8BtHeFvsOBEYqR_s_l_YeZK6Cfr2DyN9nVJi2faUgyGgYdoeRHALe_p_l_ROuJxm0V5eBFKdZg9H7ULjDr4tU2Q0VJsgzqaRQ_e_q__e_q_" launchOptions:launchOptions application:application askNotificaionPermission:true enableGeoFence:true disableOpenURL:false badgeCountReset:false];
+  [coordinator setupDengage:@"RtWFz7e1SIvcYm3IeaPg6mWwtSZS_p_l_uZUZjQ5H5PYMphJDQaj_p_l_2x_p_l_sygPdd8k4OnwDfKfxy8e6zfLezdFrlmUAVDz1o2avZsolsEgQq3eDJy_p_l_TLRRjHT2wzGZwPkbmTla5_p_l_uM4299j2Jde4iNO9MLcA_e_q__e_q_" launchOptions:launchOptions application:application askNotificaionPermission:true enableGeoFence:true disableOpenURL:false badgeCountReset:false logVisible:true];
   
   
 }

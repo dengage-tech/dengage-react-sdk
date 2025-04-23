@@ -18,7 +18,7 @@ RCT_EXTERN_METHOD(multiply:(float)a withB:(float)b
     return @[@"onNotificationClicked",@"retrieveInAppLink"];
 }
 
-RCT_EXTERN_METHOD(setIntegerationKey:(NSString *)key)
+RCT_EXTERN_METHOD(setIntegrationKey:(NSString *)key)
 
 RCT_EXTERN_METHOD(promptForPushNotifications)
 
@@ -108,4 +108,14 @@ RCT_EXTERN_METHOD(setLanguage:(NSString *)language)
 
 RCT_EXTERN_METHOD(setDeviceId:(NSString *)deviceId)
 
+
+// NEW
+RCT_EXTERN_METHOD(getSdkVersion:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(getSubscription:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
+
+
+
+
 @end
+

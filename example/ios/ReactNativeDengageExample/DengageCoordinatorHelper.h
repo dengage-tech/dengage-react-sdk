@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface DengageCoordinatorHelper : NSObject
 
 + (void)registerDeviceToken:(NSData *)deviceToken;
-+ (void)handleDengageIntialization:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions;
++ (void)handleDengageInitialization:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions;
 + (void)userNotification:(UNUserNotificationCenter *)center notificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler;
 
 @end

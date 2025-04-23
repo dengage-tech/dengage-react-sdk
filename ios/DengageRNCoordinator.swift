@@ -22,11 +22,11 @@ public class DengageRNCoordinator: NSObject {
     @objc var integerationKey: String?
     @objc var launchOptions: [UIApplication.LaunchOptionsKey: Any]?
 
-    @objc(setupDengage:launchOptions:application:askNotificaionPermission:enableGeoFence:disableOpenURL:badgeCountReset:)
+  @objc(setupDengage:launchOptions:application:askNotificaionPermission:enableGeoFence:disableOpenURL:badgeCountReset:logVisible:)
     public func setupDengage(
         key: NSString, launchOptions: NSDictionary?, application: UIApplication,
         askNotificaionPermission: DarwinBoolean, enableGeoFence: DarwinBoolean,
-        disableOpenURL: DarwinBoolean, badgeCountReset: DarwinBoolean
+        disableOpenURL: DarwinBoolean, badgeCountReset: DarwinBoolean, logVisible: DarwinBoolean
     ) {
         Dengage.setIntegrationKey(key: key as String)
         if launchOptions != nil {
@@ -50,7 +50,7 @@ public class DengageRNCoordinator: NSObject {
         }
 
         if askNotificaionPermission.boolValue {
-            Dengage.promptForPushNotifications()
+            //Dengage.promptForPushNotifications()
 
         }
 
@@ -59,6 +59,8 @@ public class DengageRNCoordinator: NSObject {
                 DengageGeofence.startGeofence()
             #endif
         }
+        Dengage.setLog(isVisible: logVisible.boolValue)
+      
         Dengage.setHybridAppEnvironment()
 
     }
