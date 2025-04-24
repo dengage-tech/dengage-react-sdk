@@ -20,12 +20,12 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
     { title: 'CHANGE CONTACT KEY', screen: 'ContactKey' },
     //{ title: 'INBOX MESSAGES', screen: 'InboxMessages' },
     //{ title: 'SEND CUSTOM EVENT', screen: 'CustomEvent' },
-    { title: 'IN APP MESSAGES', screen: 'InAppMessages' },
-    { title: 'REAL TIME IN APP MESSAGES', screen: 'RealTimeInApp' },
+    { title: 'IN APP MESSAGE', screen: 'InAppMessages' },
+    //{ title: 'REAL TIME IN APP MESSAGES', screen: 'RealTimeInApp' },
     //{ title: 'SET TAGS', screen: 'SetTags' },
     { title: 'GEOFENCE', screen: 'Geofence' },
-    { title: 'Show InLine InAPP', screen: 'InlineInApp' },
-    { title: 'App Story', screen: 'AppStory' },
+    { title: 'INAPP INLINE ', screen: 'InlineInApp' },
+    { title: 'APP STORY', screen: 'AppStory' },
   ];
 
   return (

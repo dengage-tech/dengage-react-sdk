@@ -38,7 +38,7 @@ type Attachment = {
   type: string;
 }
 
-export type Subscription = {
+type Subscription = {
   integrationKey: string;
   token?: string | null;
   appVersion?: string | null;

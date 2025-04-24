@@ -11,6 +11,8 @@ import {
   DeviceInfoScreen,
   ContactKeyScreen,
   PlaceholderScreen,
+  InAppMessageScreen,
+  InAppInlineScreen,
 } from './screens';
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -25,11 +27,11 @@ const App = () => {
         <Stack.Screen name="ContactKey" component={ContactKeyScreen} />
         {/* <Stack.Screen name="InboxMessages" component={PlaceholderScreen} /> */}
         {/* <Stack.Screen name="CustomEvent" component={PlaceholderScreen} /> */}
-        <Stack.Screen name="InAppMessages" component={PlaceholderScreen} />
-        <Stack.Screen name="RealTimeInApp" component={PlaceholderScreen} />
+        <Stack.Screen name="InAppMessages" component={InAppMessageScreen} />
+        {/* <Stack.Screen name="RealTimeInApp" component={PlaceholderScreen} /> */}
         {/* <Stack.Screen name="SetTags" component={PlaceholderScreen} /> */}
-        <Stack.Screen name="Geofence" component={PlaceholderScreen} />
-        <Stack.Screen name="InlineInApp" component={PlaceholderScreen} />
+        {/* <Stack.Screen name="Geofence" component={PlaceholderScreen} /> */}
+        <Stack.Screen name="InlineInApp" component={InAppInlineScreen} />
         <Stack.Screen name="AppStory" component={PlaceholderScreen} />
       </Stack.Navigator>
     </NavigationContainer>

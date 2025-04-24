@@ -1,5 +1,5 @@
 import { NativeModules, Platform } from 'react-native';
-import type { DengageTypes, Subscription } from './types';
+import type { DengageTypes } from './types';
 
 const LINKING_ERROR =
   `The package '@dengage-tech/react-native-dengage' doesn't seem to be linked. Make sure: \n\n` +
@@ -48,7 +48,7 @@ type DengageType = {
   removeFromWishList(params: object): void;
   search(params: object): void;
   sendDeviceEvent(tableName: string, data: object): void;
-  getSubscription(): Promise<Subscription | null | undefined>; // android only yet. for iOS use getContactKey
+  getSubscription(): Promise<DengageTypes["Subscription"] | null | undefined>; // android only yet. for iOS use getContactKey
   getInboxMessages(offset: number, limit: number): Promise<[object] | null>
   deleteInboxMessage(id: string): Promise<object | null>
   setInboxMessageAsClicked(id: string): Promise<object | null>
@@ -80,6 +80,9 @@ type DengageType = {
 };
 
 DengageRN?.registerNotificationListeners?.()
+
+
+export * from './InAppInlineView';
 
 export default DengageRN as DengageType;
 
