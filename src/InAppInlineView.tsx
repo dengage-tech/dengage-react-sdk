@@ -8,20 +8,21 @@ import {
   StyleSheet,
 } from 'react-native';
 
+
 const RCTInAppInlineView =
   requireNativeComponent<RCTInAppInlineViewProps>('RCTInAppInlineView');
 
 interface RCTInAppInlineViewProps {
-  propertyId: string | null;
-  screenName: string | null;
-  customParams: Record<string, string> | null;
+  propertyId: string;
+  screenName: string;
+  customParams: Record<string, string>;
   style?: StyleProp<ViewStyle>;
 }
 
 export interface InAppInlineViewProps {
-  propertyId: string | null;
-  screenName: string | null;
-  customParams: Record<string, string> | null;
+  propertyId: string;
+  screenName: string;
+  customParams: Record<string, string>;
   style?: StyleProp<ViewStyle>;
 }
 

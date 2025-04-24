@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
 import type { StackNavigationProp } from '@react-navigation/stack';
 import type { RouteProp } from '@react-navigation/native';
@@ -14,6 +14,18 @@ type HomeScreenProps = {
 };
 
 const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
+
+  console.log('HomeScreen rendered');
+
+
+  useEffect(() => {
+    console.log('HomeScreen mounted');
+    return () => {
+      console.log('HomeScreen unmounted');
+    };
+  }, []);
+
+
   const actions: Array<{ title: string; screen: keyof RootStackParamList }> = [
     { title: 'ASK NOTIFICATIONS', screen: 'Notification' },
     { title: 'DEVICE INFO', screen: 'DeviceInfo' },
@@ -30,6 +42,9 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+
+
+
       <FlatList
         data={actions}
         keyExtractor={(item) => item.title}

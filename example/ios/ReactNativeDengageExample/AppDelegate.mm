@@ -52,7 +52,6 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
   return [self bundleURL];
 }
 
-
 - (NSURL *)bundleURL
 {
 #if DEBUG

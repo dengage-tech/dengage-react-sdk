@@ -4,23 +4,31 @@ import { createStackNavigator } from '@react-navigation/stack';
 // Import types
 import type { RootStackParamList } from './types';
 
+console.log('App.tsx: App loaded');
+
 // Import screens
 import {
   HomeScreen,
   NotificationScreen,
   DeviceInfoScreen,
   ContactKeyScreen,
-  PlaceholderScreen,
   InAppMessageScreen,
   InAppInlineScreen,
+  AppStoryScreen,
 } from './screens';
+
 
 const Stack = createStackNavigator<RootStackParamList>();
 
 const App = () => {
+
   return (
     <NavigationContainer>
+
+
       <Stack.Navigator>
+
+
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Notification" component={NotificationScreen} />
         <Stack.Screen name="DeviceInfo" component={DeviceInfoScreen} />
@@ -32,7 +40,7 @@ const App = () => {
         {/* <Stack.Screen name="SetTags" component={PlaceholderScreen} /> */}
         {/* <Stack.Screen name="Geofence" component={PlaceholderScreen} /> */}
         <Stack.Screen name="InlineInApp" component={InAppInlineScreen} />
-        <Stack.Screen name="AppStory" component={PlaceholderScreen} />
+        <Stack.Screen name="AppStory" component={AppStoryScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

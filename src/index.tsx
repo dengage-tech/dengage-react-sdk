@@ -26,13 +26,13 @@ type DengageType = {
   setIntegrationKey(key: string): void; // iOS only
   setFirebaseIntegrationKey(key: string): void; // android only
   setContactKey(key: string): void;
-  getContactKey(): Promise<string | null | undefined>;
+  getContactKey(): Promise<string>;
   promptForPushNotifications(): void; // iOS only
   promptForPushNotificationsWitCallback(callback: (hasPermission: boolean) => void): void; // iOS only
   setUserPermission(permission: boolean): void;
   registerForRemoteNotifications(enable: boolean): void; // iOS only
   getUserPermission(): Promise<boolean>; // android only, in iOS use promptForPushNotificationsWitCallback
-  getToken(): Promise<string | any>;
+  getToken(): Promise<string>;
   setToken(token: String): void;
   setLogStatus(isVisible: boolean): void;
   handleNotificationActionBlock(callback: (notificationAction: DengageTypes["NotificationAction"]) => void): void; // iOS only,
@@ -48,10 +48,10 @@ type DengageType = {
   removeFromWishList(params: object): void;
   search(params: object): void;
   sendDeviceEvent(tableName: string, data: object): void;
-  getSubscription(): Promise<DengageTypes["Subscription"] | null | undefined>; // android only yet. for iOS use getContactKey
-  getInboxMessages(offset: number, limit: number): Promise<[object] | null>
-  deleteInboxMessage(id: string): Promise<object | null>
-  setInboxMessageAsClicked(id: string): Promise<object | null>
+  getSubscription(): Promise<DengageTypes["Subscription"]>; // android only yet. for iOS use getContactKey
+  getInboxMessages(offset: number, limit: number): Promise<[object]>
+  deleteInboxMessage(id: string): Promise<object>
+  setInboxMessageAsClicked(id: string): Promise<object>
   setNavigation(): void;
   setNavigationWithName(screenName: string): void;
   onMessageReceived(params: object): void;
@@ -66,23 +66,24 @@ type DengageType = {
   setCartItemCount(count: string): void;
   setCategoryPath(path: string): void;
   setPartnerDeviceId(adid: string): void;
-  getLastPushPayload(): Promise<string | null | undefined>;
+  getLastPushPayload(): Promise<string>;
   registerInAppListener(): void;
   setInAppLinkConfiguration(deeplink: String): void;
-  getDeviceId(): Promise<string | null | undefined>;
+  getDeviceId(): Promise<string>;
   setDevelopmentStatus(isDebug: boolean): void;
   setLanguage(language: string): void;
   setDeviceId(deviceId: string): void;
 
 
   // NEW
-  getSdkVersion(): Promise<string | null | undefined>;
+  getSdkVersion(): Promise<string>;
 };
 
 DengageRN?.registerNotificationListeners?.()
 
 
 export * from './InAppInlineView';
+export * from './AppStoryView';
 
 export default DengageRN as DengageType;
 

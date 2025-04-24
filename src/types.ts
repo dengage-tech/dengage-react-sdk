@@ -6,7 +6,7 @@ type NotificationAction = {
       identifier: string;
       content: {
         attachments: [Attachment?]
-        badge: string | number
+        badge: string
         body: string
         categoryIdentifier: string
         launchImageName: string
@@ -16,7 +16,7 @@ type NotificationAction = {
         title: string
         userInfo?: object
         summaryArgument?: string
-        summaryArgumentCount?: number | string
+        summaryArgumentCount?: number
         targetContentIdentifier?: string
       }
       trigger?: Trigger
@@ -40,23 +40,23 @@ type Attachment = {
 
 type Subscription = {
   integrationKey: string;
-  token?: string | null;
-  appVersion?: string | null;
+  token?: string;
+  appVersion?: string;
   sdkVersion: string;
-  deviceId?: string | null;
+  deviceId?: string;
   advertisingId: string;
   carrierId: string;
-  contactKey?: string | null;
-  permission?: boolean | null;
+  contactKey?: string;
+  permission?: boolean;
   trackingPermission: boolean;
   tokenType: string;
-  webSubscription?: string | null;
+  webSubscription?: string;
   testGroup: string;
-  country?: string | null;
+  country?: string;
   language: string;
   timezone: string;
-  partnerDeviceId?: string | null;
-  locationPermission?: string | null;
+  partnerDeviceId?: string;
+  locationPermission?: string;
 };
 
 export type DengageTypes = {

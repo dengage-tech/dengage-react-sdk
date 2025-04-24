@@ -34,7 +34,7 @@ const DeviceInfoScreen = () => {
     // Fetch promise-based values
     Dengage.getSubscription?.().then(sub => {
 
-      console.log('Subscription:', typeof sub);
+      //console.log('Subscription:', typeof sub);
 
       if (sub?.contactKey) {
         setContactKey(sub.contactKey);
