@@ -21,6 +21,9 @@ def reactNativeArchitectures() {
 }
 
 def isNewArchitectureEnabled() {
+  rootProject.logger.lifecycle('isNewArchitectureEnabled')
+
+  //rootProject.logger.debug(rootProject.hasProperty("newArchEnabled"))
   return rootProject.hasProperty("newArchEnabled") && rootProject.getProperty("newArchEnabled") == "true"
 }
 

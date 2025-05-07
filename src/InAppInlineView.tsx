@@ -37,7 +37,6 @@ export class InAppInlineView extends React.Component<InAppInlineViewProps> {
   render() {
     return (
       <RCTInAppInlineView
-        {...this.props}
         propertyId={this.props.propertyId}
         screenName={this.props.screenName}
         customParams={this.props.customParams}

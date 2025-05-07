@@ -15,10 +15,10 @@ Pod::Spec.new do |s|
   s.source       = { :git => "https://github.com/dengage-tech/dengage-react-sdk.git", :tag => "#{s.version}" }
 
   s.source_files = "ios/**/*.{h,m,mm,swift}"
-  s.dependency "Dengage", "5.74"
+  s.dependency "Dengage", "5.76"
 
   if ENV['install_dengage_geofence'] == '1' then
-    s.dependency "DengageGeofence", "5.74"
+    s.dependency "DengageGeofence", "5.76"
   end
 
   if respond_to?(:install_modules_dependencies, true)

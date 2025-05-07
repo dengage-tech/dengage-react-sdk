@@ -1,4 +1,4 @@
-package dengagetech.reactnativedengage.example
+package com.dengage.rnexample
 
 import android.app.Application
 import com.facebook.react.PackageList

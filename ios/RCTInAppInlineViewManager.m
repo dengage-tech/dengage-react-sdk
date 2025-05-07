@@ -17,7 +17,7 @@
 RCT_EXPORT_VIEW_PROPERTY(propertyId, NSString)
 RCT_EXPORT_VIEW_PROPERTY(screenName, NSString)
 RCT_EXPORT_VIEW_PROPERTY(customParams, NSDictionary)
-RCT_EXPORT_MODULE()
+RCT_EXPORT_MODULE(RCTInAppInlineView)
 
 - (UIView *)view {
   return [[RCTInAppInlineView alloc] init];

@@ -20,8 +20,7 @@ export default function InAppInlineScreen() {
   const [customValue2, setCustomValue2] = useState<string>('');
   const [showInline, setShowInline] = useState(false);
 
-  // helper to build or return null
-  const getCustomParams = (): Record<string, string> | null => {
+  const getCustomParams = (): Record<string, string> => {
     const params: Record<string, string> = {};
     if (customKey1.trim() && customValue1.trim()) {
       params[customKey1.trim()] = customValue1.trim();
@@ -29,8 +28,9 @@ export default function InAppInlineScreen() {
     if (customKey2.trim() && customValue2.trim()) {
       params[customKey2.trim()] = customValue2.trim();
     }
-    return Object.keys(params).length > 0 ? params : null;
+    return params; // Always return an object, never null
   };
+
 
   const onPressShow = () => {
     // optional: call the native InApp API
@@ -50,16 +50,16 @@ export default function InAppInlineScreen() {
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       >
         <ScrollView contentContainerStyle={styles.container}>
-          {showInline && propertyId.trim() !== '' && (
-            <View style={styles.flex1}>
-              <InAppInlineView
-                propertyId={propertyId.trim() || null}
-                screenName={screenName.trim() || null}
-                customParams={getCustomParams()}
-                style={styles.flex1}
-              />
-            </View>
-          )}
+        {showInline && propertyId.trim() !== '' && (
+          <View style={styles.flex1}>
+            <InAppInlineView
+              propertyId={propertyId.trim() || ""} // Empty string instead of null
+              screenName={screenName.trim() || ""} // Empty string instead of null
+              customParams={getCustomParams()}     // Always an object
+              style={styles.flex1}
+            />
+          </View>
+        )}
 
           <TextInput
             style={styles.input}

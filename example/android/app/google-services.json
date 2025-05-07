@@ -1,0 +1,67 @@
+{
+  "project_info": {
+    "project_number": "450490384663",
+    "project_id": "andriodnewsdk",
+    "storage_bucket": "andriodnewsdk.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:450490384663:android:2ee2841ac9c28c257cb752",
+        "android_client_info": {
+          "package_name": "com.dengage.android.kotlin.sample"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQF6D_I3DItd4r7LQWDkt2vEOUpKYOPwE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:450490384663:android:a572d4072d23d98e7cb752",
+        "android_client_info": {
+          "package_name": "com.dengage.dengageecommercetest"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQF6D_I3DItd4r7LQWDkt2vEOUpKYOPwE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:450490384663:android:df08eb87a26aa9717cb752",
+        "android_client_info": {
+          "package_name": "com.dengage.rnexample"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQF6D_I3DItd4r7LQWDkt2vEOUpKYOPwE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
