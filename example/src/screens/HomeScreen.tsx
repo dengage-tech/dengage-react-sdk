@@ -18,12 +18,12 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   console.log('HomeScreen rendered');
 
 
-  useEffect(() => {
+/*   useEffect(() => {
     console.log('HomeScreen mounted');
     return () => {
       console.log('HomeScreen unmounted');
     };
-  }, []);
+  }, []); */
 
 
   const actions: Array<{ title: string; screen: keyof RootStackParamList }> = [

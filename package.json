@@ -2,21 +2,11 @@
   "name": "@dengage-tech/react-native-dengage",
   "version": "1.1.0",
   "description": "dEngage Customer Driven Marketing Platform (CDMP) serves as a customer data platform (CDP) with built-in omnichannel marketing features. It replaces your marketing automation and cross-channel campaign management. This package makes it easy to integrate your native React-Native iOS and/or Android apps with dEngage.",
-  "source": "./src/index.tsx",
-  "main": "./lib/commonjs/index.js",
-  "module": "./lib/module/index.js",
-  "exports": {
-    ".": {
-      "import": {
-        "types": "./lib/typescript/module/src/index.d.ts",
-        "default": "./lib/module/index.js"
-      },
-      "require": {
-        "types": "./lib/typescript/commonjs/src/index.d.ts",
-        "default": "./lib/commonjs/index.js"
-      }
-    }
-  },
+  "main": "lib/commonjs/index",
+  "module": "lib/module/index",
+  "types": "lib/typescript/src/index.d.ts",
+  "react-native": "src/index",
+  "source": "src/index",
   "files": [
     "src",
     "lib",
@@ -79,13 +69,14 @@
     "eslint-plugin-prettier": ">=4.0.0",
     "jest": ">=26.6.3",
     "prettier": ">=3.0.3",
-    "react": ">=17.0.2",
-    "react-native": ">=0.65.0",
+    "react": "18.3.1",
+    "react-native": "0.77.2",
     "react-native-builder-bob": ">=0.35.2",
     "turbo": ">=1.10.7",
     "typescript": ">=5.0.4"
   },
   "peerDependencies": {
+    "react": ">=17.0.2",
     "react-native": ">=0.65.0"
   },
   "jest": {
@@ -130,18 +121,8 @@
     "source": "src",
     "output": "lib",
     "targets": [
-      [
-        "commonjs",
-        {
-          "esm": true
-        }
-      ],
-      [
-        "module",
-        {
-          "esm": true
-        }
-      ],
+      "commonjs",
+      "module",
       [
         "typescript",
         {
