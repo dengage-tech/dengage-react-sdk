@@ -1,13 +1,9 @@
-'use strict';
-
 import React from 'react';
 import {
   requireNativeComponent,
   type StyleProp,
   type ViewStyle,
-  StyleSheet,
 } from 'react-native';
-
 
 const RCTInAppInlineView =
   requireNativeComponent<RCTInAppInlineViewProps>('RCTInAppInlineView');
@@ -26,22 +22,15 @@ export interface InAppInlineViewProps {
   style?: StyleProp<ViewStyle>;
 }
 
-const styles = StyleSheet.create({
-  defaultStyle: {
-    minHeight: 110,
-  },
-});
-
 export class InAppInlineView extends React.Component<InAppInlineViewProps> {
 
   render() {
     return (
       <RCTInAppInlineView
-        {...this.props}
         propertyId={this.props.propertyId}
         screenName={this.props.screenName}
         customParams={this.props.customParams}
-        style={[styles.defaultStyle, this.props.style]}
+        style={[{ width: '100%' }, this.props.style]}
       />
     );
   }

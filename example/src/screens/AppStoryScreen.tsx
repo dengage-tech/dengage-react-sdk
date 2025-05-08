@@ -12,8 +12,8 @@ import {
 import { StoriesListView } from '@dengage-tech/react-native-dengage';
 
 export default function AppStoryScreen() {
-  const [propertyId, setPropertyId] = useState<string>('3');
-  const [screenName, setScreenName] = useState<string>('ego');
+  const [propertyId, setPropertyId] = useState<string>('1');
+  const [screenName, setScreenName] = useState<string>('appstory');
   const [storyBackgroundColor, setStoryBackgroundColor] =
     useState<string>('#ffffff');
   const [showInline, setShowInline] = useState(false);
