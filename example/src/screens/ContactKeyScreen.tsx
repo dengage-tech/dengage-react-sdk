@@ -18,6 +18,16 @@ const ContactKeyScreen = () => {
   const [permission, setPermission] = useState<boolean>(false);
 
   useEffect(() => {
+
+    Dengage.getContactKey?.().then((key) => {
+
+      if (key) {
+        setContactKey(key);
+      }
+    }).catch((err) => {
+      console.error('Error fetching contact key:', err);
+    });
+
     Dengage.getSubscription?.()
       .then((sub) => {
         if (sub?.contactKey) {

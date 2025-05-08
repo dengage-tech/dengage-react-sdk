@@ -39,7 +39,7 @@ type Attachment = {
 }
 
 type Subscription = {
-  integrationKey: string;
+  integrationKey?: string;
   token?: string;
   appVersion?: string;
   sdkVersion: string;

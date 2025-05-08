@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useMemo } from 'react';
+import { useEffect, useState, useRef, useMemo } from 'react';
 import {
   SafeAreaView,
   View,
@@ -8,6 +8,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  Text,
 } from 'react-native';
 import { StoriesListView } from '@dengage-tech/react-native-dengage';
 
@@ -32,34 +33,32 @@ export default function AppStoryScreen() {
     }
   };
 
+  /*
   const contentComponent = useMemo(() => {
     return (
       <StoriesListView
         storyPropertyId={'5'}
         screenName={'5'}
-        style={styles.flex}
-      />
+        customParams={{}}
+        style={styles.flex} 
+        />
     );
   }, []); // Add dependencies if needed
+  */
 
   const getContentComponent = () => {
     const a = (
       <StoriesListView
         storyPropertyId={'5'}
         screenName={'5'}
+        customParams={{}}
         style={styles.flex}
       />
     );
 
-    console.log('Counter:', counter);
-    if (counter === 0) {
-      counter++;
-      return a;
-    } else {
-      console.log('Counter:', counter);
-      return
-    }
+    const b = <Text>{'asd'}</Text>;
 
+    return b;
   };
 
   var counter = 0;
@@ -123,7 +122,14 @@ export default function AppStoryScreen() {
               { backgroundColor: storyBackgroundColor },
             ]}
           >
-            {showInline && propertyId.trim() !== '' && getContentComponent()}
+            <View>
+              <StoriesListView
+                storyPropertyId={'5'}
+                screenName={'5'}
+                customParams={{}}
+              />
+            </View>
+            {/* {showInline && propertyId.trim() !== '' && getContentComponent()} */}
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
@@ -153,5 +159,10 @@ const styles = StyleSheet.create({
   storyContainer: {
     height: 200,
     marginTop: 16,
+  },
+  storyBackgroundContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    backgroundColor: 'white',
   },
 });

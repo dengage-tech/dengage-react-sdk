@@ -11,6 +11,7 @@ import Dengage
   
   @objc var storyPropertyId: String?
   @objc var screenName: String?
+  @objc var customParams: [String: String]? = nil
     
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -31,7 +32,7 @@ import Dengage
     }
     
     
-    Dengage.showAppStory(storyPropertyID: storyPropertyId, screenName: screenName) { storiesListView in
+    Dengage.showAppStory(storyPropertyID: storyPropertyId, screenName: screenName, customParams: customParams) { storiesListView in
       
       if let storiesListView = storiesListView {
         storiesListView.translatesAutoresizingMaskIntoConstraints = false

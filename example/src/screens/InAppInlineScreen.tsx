@@ -9,7 +9,7 @@ import {
   Platform,
   ScrollView,
 } from 'react-native';
-import Dengage, { InAppInlineView } from '@dengage-tech/react-native-dengage';
+//import Dengage, { InAppInlineView } from '@dengage-tech/react-native-dengage';
 
 export default function InAppInlineScreen() {
   const [propertyId, setPropertyId] = useState<string>('');
@@ -50,16 +50,7 @@ export default function InAppInlineScreen() {
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       >
         <ScrollView contentContainerStyle={styles.container}>
-        {showInline && propertyId.trim() !== '' && (
-          <View style={styles.flex1}>
-            <InAppInlineView
-              propertyId={propertyId.trim() || ""} // Empty string instead of null
-              screenName={screenName.trim() || ""} // Empty string instead of null
-              customParams={getCustomParams()}     // Always an object
-              style={styles.flex1}
-            />
-          </View>
-        )}
+
 
           <TextInput
             style={styles.input}

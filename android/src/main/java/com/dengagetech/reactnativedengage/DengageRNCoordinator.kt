@@ -1,21 +1,23 @@
 package com.dengagetech.reactnativedengage
 
 import android.content.Context
+import android.util.Log
 import com.dengage.sdk.DengageManager
+import com.dengage.sdk.Dengage
+import com.dengage.sdk.data.remote.api.DeviceConfigurationPreference
+import com.dengage.sdk.data.remote.api.NotificationDisplayPriorityConfiguration
 import com.facebook.react.ReactInstanceManager
 import com.facebook.react.bridge.ReactContext
 
 class DengageRNCoordinator private constructor() {
-  var reactInstanceManager: ReactInstanceManager? = null
-  var dengageManager: DengageManager? = null
+  private var reactInstanceManager: ReactInstanceManager? = null
 
-  var isSuccessfullyInitialized = false
+  var initialized = false
     private set
 
   fun injectReactInstanceManager(reactInstanceManager: ReactInstanceManager) {
     if (this.reactInstanceManager != null) {
-      // TODO: throw error. can only initialize once.
-
+      Log.i(LOG_TAG, "DengageRNCoordinator already initialized.")
     }
     this.reactInstanceManager = reactInstanceManager
 
@@ -23,33 +25,35 @@ class DengageRNCoordinator private constructor() {
       object : ReactInstanceManager.ReactInstanceEventListener {
         override fun onReactContextInitialized(context: ReactContext) {
           reactInstanceManager.removeReactInstanceEventListener(this)
-          isSuccessfullyInitialized = true
+          initialized = true
         }
       })
+    this.reactInstanceManager!!.onNewIntent(null)
   }
 
-  fun setupDengage(
-    logStatus: Boolean,
-    firebaseKey: String?,
-    enableGeofence: Boolean,
+  fun initDengage(
+    firebaseIntegrationKey: String?,
     context: Context,
-    disableOpenWelUrl:Boolean?=false
-  ) {
-    if (firebaseKey == null) {
+    deviceConfigurationPreference: DeviceConfigurationPreference,
+    disableOpenWelUrl:Boolean?=false,
+    logEnabled: Boolean
+    ) {
+    if (firebaseIntegrationKey == null) {
       throw Error("Firebase key can't be null");
     }
 
-
-    dengageManager = DengageManager.getInstance(context)
-      .setLogStatus(logStatus)
-      .setFirebaseIntegrationKey(firebaseKey)
-      .setDisableWebUrl(disableOpenWelUrl)
-      .init()
-
-
+    Dengage.init(
+      context = context,
+      firebaseIntegrationKey = firebaseIntegrationKey,
+      deviceConfigurationPreference = deviceConfigurationPreference,
+      disableOpenWebUrl = disableOpenWelUrl,
+      notificationDisplayPriorityConfiguration = NotificationDisplayPriorityConfiguration.SHOW_WITH_HIGH_PRIORITY
+    )
+    Dengage.setLogStatus(logEnabled)
   }
 
   companion object {
+    private const val LOG_TAG: String = "DengageRNCoordinator"
     var sharedInstance = DengageRNCoordinator()
   }
 }

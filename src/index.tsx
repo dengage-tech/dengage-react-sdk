@@ -25,9 +25,7 @@ export function multiply(a: number, b: number): Promise<number> {
 type DengageType = {
   setIntegrationKey(key: string): void; // iOS only
   setFirebaseIntegrationKey(key: string): void; // android only
-  setContactKey(key: string): void;
-  getContactKey(): Promise<string>;
-  promptForPushNotifications(): void; // iOS only
+  
   promptForPushNotificationsWitCallback(callback: (hasPermission: boolean) => void): void; // iOS only
   setUserPermission(permission: boolean): void;
   registerForRemoteNotifications(enable: boolean): void; // iOS only
@@ -75,6 +73,9 @@ type DengageType = {
   setDeviceId(deviceId: string): void;
 
 
+  promptForPushNotifications(): void; // iOS only
+  setContactKey(key: string): void;
+  getContactKey(): Promise<string | null>; // iOS only
   // NEW
   getSdkVersion(): Promise<string>;
 };

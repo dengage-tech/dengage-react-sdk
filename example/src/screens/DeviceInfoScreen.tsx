@@ -19,6 +19,7 @@ const { PlatformConstants } = NativeModules;
 const DeviceInfoScreen = () => {
 
   // State for async values
+  const [integrationKey, setIntegrationKey] = useState<string>('');
   const [deviceId, setDeviceId] = useState<string>('');
   const [contactKey, setContactKey] = useState<string>('');
   const [token, setToken] = useState<string>('');
@@ -34,14 +35,23 @@ const DeviceInfoScreen = () => {
     // Fetch promise-based values
     Dengage.getSubscription?.().then(sub => {
 
-      //console.log('Subscription:', typeof sub);
+      console.log('Subscription:', sub);
+
+
+      console.log('Integration Key:', sub.integrationKey);
+      if (sub?.integrationKey) {
+        console.log('Integration Key:', sub.integrationKey);
+        setIntegrationKey(sub.integrationKey);
+      }
+
+      if (sub?.deviceId) {
+        setDeviceId(sub.deviceId);
+      }
 
       if (sub?.contactKey) {
         setContactKey(sub.contactKey);
       }
-      if (sub?.deviceId) {
-        setDeviceId(sub.deviceId);
-      }
+      
       if (sub?.token) {
         setToken(sub.token);
       }
@@ -97,7 +107,7 @@ const DeviceInfoScreen = () => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      {renderRow('Integration Key', "")}
+      {renderRow('Integration Key', integrationKey, true)}
       {renderRow('Device ID', deviceId, true)}
       {renderRow('Contact Key', contactKey, true)}
       {renderRow('User Permission', permission)}
