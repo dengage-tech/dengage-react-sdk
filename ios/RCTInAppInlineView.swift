@@ -36,8 +36,6 @@ import React
     print(propertyId ?? "")
     print(screenName ?? "")
     callInAppInline()
-    
-    
   }
   private func callInAppInline() {
     

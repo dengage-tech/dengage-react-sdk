@@ -9,11 +9,11 @@ import {
   Platform,
   ScrollView,
 } from 'react-native';
-//import Dengage, { InAppInlineView } from '@dengage-tech/react-native-dengage';
+import Dengage, { InAppInlineView } from '@dengage-tech/react-native-dengage';
 
 export default function InAppInlineScreen() {
-  const [propertyId, setPropertyId] = useState<string>('');
-  const [screenName, setScreenName] = useState<string>('');
+  const [propertyId, setPropertyId] = useState<string>('3');
+  const [screenName, setScreenName] = useState<string>('gizem7');
   const [customKey1, setCustomKey1] = useState<string>('');
   const [customValue1, setCustomValue1] = useState<string>('');
   const [customKey2, setCustomKey2] = useState<string>('');
@@ -50,7 +50,7 @@ export default function InAppInlineScreen() {
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       >
         <ScrollView contentContainerStyle={styles.container}>
-
+        
 
           <TextInput
             style={styles.input}
@@ -102,6 +102,17 @@ export default function InAppInlineScreen() {
           </View>
 
           <Button title="Show InApp Inline" onPress={onPressShow} />
+
+          {showInline && propertyId.trim() !== '' && (
+          <View style={styles.flex1}>
+            <InAppInlineView
+              propertyId={propertyId.trim() || ""} // Empty string instead of null
+              screenName={screenName.trim() || ""} // Empty string instead of null
+              customParams={getCustomParams()}     // Always an object
+              style={styles.flex1}
+            />
+          </View>
+        )}
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
@@ -109,7 +120,7 @@ export default function InAppInlineScreen() {
 }
 
 const styles = StyleSheet.create({
-  flex: { flex: 1 },
+  flex: { flex: 1, backgroundColor: '#fff000', },
   flex1: { flex: 1 },
   container: {
     padding: 16,

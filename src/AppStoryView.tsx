@@ -25,7 +25,9 @@ export interface StoriesListViewProps {
 
 const styles = StyleSheet.create({
   defaultStyle: {
-    minHeight: 110,
+    minHeight: 160,
+    backgroundColor: '#ffffff',
+
   },
 });
 

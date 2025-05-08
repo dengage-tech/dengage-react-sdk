@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, useMemo } from 'react';
+import React, { useEffect, useState, useRef, useMemo } from 'react';
 import {
   SafeAreaView,
   View,
@@ -8,7 +8,6 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
-  Text,
 } from 'react-native';
 import { StoriesListView } from '@dengage-tech/react-native-dengage';
 
@@ -32,36 +31,6 @@ export default function AppStoryScreen() {
       });
     }
   };
-
-  /*
-  const contentComponent = useMemo(() => {
-    return (
-      <StoriesListView
-        storyPropertyId={'5'}
-        screenName={'5'}
-        customParams={{}}
-        style={styles.flex} 
-        />
-    );
-  }, []); // Add dependencies if needed
-  */
-
-  const getContentComponent = () => {
-    const a = (
-      <StoriesListView
-        storyPropertyId={'5'}
-        screenName={'5'}
-        customParams={{}}
-        style={styles.flex}
-      />
-    );
-
-    const b = <Text>{'asd'}</Text>;
-
-    return b;
-  };
-
-  var counter = 0;
 
   const refreshStory = () => {
     // Remove existing story display
@@ -116,20 +85,16 @@ export default function AppStoryScreen() {
           </View>
 
           <View
-            ref={storyContainerRef}
-            style={[
-              styles.storyContainer,
-              { backgroundColor: storyBackgroundColor },
-            ]}
+            style={styles.storyBackgroundContainer}
           >
-            <View>
+            {showInline && propertyId.trim() !== '' && (
               <StoriesListView
-                storyPropertyId={'5'}
-                screenName={'5'}
+              style={{backgroundColor: storyBackgroundColor}}
+                storyPropertyId={propertyId.trim()}
+                screenName={screenName.trim()}
                 customParams={{}}
               />
-            </View>
-            {/* {showInline && propertyId.trim() !== '' && getContentComponent()} */}
+            )}
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
@@ -139,6 +104,9 @@ export default function AppStoryScreen() {
 
 const styles = StyleSheet.create({
   flex: { flex: 1 },
+  flex1: {
+    flex: 1,
+  },
   container: {
     padding: 16,
     backgroundColor: '#f0f0f0',
@@ -157,12 +125,13 @@ const styles = StyleSheet.create({
     marginTop: 12,
   },
   storyContainer: {
-    height: 200,
+    height: 300,
+    width: '100%',
     marginTop: 16,
+    backgroundColor: '#ffffff',
   },
   storyBackgroundContainer: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: 'white',
   },
 });

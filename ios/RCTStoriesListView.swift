@@ -6,9 +6,7 @@ import Dengage
 @objc public class RCTStoriesListView: RCTView {
   
   static let viewTag = 1453
-  
-  static let urlKey = "url"
-  
+    
   @objc var storyPropertyId: String?
   @objc var screenName: String?
   @objc var customParams: [String: String]? = nil
@@ -37,6 +35,11 @@ import Dengage
       if let storiesListView = storiesListView {
         storiesListView.translatesAutoresizingMaskIntoConstraints = false
         storyView.addSubview(storiesListView as UIView)
+        NSLayoutConstraint.activate([storiesListView.topAnchor.constraint(equalTo: storyView.topAnchor),
+                                     storiesListView.bottomAnchor.constraint(equalTo: storyView.bottomAnchor),
+                                     storiesListView.leadingAnchor.constraint(equalTo: storyView.leadingAnchor),
+                                     storiesListView.trailingAnchor.constraint(equalTo: storyView.trailingAnchor)])
+        
       }
       
     }
