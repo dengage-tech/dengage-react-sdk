@@ -1,171 +1,159 @@
-import React, { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
-  SafeAreaView,
   View,
   Text,
-  TextInput,
   Button,
-  FlatList,
   StyleSheet,
+  ScrollView,
+  TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
-  Alert,
 } from 'react-native';
+import NoCapTextInput from '../components/NoCapTextInput';
+import DeviceInfoItemCell from '../components/DeviceInfoItemCell';
 import Dengage from '@dengage-tech/react-native-dengage';
 
-interface DeviceInfoItem {
-  key: string;
-  value: string;
-}
-
 export default function InAppMessageScreen() {
-  const [screenName, setScreenName] = useState<string>('');
-  const [deviceInfoList, setDeviceInfoList] = useState<DeviceInfoItem[]>([]);
+  const [screenName, setScreenName] = useState('');
+  const [deviceInfoList, setDeviceInfoList] = useState([
+    { key: '', value: '' },
+  ]);
 
   useEffect(() => {
-    /*
-    const info = Dengage.getInAppDeviceInfo?.();
-    if (info && typeof info === 'object') {
-      const entries = Object.entries(info).map(
-        ([k, v]) => ({ key: k, value: v })
+    Dengage.getInAppDeviceInfo().then((info) => {
+      const arr = Object.entries(info || {}).map(([key, value]) => ({
+        key,
+        value,
+      }));
+      setDeviceInfoList(
+        arr.length ? [...arr, { key: '', value: '' }] : [{ key: '', value: '' }]
       );
-      setDeviceInfoList([...entries, { key: '', value: '' }]);
-    } else {
-      setDeviceInfoList([{ key: '', value: '' }]);
-    }
-      */
+    });
   }, []);
 
-  const updateRow = (
-    index: number,
-    field: keyof DeviceInfoItem,
+  const updateDeviceInfo = (
+    idx: number,
+    field: 'key' | 'value',
     text: string
-  ) => {
-    /*
-    setDeviceInfoList(prev => {
-      const newList = [...prev];
-      newList[index] = {
-        ...newList[index],
-        [field]: text,
-      };
-      return newList;
+  ) =>
+    setDeviceInfoList((list) =>
+      list.map((item, i) => (i === idx ? { ...item, [field]: text } : item))
+    );
+
+  const handleSetNavigation = () => {
+    deviceInfoList.forEach(({ key, value }) => {
+      if (key && value) Dengage.setInAppDeviceInfo(key, value);
     });
-    */
+    if (screenName) Dengage.setNavigation(screenName);
   };
 
-  const addNewDeviceInfoRow = () => {
-    setDeviceInfoList(prev => [...prev, { key: '', value: '' }]);
-  };
-
-  const clearDeviceInfo = () => {
-    //Dengage.clearInAppDeviceInfo?.();
+  const handleClearDeviceInfo = () => {
+    Dengage.clearInAppDeviceInfo();
     setDeviceInfoList([{ key: '', value: '' }]);
   };
 
-  const saveDeviceInfo = () => {
-    deviceInfoList.forEach(item => {
-      if (item.key.trim() && item.value.trim()) {
-        //Dengage.setInAppDeviceInfo?.(item.key.trim(), item.value.trim());
-      }
-    });
-  };
-
-  const onSetNavigation = () => {
-    saveDeviceInfo();
-    Dengage.setNavigationWithName?.(screenName.trim());
-  };
-
-  const renderItem = ({ item, index }: { item: DeviceInfoItem; index: number }) => (
-    <View style={styles.row}>
-      <TextInput
-        style={styles.inputKey}
-        placeholder="Key"
-        value={item.key}
-        onChangeText={text => updateRow(index, 'key', text)}
-      />
-      <TextInput
-        style={styles.inputValue}
-        placeholder="Value"
-        value={item.value}
-        onChangeText={text => updateRow(index, 'value', text)}
-      />
-    </View>
-  );
-
   return (
-    <SafeAreaView style={styles.flex}>
-      <KeyboardAvoidingView
-        style={styles.flex}
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-      >
-        <View style={styles.container}>
-          <TextInput
-            style={styles.screenInput}
-            placeholder="Screen Name"
-            value={screenName}
-            onChangeText={setScreenName}
-            autoCapitalize="none"
-          />
-          <Button title="Set Navigation" onPress={onSetNavigation} />
-          {/* <View style={styles.buttonMargin}>
-            <Button title="Clear Device Info" onPress={clearDeviceInfo} />
-          </View>
-          <View style={styles.buttonMargin}>
-            <Button title="Add New Device Info" onPress={addNewDeviceInfoRow} />
-          </View>
-          <FlatList
-            data={deviceInfoList}
-            keyExtractor={(_, idx) => idx.toString()}
-            renderItem={renderItem}
-            contentContainerStyle={styles.list}
-          /> */}
+    <KeyboardAvoidingView
+      style={styles.flex}
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+    >
+      <ScrollView contentContainerStyle={styles.container}>
+        <NoCapTextInput
+          placeholder="Screen Name"
+          value={screenName}
+          onChangeText={setScreenName}
+          style={styles.input}
+        />
+
+        <View style={styles.buttonColumn}>
+          <Button title="Set Navigation" onPress={handleSetNavigation} />
+          <View style={{ height: 10 }} />
+          <Button title="Clear Device Info" onPress={handleClearDeviceInfo} />
         </View>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+
+        <View style={styles.deviceInfoContainer}>
+          <Text style={styles.deviceInfoTitle}>Device Info</Text>
+          {deviceInfoList.map((info, idx) => (
+            <DeviceInfoItemCell
+              key={idx}
+              keyName={info.key}
+              valueName={info.value}
+              onChangeKey={(text) => updateDeviceInfo(idx, 'key', text)}
+              onChangeValue={(text) => updateDeviceInfo(idx, 'value', text)}
+            />
+          ))}
+          <View style={styles.deviceInfoButtonRow}>
+            <TouchableOpacity
+              onPress={() =>
+                setDeviceInfoList((list) => [...list, { key: '', value: '' }])
+              }
+              style={styles.deviceInfoSmallButton}
+            >
+              <Text style={styles.deviceInfoSmallButtonText}>
+                + Add New Device Info
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={handleClearDeviceInfo}
+              style={[
+                styles.deviceInfoSmallButton,
+                { backgroundColor: '#ffeaea' },
+              ]}
+            >
+              <Text
+                style={[styles.deviceInfoSmallButtonText, { color: '#d00' }]}
+              >
+                Clear Device Info
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
   flex: { flex: 1 },
   container: {
-    flex: 1,
     padding: 16,
     backgroundColor: '#fff',
   },
-  screenInput: {
-    height: 48,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    borderRadius: 4,
-    paddingHorizontal: 12,
-    fontSize: 16,
+  input: {
     marginBottom: 12,
   },
-  buttonMargin: {
-    marginTop: 12,
+  buttonColumn: {
+    flexDirection: 'column',
+    marginBottom: 18,
   },
-  list: {
-    marginTop: 20,
+  deviceInfoContainer: {
+    backgroundColor: '#f0f0f0',
+    borderRadius: 8,
+    padding: 12,
+    marginTop: 10,
   },
-  row: {
+  deviceInfoTitle: {
+    fontWeight: 'bold',
+    marginBottom: 8,
+    color: '#222',
+  },
+  deviceInfoButtonRow: {
     flexDirection: 'row',
-    marginBottom: 12,
+    gap: 10,
+    marginTop: 12,
+    justifyContent: 'flex-end',
   },
-  inputKey: {
-    flex: 1,
-    height: 40,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    borderRadius: 4,
-    paddingHorizontal: 8,
-    marginRight: 8,
+  deviceInfoSmallButton: {
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    backgroundColor: '#d3d3d3',
+    borderRadius: 5,
+    alignItems: 'center',
+    minWidth: 0,
   },
-  inputValue: {
-    flex: 1,
-    height: 40,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    borderRadius: 4,
-    paddingHorizontal: 8,
+  deviceInfoSmallButtonText: {
+    color: '#007bff',
+    fontWeight: 'bold',
+    fontSize: 13,
   },
 });

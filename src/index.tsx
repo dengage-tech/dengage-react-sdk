@@ -27,7 +27,6 @@ type DengageType = {
   setFirebaseIntegrationKey(key: string): void; // android only
   
   promptForPushNotificationsWitCallback(callback: (hasPermission: boolean) => void): void; // iOS only
-  setUserPermission(permission: boolean): void;
   registerForRemoteNotifications(enable: boolean): void; // iOS only
   getUserPermission(): Promise<boolean>; // android only, in iOS use promptForPushNotificationsWitCallback
   getToken(): Promise<string>;
@@ -54,7 +53,7 @@ type DengageType = {
   setNavigationWithName(screenName: string): void;
   onMessageReceived(params: object): void;
   stopGeofence(): void;
-  requestLocationPermissions(): void;
+  
   startGeofence(): void;
   resetAppBadge():void; // android only
   showRealTimeInApp(screenName: string, data: object): void;
@@ -73,11 +72,21 @@ type DengageType = {
   setDeviceId(deviceId: string): void;
 
 
+
+  
+
   promptForPushNotifications(): void; // iOS only
-  setContactKey(key: string): void;
+  setContactKey(key: string | null): void;
   getContactKey(): Promise<string | null>; // iOS only
+  setUserPermission(permission: boolean): void;
+  requestLocationPermissions(): void;
+  setNavigation(screenName: string | null): void;
+  setInAppDeviceInfo(key: string, value: string): void;
+  clearInAppDeviceInfo(): void;
+  getInAppDeviceInfo(): Promise<Record<string, string>>;
   // NEW
   getSdkVersion(): Promise<string>;
+
 };
 
 DengageRN?.registerNotificationListeners?.()

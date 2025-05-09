@@ -8,6 +8,86 @@ import DengageGeofence
 @objc(DengageRN)
 class ReactNativeDengage: RCTEventEmitter {
   
+  @objc
+  func promptForPushNotifications() {
+    Dengage.promptForPushNotifications()
+  }
+  
+  @objc(setContactKey:)
+  func setContactKey(contactKey: String?) {
+    Dengage.setContactKey(contactKey: contactKey)
+  }
+  
+  @objc
+  func getContactKey(_ resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
+    let contactKey = Dengage.getContactKey()
+    resolve(contactKey)
+  }
+  
+  @objc(setUserPermission:)
+  func setUserPermission(permission: Bool) {
+    Dengage.setUserPermission(permission: permission)
+  }
+  
+  @objc(requestLocationPermissions)
+  func requestLocationPermissions(){
+#if canImport(DengageGeofence)
+    DengageGeofence.requestLocationPermissions()
+#endif
+  }
+  
+  @objc(setNavigation:)
+  func setNavigation(screenName: NSString){
+    Dengage.setNavigation(screenName: screenName as String)
+  }
+  
+  @objc(setInAppDeviceInfo:withValue:)
+  func setInAppDeviceInfo(key: String, value: String){
+    Dengage.setInAppDeviceInfo(key: key, value: value)
+  }
+  
+  @objc(clearInAppDeviceInfo)
+  func clearInAppDeviceInfo() {
+    Dengage.clearInAppDeviceInfo()
+  }
+  
+  @objc
+  func getInAppDeviceInfo(_ resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock){
+    let deviceInfo = Dengage.getInAppDeviceInfo()
+    resolve(deviceInfo)
+  }
+  
+  
+  
+  @objc(startGeofence)
+  func startGeofence(){
+#if canImport(DengageGeofence)
+    DengageGeofence.startGeofence()
+#endif
+  }
+  
+  
+  
+  
+  @objc(stopGeofence)
+  func stopGeofence(){
+#if canImport(DengageGeofence)
+    DengageGeofence.stopGeofence()
+#endif
+  }
+  
+  
+  
+
+  
+  
+  
+  
+  
+  
+  
+
+  
   @objc(multiply:withB:withResolver:withRejecter:)
   func multiply(a: Float, b: Float, resolve:RCTPromiseResolveBlock,reject:RCTPromiseRejectBlock) -> Void {
     resolve(a*b)
@@ -18,10 +98,7 @@ class ReactNativeDengage: RCTEventEmitter {
     Dengage.setIntegrationKey(key: key)
   }
   
-  @objc
-  func promptForPushNotifications() {
-    Dengage.promptForPushNotifications()
-  }
+  
   
   @objc(promptForPushNotificationsWitCallback:)
   func promptForPushNotifications(callback: @escaping RCTResponseSenderBlock) {
@@ -30,10 +107,7 @@ class ReactNativeDengage: RCTEventEmitter {
     }
   }
   
-  @objc(setUserPermission:)
-  func setUserPermission(permission: Bool) {
-    Dengage.setUserPermission(permission: permission)
-  }
+  
   
   @objc(registerForRemoteNotifications:)
   func registerForRemoteNotifications(enable: Bool) {
@@ -45,11 +119,7 @@ class ReactNativeDengage: RCTEventEmitter {
     resolve(Dengage.getDeviceToken())
   }
   
-  @objc
-  func getContactKey(_ resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
-    let contactKey = Dengage.getContactKey()
-    resolve(contactKey)
-  }
+  
   
   @objc(setToken:)
   func setToken(token: String) {
@@ -61,10 +131,7 @@ class ReactNativeDengage: RCTEventEmitter {
     Dengage.setLogStatus(isVisible: isVisible)
   }
   
-  @objc(setContactKey:)
-  func setContactKey(contactKey: String) {
-    Dengage.setContactKey(contactKey: contactKey)
-  }
+  
   
   @objc(registerNotificationListeners)
   func registerNotificationListeners () {
@@ -389,37 +456,8 @@ class ReactNativeDengage: RCTEventEmitter {
       }
     }
   }
-  
-  @objc(setNavigation)
-  func setNavigation(){
-    Dengage.setNavigation()
-  }
-  
-  @objc(setNavigationWithName:)
-  func setNavigationWithName(screenName: NSString) {
-    Dengage.setNavigation(screenName: screenName as String)
-  }
-  
-  @objc(stopGeofence)
-  func stopGeofence(){
-#if canImport(DengageGeofence)
-    DengageGeofence.stopGeofence()
-#endif
-  }
-  
-  @objc(requestLocationPermissions)
-  func requestLocationPermissions(){
-#if canImport(DengageGeofence)
-    DengageGeofence.requestLocationPermissions()
-#endif
-  }
-  
-  @objc(startGeofence)
-  func startGeofence(){
-#if canImport(DengageGeofence)
-    DengageGeofence.startGeofence()
-#endif
-  }
+
+
   
   @objc(setCategoryPath:)
   func setCategoryPath(path: NSString) {

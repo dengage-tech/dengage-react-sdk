@@ -1,153 +1,132 @@
 import { useEffect, useState } from 'react';
 import {
-  ScrollView,
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
-  ToastAndroid,
   Alert,
-  Dimensions,
+  ToastAndroid,
   Platform,
+  Dimensions,
+  PixelRatio,
   NativeModules,
+  ScrollView,
 } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import Dengage from '@dengage-tech/react-native-dengage';
 
 const { PlatformConstants } = NativeModules;
 
-const DeviceInfoScreen = () => {
+export default function DeviceInfoScreen() {
+  const [info, setInfo] = useState({
+    integrationKey: '',
+    deviceId: '',
+    contactKey: '',
+    token: '',
+    sdkVersion: '',
+    permission: '',
+  });
 
-  // State for async values
-  const [integrationKey, setIntegrationKey] = useState<string>('');
-  const [deviceId, setDeviceId] = useState<string>('');
-  const [contactKey, setContactKey] = useState<string>('');
-  const [token, setToken] = useState<string>('');
-  const [sdkVersion, setSdkVersion] = useState<string>('');
-  const [permission, setPermission] = useState<string>('');
-
-  // Trigger page view analytics
   useEffect(() => {
-    //if (Dengage.sendPageView) {
-    //  Dengage.sendPageView('device-info');
-    //}
-
-    // Fetch promise-based values
-    Dengage.getSubscription?.().then(sub => {
-
-      console.log('Subscription:', sub);
-
-
-      console.log('Integration Key:', sub.integrationKey);
-      if (sub?.integrationKey) {
-        console.log('Integration Key:', sub.integrationKey);
-        setIntegrationKey(sub.integrationKey);
-      }
-
-      if (sub?.deviceId) {
-        setDeviceId(sub.deviceId);
-      }
-
-      if (sub?.contactKey) {
-        setContactKey(sub.contactKey);
-      }
-      
-      if (sub?.token) {
-        setToken(sub.token);
-      }
-      if (sub?.sdkVersion) {
-        setSdkVersion(sub.sdkVersion);
-      }
-      setPermission(sub?.permission ? 'true' : 'false');
-      if (sub?.sdkVersion) {
-        setSdkVersion(sub.sdkVersion);
-      }
-    }).catch((err) => {
-      console.error('Error fetching subscription:', err);
-    });
-
-    //Dengage.getDeviceId?.().then(val => setDeviceId(val ?? '')).catch(() => {});
-    //Dengage.getContactKey?.().then(val => setContactKey(val ?? '')).catch(() => {});
-    //Dengage.getToken?.().then(val => setToken(val ?? '')).catch(() => {});
-    //Dengage.getSdkVersion?.().then(val => setSdkVersion(val ?? '')).catch(() => {});
+    Dengage.getSubscription?.()
+      .then((sub) =>
+        setInfo({
+          integrationKey: sub?.integrationKey || '',
+          deviceId: sub?.deviceId || '',
+          contactKey: sub?.contactKey || '',
+          token: sub?.token || '',
+          sdkVersion: sub?.sdkVersion || '',
+          permission: sub?.permission ? 'true' : 'false',
+        })
+      )
+      .catch((err) => console.error('Error fetching subscription:', err));
   }, []);
-
 
   const brand = PlatformConstants?.Manufacturer || Platform.OS;
   const model = PlatformConstants?.Model || 'Unknown';
   const { width, height } = Dimensions.get('window');
+  const pixelRatio = PixelRatio.get();
+  const realWidth = Math.round(width * pixelRatio);
+  const realHeight = Math.round(height * pixelRatio);
   const osVersion = Platform.Version;
 
-  const copyToClipboard = (label: string, value: string) => {
+  const fields = [
+    { label: 'Integration Key', value: info.integrationKey },
+    { label: 'Device ID', value: info.deviceId },
+    { label: 'Contact Key', value: info.contactKey },
+    { label: 'User Permission', value: info.permission },
+    { label: 'Device Token', value: info.token },
+    { label: 'Device Brand', value: brand },
+    { label: 'Device Model', value: model },
+    { label: 'SDK Version', value: info.sdkVersion },
+    { label: 'Screen Width', value: realWidth.toString() },
+    { label: 'Screen Height', value: realHeight.toString() },
+    { label: 'OS Version', value: osVersion.toString() },
+  ];
+
+  const handleCopy = (label: string, value: string) => {
     if (!value) return;
     Clipboard.setString(value);
-    if (Platform.OS === 'android') {
-      ToastAndroid.show(`${label} copied`, ToastAndroid.SHORT);
-    } else {
-      Alert.alert('Copied', `${label} copied to clipboard`);
-    }
+    Platform.OS === 'android'
+      ? ToastAndroid.show(`${label} copied`, ToastAndroid.SHORT)
+      : Alert.alert('Copied', `${label} copied to clipboard`);
   };
 
-  const renderRow = (
-    label: string,
-    value: string,
-    copyable: boolean = false
-  ) => (
-    <View style={styles.row} key={label}>
-      <Text style={styles.label}>{label}:</Text>
-      {copyable ? (
-        <TouchableOpacity onPress={() => copyToClipboard(label, value)}>
-          <Text style={[styles.value, styles.copyable]}>{value}</Text>
-        </TouchableOpacity>
-      ) : (
-        <Text style={styles.value}>{value}</Text>
-      )}
-    </View>
-  );
-
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      {renderRow('Integration Key', integrationKey, true)}
-      {renderRow('Device ID', deviceId, true)}
-      {renderRow('Contact Key', contactKey, true)}
-      {renderRow('User Permission', permission)}
-      {renderRow('Device Token', token, true)}
-      {renderRow('Device Brand', brand, true)}
-      {renderRow('Device Model', model, true)}
-      {renderRow('Advertising ID', "advertisingId")}
-      {renderRow('Time Zone', "timeZone")}
-      {renderRow('Language', "language")}
-      {renderRow('SDK Version', sdkVersion)}
-      {renderRow('Screen Width', width.toString())}
-      {renderRow('Screen Height', height.toString())}
-      {renderRow('OS Version', osVersion.toString())}
+    <ScrollView contentContainerStyle={styles.list}>
+      <View style={styles.card}>
+        {fields.map((item, idx) => (
+          <View key={item.label}>
+            <TouchableOpacity
+              style={styles.row}
+              onLongPress={() => handleCopy(item.label, item.value)}
+              activeOpacity={0.7}
+            >
+              <Text style={styles.cellLabel}>{item.label}</Text>
+              <Text style={styles.cellValue}>{item.value}</Text>
+            </TouchableOpacity>
+            {idx !== fields.length - 1 && <View style={styles.separator} />}
+          </View>
+        ))}
+      </View>
     </ScrollView>
   );
-};
+}
 
 const styles = StyleSheet.create({
-  container: {
+  list: {
     padding: 16,
+    backgroundColor: '#f2f2f7',
+    flexGrow: 1,
+  },
+  card: {
     backgroundColor: '#fff',
+    borderRadius: 16,
+    overflow: 'hidden',
+    shadowColor: '#000',
+    shadowOpacity: 0.04,
+    shadowRadius: 2,
+    shadowOffset: { width: 0, height: 1 },
+    elevation: 1,
   },
   row: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    marginBottom: 12,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
   },
-  label: {
-    fontWeight: 'bold',
-    marginRight: 6,
-    fontSize: 16,
-    color: '#000',
+  cellLabel: {
+    fontSize: 12,
+    color: '#888',
+    marginBottom: 2,
   },
-  value: {
-    fontSize: 16,
-    color: '#000',
+  cellValue: {
+    fontSize: 13,
+    color: '#222',
+    fontWeight: '500',
   },
-  copyable: {
-    textDecorationLine: 'underline',
+  separator: {
+    height: 1,
+    backgroundColor: '#ececec',
+    marginLeft: 16,
+    marginRight: 16,
   },
 });
-
-export default DeviceInfoScreen;

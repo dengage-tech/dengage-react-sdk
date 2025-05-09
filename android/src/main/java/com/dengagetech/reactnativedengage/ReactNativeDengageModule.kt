@@ -66,7 +66,38 @@ class ReactNativeDengageModule(reactContext: ReactApplicationContext) :
     }
   }
 
+
+
   companion object {
     const val NAME = "DengageRN"
   }
+
+
+  /*
+  fun requestLocationPermissions() {
+    try {
+      val clazz = Class.forName("com.dengage.geofence.DengageGeofence")
+      val method = clazz.getMethod("requestLocationPermissions")
+      method.invoke(null) // statik method olduğu için null geçiyoruz
+    } catch (e: ClassNotFoundException) {
+      println("DengageGeofence kütüphanesi bulunamadı")
+    } catch (e: Exception) {
+      e.printStackTrace()
+    }
+  }
+
+
+  fun requestLocationPermissions() {
+    try {
+      val clazz = Class.forName("com.dengage.geofence.DengageGeofence")
+      val instance = clazz.getDeclaredConstructor().newInstance()
+      val method = clazz.getMethod("requestLocationPermissions")
+      method.invoke(instance)
+    } catch (e: ClassNotFoundException) {
+      println("DengageGeofence kütüphanesi bulunamadı")
+    } catch (e: Exception) {
+      e.printStackTrace()
+    }
+  }
+  */
 }

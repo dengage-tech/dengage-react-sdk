@@ -15,6 +15,7 @@ import {
   InAppMessageScreen,
   InAppInlineScreen,
   AppStoryScreen,
+  GeofenceScreen
 } from './screens';
 
 
@@ -38,7 +39,7 @@ const App = () => {
         <Stack.Screen name="InAppMessages" component={InAppMessageScreen} />
         {/* <Stack.Screen name="RealTimeInApp" component={PlaceholderScreen} /> */}
         {/* <Stack.Screen name="SetTags" component={PlaceholderScreen} /> */}
-        {/* <Stack.Screen name="Geofence" component={PlaceholderScreen} /> */}
+         <Stack.Screen name="Geofence" component={GeofenceScreen} />
         <Stack.Screen name="InlineInApp" component={InAppInlineScreen} />
         <Stack.Screen name="AppStory" component={AppStoryScreen} />
       </Stack.Navigator>

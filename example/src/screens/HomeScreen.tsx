@@ -1,31 +1,17 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
 import type { StackNavigationProp } from '@react-navigation/stack';
-import type { RouteProp } from '@react-navigation/native';
 import Dengage from '@dengage-tech/react-native-dengage';
 import type { RootStackParamList } from '../types';
 
 type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
-type HomeScreenRouteProp = RouteProp<RootStackParamList, 'Home'>;
 
 type HomeScreenProps = {
   navigation: HomeScreenNavigationProp;
-  route: HomeScreenRouteProp;
 };
 
 const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
-
-  console.log('HomeScreen rendered');
-
-
-/*   useEffect(() => {
-    console.log('HomeScreen mounted');
-    return () => {
-      console.log('HomeScreen unmounted');
-    };
-  }, []); */
-
-
+  
   const actions: Array<{ title: string; screen: keyof RootStackParamList }> = [
     { title: 'ASK NOTIFICATIONS', screen: 'Notification' },
     { title: 'DEVICE INFO', screen: 'DeviceInfo' },

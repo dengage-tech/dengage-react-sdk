@@ -18,25 +18,54 @@ RCT_EXTERN_METHOD(multiply:(float)a withB:(float)b
     return @[@"onNotificationClicked",@"retrieveInAppLink"];
 }
 
+RCT_EXTERN_METHOD(promptForPushNotifications)
+
+RCT_EXTERN_METHOD(setContactKey:(NSString *)contactKey)
+
+RCT_EXTERN_METHOD(getContactKey:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(setUserPermission:(BOOL)permission)
+
+RCT_EXTERN_METHOD(requestLocationPermissions)
+
+RCT_EXTERN_METHOD(setNavigation:(NSString *)screenName)
+
+RCT_EXTERN_METHOD(setInAppDeviceInfo:(NSString *)key withValue:(NSString *)value)
+
+RCT_EXTERN_METHOD(clearInAppDeviceInfo)
+
+RCT_EXTERN_METHOD(getInAppDeviceInfo:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
+
+
+
+
+
+
+
+RCT_EXTERN_METHOD(startGeofence)
+
+RCT_EXTERN_METHOD(stopGeofence)
+
+
+
 RCT_EXTERN_METHOD(setIntegrationKey:(NSString *)key)
 
-RCT_EXTERN_METHOD(promptForPushNotifications)
+
 
 RCT_EXTERN_METHOD(promptForPushNotificationsWitCallback:(RCTResponseSenderBlock)callback)
 
-RCT_EXTERN_METHOD(setUserPermission:(BOOL)permission)
+
 
 RCT_EXTERN_METHOD(registerForRemoteNotifications:(BOOL)enable)
 
 RCT_EXTERN_METHOD(getToken:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
 
-RCT_EXTERN_METHOD(getContactKey:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
 
 RCT_EXTERN_METHOD(setToken:(NSString *)token)
 
 RCT_EXTERN_METHOD(setLogStatus:(BOOL)isVisible)
 
-RCT_EXTERN_METHOD(setContactKey:(NSString *)contactKey)
+
 
 RCT_EXTERN_METHOD(handleNotificationActionBlock:(RCTResponseSenderBlock)callback)
 
@@ -70,15 +99,12 @@ RCT_EXTERN_METHOD(deleteInboxMessage:(NSString *)id resolve:(RCTPromiseResolveBl
 
 RCT_EXTERN_METHOD(setInboxMessageAsClicked:(NSString *)id resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
 
-RCT_EXTERN_METHOD(setNavigation)
 
-RCT_EXTERN_METHOD(setNavigationWithName:(NSString *)screenName)
 
-RCT_EXTERN_METHOD(stopGeofence)
 
-RCT_EXTERN_METHOD(requestLocationPermissions)
 
-RCT_EXTERN_METHOD(startGeofence)
+
+
 
 RCT_EXTERN_METHOD(showRealTimeInApp:(NSString *)screenName withData:(NSDictionary *)withData)
 

@@ -58,6 +58,17 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
   return [self bundleURL];
 }
 
+
+/*
+ - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge {
+   #ifdef DEBUG
+     return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackExtension:nil];
+   #else
+     return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
+   #endif
+ }
+ */
+
 - (NSURL *)bundleURL
 {
 #if DEBUG

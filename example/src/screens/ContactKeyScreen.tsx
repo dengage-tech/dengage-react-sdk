@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import {
   View,
   Text,
-  TextInput,
   Switch,
   Button,
   StyleSheet,
@@ -11,35 +10,20 @@ import {
   Platform,
   ScrollView,
 } from 'react-native';
+import NoCapTextInput from '../components/NoCapTextInput';
 import Dengage from '@dengage-tech/react-native-dengage';
 
-const ContactKeyScreen = () => {
-  const [contactKey, setContactKey] = useState<string>('');
-  const [permission, setPermission] = useState<boolean>(false);
+export default function ContactKeyScreen() {
+  const [contactKey, setContactKey] = useState('');
+  const [permission, setPermission] = useState(false);
 
   useEffect(() => {
-
-    Dengage.getContactKey?.().then((key) => {
-
-      if (key) {
-        setContactKey(key);
-      }
-    }).catch((err) => {
-      console.error('Error fetching contact key:', err);
-    });
-
     Dengage.getSubscription?.()
       .then((sub) => {
-        if (sub?.contactKey) {
-          setContactKey(sub.contactKey);
-        }
-        if (sub?.permission) {
-          setPermission(sub.permission);
-        }
+        setContactKey(sub?.contactKey ?? '');
+        setPermission(!!sub?.permission);
       })
-      .catch((err) => {
-        console.error('Error fetching subscription:', err);
-      });
+      .catch((err) => console.error('Error fetching subscription:', err));
   }, []);
 
   const saveContactKey = () => {
@@ -58,12 +42,10 @@ const ContactKeyScreen = () => {
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
       <ScrollView contentContainerStyle={styles.container}>
-        <TextInput
-          style={styles.input}
+        <NoCapTextInput
           placeholder="Contact Key"
           value={contactKey}
           onChangeText={setContactKey}
-          autoCapitalize="none"
         />
         <View style={styles.permissionRow}>
           <Text style={styles.permissionLabel}>User Permission</Text>
@@ -75,35 +57,16 @@ const ContactKeyScreen = () => {
       </ScrollView>
     </KeyboardAvoidingView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   flex: { flex: 1 },
-  container: {
-    padding: 16,
-    backgroundColor: '#fff',
-  },
-  input: {
-    height: 48,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    borderRadius: 4,
-    paddingHorizontal: 12,
-    fontSize: 16,
-    marginBottom: 12,
-  },
-  buttonContainer: {
-    marginBottom: 20,
-  },
+  container: { padding: 16 },
+  buttonContainer: { marginBottom: 20 },
   permissionRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-  permissionLabel: {
-    fontSize: 16,
-    color: '#000',
-  },
+  permissionLabel: { fontSize: 16, color: '#000' },
 });
-
-export default ContactKeyScreen;
