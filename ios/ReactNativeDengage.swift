@@ -4,14 +4,22 @@ import Dengage
 import DengageGeofence
 #endif
 
-
 @objc(DengageRN)
 class ReactNativeDengage: RCTEventEmitter {
+  
+  // MARK: - Push Notifications
   
   @objc
   func promptForPushNotifications() {
     Dengage.promptForPushNotifications()
   }
+  
+  @objc(setUserPermission:)
+  func setUserPermission(permission: Bool) {
+    Dengage.setUserPermission(permission: permission)
+  }
+  
+  // MARK: - Contact Key
   
   @objc(setContactKey:)
   func setContactKey(contactKey: String?) {
@@ -20,29 +28,20 @@ class ReactNativeDengage: RCTEventEmitter {
   
   @objc
   func getContactKey(_ resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
-    let contactKey = Dengage.getContactKey()
-    resolve(contactKey)
+    resolve(Dengage.getContactKey())
   }
   
-  @objc(setUserPermission:)
-  func setUserPermission(permission: Bool) {
-    Dengage.setUserPermission(permission: permission)
-  }
-  
-  @objc(requestLocationPermissions)
-  func requestLocationPermissions(){
-#if canImport(DengageGeofence)
-    DengageGeofence.requestLocationPermissions()
-#endif
-  }
+  // MARK: - Navigation
   
   @objc(setNavigation:)
-  func setNavigation(screenName: NSString){
+  func setNavigation(screenName: NSString) {
     Dengage.setNavigation(screenName: screenName as String)
   }
   
+  // MARK: - In-App Device Info
+  
   @objc(setInAppDeviceInfo:withValue:)
-  func setInAppDeviceInfo(key: String, value: String){
+  func setInAppDeviceInfo(key: String, value: String) {
     Dengage.setInAppDeviceInfo(key: key, value: value)
   }
   
@@ -52,33 +51,61 @@ class ReactNativeDengage: RCTEventEmitter {
   }
   
   @objc
-  func getInAppDeviceInfo(_ resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock){
-    let deviceInfo = Dengage.getInAppDeviceInfo()
-    resolve(deviceInfo)
+  func getInAppDeviceInfo(_ resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
+    resolve(Dengage.getInAppDeviceInfo())
   }
   
+  // MARK: - Geofence
   
+  @objc(requestLocationPermissions)
+  func requestLocationPermissions() {
+#if canImport(DengageGeofence)
+    DengageGeofence.requestLocationPermissions()
+#endif
+  }
   
   @objc(startGeofence)
-  func startGeofence(){
+  func startGeofence() {
 #if canImport(DengageGeofence)
     DengageGeofence.startGeofence()
 #endif
   }
   
-  
-  
-  
   @objc(stopGeofence)
-  func stopGeofence(){
+  func stopGeofence() {
 #if canImport(DengageGeofence)
     DengageGeofence.stopGeofence()
 #endif
   }
   
+  // MARK: - Subscription
+  
+  @objc
+  func getSubscription(_ resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
+    let subscription = Subscription(
+      integrationKey: "",
+      token: Dengage.getDeviceToken(),
+      appVersion: "",
+      sdkVersion: Dengage.getSdkVersion() ?? "",
+      deviceId: Dengage.getDeviceId(),
+      advertisingId: "",
+      carrierId: "",
+      contactKey: Dengage.getContactKey(),
+      permission: Dengage.getPermission(),
+      trackingPermission: false,
+      tokenType: "",
+      webSubscription: "",
+      testGroup: "",
+      country: "",
+      language: "",
+      timezone: "",
+      partnerDeviceId: "",
+      locationPermission: ""
+    )
+    resolve(subscription.toDictionary())
+  }
   
   
-
   
   
   
@@ -86,7 +113,15 @@ class ReactNativeDengage: RCTEventEmitter {
   
   
   
-
+  
+  
+  
+  
+  
+  
+  
+  
+  
   
   @objc(multiply:withB:withResolver:withRejecter:)
   func multiply(a: Float, b: Float, resolve:RCTPromiseResolveBlock,reject:RCTPromiseRejectBlock) -> Void {
@@ -358,21 +393,7 @@ class ReactNativeDengage: RCTEventEmitter {
     }
   }
   
-  @objc
-  func getSubscription(_ resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock){
-    
-    let subscription = Subscription(integrationKey: "", token: Dengage.getDeviceToken(), appVersion: "", sdkVersion: Dengage.getSdkVersion() ?? "", deviceId: Dengage.getDeviceId(), advertisingId: "", carrierId: "", contactKey: Dengage.getContactKey(), permission: Dengage.getPermission(), trackingPermission: false, tokenType: "", webSubscription: "", testGroup: "", country: "", language: "", timezone: "", partnerDeviceId: "", locationPermission: "")
-    
-    
-    do {
-      //let encodedData = try JSONSerialization.data(withJSONObject: subscription, options: .prettyPrinted)
-      //let jsonString = String(data: encodedData, encoding: .utf8)
-      resolve(subscription.toDictionary())
-    } catch {
-      reject("getSubscriptionError", error.localizedDescription, error)
-    }
-    
-  }
+
   
   @objc(getInboxMessages:limit:resolve:reject:)
   func getInboxMessages(offset: Int = 10, limit: Int = 20, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock){
@@ -553,5 +574,4 @@ class ReactNativeDengage: RCTEventEmitter {
   func getSdkVersion(_ resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
     resolve(Dengage.getSdkVersion())
   }
-  
 }

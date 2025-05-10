@@ -12,7 +12,8 @@ import Dengage from '@dengage-tech/react-native-dengage';
 export default function GeofenceScreen() {
 
 
-  const changeStoryBackgroundColor = () => {
+  const requestLocationPermissions = () => {
+    Dengage.requestLocationPermissions();
   };
 
   const stopGeofence = () => {
@@ -29,7 +30,7 @@ export default function GeofenceScreen() {
           <View style={styles.buttonMargin}>
             <Button
               title="Request Location Always Authorization"
-              onPress={changeStoryBackgroundColor}
+              onPress={requestLocationPermissions}
             />
           </View>
 
@@ -48,21 +49,7 @@ const styles = StyleSheet.create({
     padding: 16,
     backgroundColor: '#f0f0f0',
   },
-  input: {
-    height: 48,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    borderRadius: 4,
-    paddingHorizontal: 12,
-    fontSize: 16,
-    marginBottom: 12,
-    backgroundColor: '#fff',
-  },
   buttonMargin: {
     marginTop: 12,
-  },
-  storyContainer: {
-    width: '100%',
-    marginTop: 16,
   },
 });

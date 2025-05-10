@@ -16,82 +16,58 @@ import DengageGeofence
 
 @objc(DengageRNCoordinator)
 public class DengageRNCoordinator: NSObject {
-  @objc public static let staticInstance: DengageRNCoordinator = DengageRNCoordinator()
-  
-  // todo: will remove in case not used.
-  @objc var integerationKey: String?
-  @objc var launchOptions: [UIApplication.LaunchOptionsKey: Any]?
-  
-  @objc(setupDengage:launchOptions:application:askNotificaionPermission:enableGeoFence:disableOpenURL:badgeCountReset:logVisible:)
-  public func setupDengage(
-    key: NSString, launchOptions: NSDictionary?, application: UIApplication,
-    askNotificaionPermission: DarwinBoolean, enableGeoFence: DarwinBoolean,
-    disableOpenURL: DarwinBoolean, badgeCountReset: DarwinBoolean, logVisible: DarwinBoolean
-  ) {
-    Dengage.setIntegrationKey(key: key as String)
-    if launchOptions != nil {
-      
-      let options = DengageOptions.init(
-        disableOpenURL: disableOpenURL.boolValue, badgeCountReset: badgeCountReset.boolValue,
-        disableRegisterForRemoteNotifications: false)
-      
-      Dengage.initWithLaunchOptions(
-        application: application, withLaunchOptions: launchOptions as! [UIApplication.LaunchOptionsKey: Any],
-        dengageOptions: options)
-      
-    } else {
-      
-      let options = DengageOptions.init(
-        disableOpenURL: disableOpenURL.boolValue, badgeCountReset: badgeCountReset.boolValue,
-        disableRegisterForRemoteNotifications: false)
-      
-      Dengage.initWithLaunchOptions(application: application, withLaunchOptions: [:], dengageOptions: options)
-      
+    @objc public static let staticInstance = DengageRNCoordinator()
+    @objc var integrationKey: String?
+    @objc var launchOptions: [UIApplication.LaunchOptionsKey: Any]?
+
+    @objc(setupDengage:launchOptions:application:askNotificationPermission:enableGeoFence:disableOpenURL:badgeCountReset:logVisible:)
+    public func setupDengage(
+        key: NSString,
+        launchOptions: NSDictionary?,
+        application: UIApplication,
+        askNotificationPermission: DarwinBoolean,
+        enableGeoFence: DarwinBoolean,
+        disableOpenURL: DarwinBoolean,
+        badgeCountReset: DarwinBoolean,
+        logVisible: DarwinBoolean
+    ) {
+        Dengage.setIntegrationKey(key: key as String)
+        let options = DengageOptions(
+            disableOpenURL: disableOpenURL.boolValue,
+            badgeCountReset: badgeCountReset.boolValue,
+            disableRegisterForRemoteNotifications: false
+        )
+        let opts = launchOptions as? [UIApplication.LaunchOptionsKey: Any] ?? [:]
+        Dengage.initWithLaunchOptions(application: application, withLaunchOptions: opts, dengageOptions: options)
+
+        if askNotificationPermission.boolValue {
+            Dengage.promptForPushNotifications()
+        }
+        #if canImport(DengageGeofence)
+        if enableGeoFence.boolValue {
+            DengageGeofence.startGeofence()
+        }
+        #endif
+        Dengage.setLog(isVisible: logVisible.boolValue)
+        Dengage.setHybridAppEnvironment()
     }
-    
-    if askNotificaionPermission.boolValue {
-      //Dengage.promptForPushNotifications()
-      
+
+    @objc(registerForPushToken:)
+    public func registerForPushToken(deviceToken: Data) {
+        Dengage.register(deviceToken: deviceToken)
     }
-    
-    if enableGeoFence.boolValue == true {
-#if canImport(DengageGeofence)
-      DengageGeofence.startGeofence()
-#endif
+
+    @objc(didReceivePush:response:withCompletionHandler:)
+    public func didReceivePush(
+        _ center: UNUserNotificationCenter,
+        _ response: UNNotificationResponse,
+        withCompletionHandler completionHandler: @escaping () -> Void
+    ) {
+        Dengage.didReceivePush(center, response, withCompletionHandler: completionHandler)
     }
-    Dengage.setLog(isVisible: logVisible.boolValue)
-    
-    Dengage.setHybridAppEnvironment()
-    
-  }
-  
-  @objc(registerForPushToken:)
-  public func registerForPushToken(deviceToken: Data) {
-    var token = ""
-    if #available(iOS 13.0, *) {
-      token = deviceToken.map { String(format: "%02x", $0) }.joined()
-    } else {
-      let tokenParts = deviceToken.map { data in String(format: "%02.2hhx", data) }
-      token = tokenParts.joined()
+
+    @objc(didReceive:)
+    public func didReceive(with userInfo: [AnyHashable: Any]) {
+        Dengage.didReceive(with: userInfo)
     }
-    Dengage.register(deviceToken: deviceToken)
-  }
-  
-  @objc(didReceivePush:response:withCompletionHandler:)
-  public func didReceivePush(
-    _ center: UNUserNotificationCenter,
-    _ response: UNNotificationResponse,
-    withCompletionHandler completionHandler: @escaping () -> Void
-  ) {
-    
-    Dengage.didReceivePush(center, response, withCompletionHandler: completionHandler)
-    
-  }
-  
-  @objc(didReceive:)
-  public func didReceive(with userInfo: [AnyHashable: Any]) {
-    Dengage.didReceive(with: userInfo)
-    
-  }
-  
 }

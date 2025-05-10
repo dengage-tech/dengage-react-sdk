@@ -25,14 +25,18 @@ export function multiply(a: number, b: number): Promise<number> {
 type DengageType = {
   setIntegrationKey(key: string): void; // iOS only
   setFirebaseIntegrationKey(key: string): void; // android only
-  
-  promptForPushNotificationsWitCallback(callback: (hasPermission: boolean) => void): void; // iOS only
+
+  promptForPushNotificationsWitCallback(
+    callback: (hasPermission: boolean) => void
+  ): void; // iOS only
   registerForRemoteNotifications(enable: boolean): void; // iOS only
   getUserPermission(): Promise<boolean>; // android only, in iOS use promptForPushNotificationsWitCallback
   getToken(): Promise<string>;
   setToken(token: String): void;
   setLogStatus(isVisible: boolean): void;
-  handleNotificationActionBlock(callback: (notificationAction: DengageTypes["NotificationAction"]) => void): void; // iOS only,
+  handleNotificationActionBlock(
+    callback: (notificationAction: DengageTypes['NotificationAction']) => void
+  ): void; // iOS only,
   registerNotificationListeners(): void; // End Developer No Need to call this, we're calling it ourself, to register for events like `onNotificationReceived` & `onNotificationClicked`
   pageView(params: object): void;
   addToCart(params: object): void;
@@ -45,17 +49,14 @@ type DengageType = {
   removeFromWishList(params: object): void;
   search(params: object): void;
   sendDeviceEvent(tableName: string, data: object): void;
-  getSubscription(): Promise<DengageTypes["Subscription"]>; // android only yet. for iOS use getContactKey
-  getInboxMessages(offset: number, limit: number): Promise<[object]>
-  deleteInboxMessage(id: string): Promise<object>
-  setInboxMessageAsClicked(id: string): Promise<object>
+  getInboxMessages(offset: number, limit: number): Promise<[object]>;
+  deleteInboxMessage(id: string): Promise<object>;
+  setInboxMessageAsClicked(id: string): Promise<object>;
   setNavigation(): void;
   setNavigationWithName(screenName: string): void;
   onMessageReceived(params: object): void;
-  stopGeofence(): void;
-  
-  startGeofence(): void;
-  resetAppBadge():void; // android only
+
+  resetAppBadge(): void; // android only
   showRealTimeInApp(screenName: string, data: object): void;
   setCity(city: string): void;
   setState(state: string): void;
@@ -72,9 +73,7 @@ type DengageType = {
   setDeviceId(deviceId: string): void;
 
 
-
   
-
   promptForPushNotifications(): void; // iOS only
   setContactKey(key: string | null): void;
   getContactKey(): Promise<string | null>; // iOS only
@@ -84,16 +83,18 @@ type DengageType = {
   setInAppDeviceInfo(key: string, value: string): void;
   clearInAppDeviceInfo(): void;
   getInAppDeviceInfo(): Promise<Record<string, string>>;
+  startGeofence(): void;
+  stopGeofence(): void;
+  getSubscription(): Promise<DengageTypes['Subscription']>; // android only yet. for iOS use getContactKey
+
+
   // NEW
   getSdkVersion(): Promise<string>;
-
 };
 
-DengageRN?.registerNotificationListeners?.()
-
+DengageRN?.registerNotificationListeners?.();
 
 export * from './InAppInlineView';
 export * from './AppStoryView';
 
 export default DengageRN as DengageType;
-

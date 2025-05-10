@@ -36,15 +36,15 @@ RCT_EXTERN_METHOD(clearInAppDeviceInfo)
 
 RCT_EXTERN_METHOD(getInAppDeviceInfo:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
 
-
-
-
-
-
-
 RCT_EXTERN_METHOD(startGeofence)
 
 RCT_EXTERN_METHOD(stopGeofence)
+
+RCT_EXTERN_METHOD(getSubscription:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
+
+
+
+
 
 
 
@@ -138,7 +138,7 @@ RCT_EXTERN_METHOD(setDeviceId:(NSString *)deviceId)
 // NEW
 RCT_EXTERN_METHOD(getSdkVersion:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
 
-RCT_EXTERN_METHOD(getSubscription:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
+
 
 
 

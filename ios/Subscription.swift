@@ -7,8 +7,6 @@
 
 import Foundation
 
-import Foundation
-
 public class Subscription: Codable {
   var integrationKey: String
   var token: String?
@@ -40,7 +38,7 @@ public class Subscription: Codable {
     contactKey: String? = "",
     permission: Bool? = true,
     trackingPermission: Bool = true,
-    tokenType: String = "A",
+    tokenType: String = "I",
     webSubscription: String? = nil,
     testGroup: String = "",
     country: String? = "",

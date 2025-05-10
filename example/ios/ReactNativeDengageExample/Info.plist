@@ -59,5 +59,15 @@
 	<false/>
 	<key>fetchRealTimeINAPPURL</key>
 	<string>https://dev-inapp.lib.dengage.com</string>
+  <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+  <string>This app uses location services to enhance your app experience</string>
+  <key>NSLocationWhenInUseUsageDescription</key>
+  <string>This app uses location services to enhance your app experience</string>
+  <key>UIBackgroundModes</key>
+  <array>
+      <string>fetch</string>
+      <string>location</string>
+      <string>remote-notification</string>
+  </array>
 </dict>
 </plist>
