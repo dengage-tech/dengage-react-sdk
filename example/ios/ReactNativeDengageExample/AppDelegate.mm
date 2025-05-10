@@ -39,7 +39,9 @@
        willPresentNotification:(UNNotification *)notification
          withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler {
   // Show the notification even when the app is in foreground
-  completionHandler(UNNotificationPresentationOptionBadge | UNNotificationPresentationOptionSound | UNNotificationPresentationOptionBanner);
+  completionHandler(UNAuthorizationOptionSound | UNAuthorizationOptionAlert |
+                      UNAuthorizationOptionBadge);
+
 }
 
 // Called when a user selects a notification or selects an action from a notification

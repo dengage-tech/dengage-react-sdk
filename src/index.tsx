@@ -84,12 +84,9 @@ type DengageType = {
   startGeofence(): void;
   stopGeofence(): void;
   getSubscription(): Promise<Subscription>; // android only yet. for iOS use getContactKey
-
-
-
   getInboxMessages(offset: number, limit: number): Promise<[InboxMessage]>;
-  deleteInboxMessage(id: string): Promise<object>;
-  setInboxMessageAsClicked(id: string): Promise<object>;
+  deleteInboxMessage(id: string): Promise<boolean>;
+  setInboxMessageAsClicked(id: string): Promise<boolean>;
 
 
 
@@ -102,8 +99,8 @@ DengageRN?.registerNotificationListeners?.();
 
 export * from './InAppInlineView';
 export * from './AppStoryView';
+export * from './types';
+
 
 export default DengageRN as DengageType;
-
-export type { InboxMessage, CarouselItem } from './types';
 

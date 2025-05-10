@@ -166,7 +166,7 @@ class ReactNativeDengage: RCTEventEmitter {
     Dengage.deleteInboxMessage(with: id as String) { (result) in
       switch result {
       case .success:
-        resolve(["success": true, "id": id])
+        resolve(true)
         break;
       case .failure (let error):
         reject("error", error.localizedDescription , error)
@@ -180,7 +180,7 @@ class ReactNativeDengage: RCTEventEmitter {
     Dengage.setInboxMessageAsClicked(with: id as String) { (result) in
       switch result {
       case .success:
-        resolve(["success": true, "id": id])
+        resolve(true)
         break;
       case .failure (let error):
         reject("error", error.localizedDescription , error)
@@ -194,13 +194,7 @@ class ReactNativeDengage: RCTEventEmitter {
   
   
   
-  
-  
-  
-  
-  
-  
-  
+
   
   
   

@@ -40,7 +40,7 @@ export default function InboxMessagesScreen() {
 
   const handleDelete = async (id: string) => {
     try {
-      await Dengage.deleteInboxMessage?.(id);
+      await Dengage.deleteInboxMessage(id);
       fetchMessages();
     } catch {
       Alert.alert('Error', 'Failed to delete message');
@@ -49,7 +49,7 @@ export default function InboxMessagesScreen() {
 
   const handleMarkClicked = async (id: string) => {
     try {
-      await Dengage.setInboxMessageAsClicked?.(id);
+      await Dengage.setInboxMessageAsClicked(id);
       fetchMessages();
     } catch {
       Alert.alert('Error', 'Failed to mark as clicked');
