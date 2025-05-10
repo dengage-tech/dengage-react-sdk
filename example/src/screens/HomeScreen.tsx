@@ -16,7 +16,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
     { title: 'ASK NOTIFICATIONS', screen: 'Notification' },
     { title: 'DEVICE INFO', screen: 'DeviceInfo' },
     { title: 'CHANGE CONTACT KEY', screen: 'ContactKey' },
-    //{ title: 'INBOX MESSAGES', screen: 'InboxMessages' },
+    { title: 'INBOX MESSAGES', screen: 'InboxMessages' },
     //{ title: 'SEND CUSTOM EVENT', screen: 'CustomEvent' },
     { title: 'IN APP MESSAGE', screen: 'InAppMessages' },
     //{ title: 'REAL TIME IN APP MESSAGES', screen: 'RealTimeInApp' },

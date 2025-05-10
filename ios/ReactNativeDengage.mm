@@ -42,6 +42,14 @@ RCT_EXTERN_METHOD(stopGeofence)
 
 RCT_EXTERN_METHOD(getSubscription:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
 
+RCT_EXTERN_METHOD(getInboxMessages:(NSInteger *)offset limit:(NSInteger *)limit resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(deleteInboxMessage:(NSString *)id resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(setInboxMessageAsClicked:(NSString *)id resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
+
+
+
 
 
 
@@ -93,11 +101,6 @@ RCT_EXTERN_METHOD(search:(NSDictionary *)data)
 
 RCT_EXTERN_METHOD(sendDeviceEvent:(NSString *)tableName withData:(NSDictionary *)withData)
 
-RCT_EXTERN_METHOD(getInboxMessages:(NSInteger *)offset limit:(NSInteger *)limit resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
-
-RCT_EXTERN_METHOD(deleteInboxMessage:(NSString *)id resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
-
-RCT_EXTERN_METHOD(setInboxMessageAsClicked:(NSString *)id resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
 
 
 

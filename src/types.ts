@@ -38,7 +38,7 @@ type Attachment = {
   type: string;
 }
 
-type Subscription = {
+export type Subscription = {
   integrationKey?: string;
   token?: string;
   appVersion?: string;
@@ -66,4 +66,23 @@ export type DengageTypes = {
   Trigger: Trigger
   Subscription: Subscription
 }
-  
+
+export type CarouselItem = {
+  id: string;
+  title: string;
+  descriptionText: string;
+  mediaUrl: string;
+  targetUrl: string;
+};
+
+export type InboxMessage = {
+  id: string;
+  title?: string;
+  message?: string;
+  mediaURL?: string;
+  targetUrl?: string;
+  receiveDate?: string;
+  isClicked: boolean;
+  carouselItems?: CarouselItem[];
+  [key: string]: any;
+};

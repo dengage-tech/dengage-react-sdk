@@ -1,5 +1,5 @@
 import { NativeModules, Platform } from 'react-native';
-import type { DengageTypes } from './types';
+import type { DengageTypes, InboxMessage, Subscription } from './types';
 
 const LINKING_ERROR =
   `The package '@dengage-tech/react-native-dengage' doesn't seem to be linked. Make sure: \n\n` +
@@ -49,9 +49,7 @@ type DengageType = {
   removeFromWishList(params: object): void;
   search(params: object): void;
   sendDeviceEvent(tableName: string, data: object): void;
-  getInboxMessages(offset: number, limit: number): Promise<[object]>;
-  deleteInboxMessage(id: string): Promise<object>;
-  setInboxMessageAsClicked(id: string): Promise<object>;
+  
   setNavigation(): void;
   setNavigationWithName(screenName: string): void;
   onMessageReceived(params: object): void;
@@ -85,7 +83,15 @@ type DengageType = {
   getInAppDeviceInfo(): Promise<Record<string, string>>;
   startGeofence(): void;
   stopGeofence(): void;
-  getSubscription(): Promise<DengageTypes['Subscription']>; // android only yet. for iOS use getContactKey
+  getSubscription(): Promise<Subscription>; // android only yet. for iOS use getContactKey
+
+
+
+  getInboxMessages(offset: number, limit: number): Promise<[InboxMessage]>;
+  deleteInboxMessage(id: string): Promise<object>;
+  setInboxMessageAsClicked(id: string): Promise<object>;
+
+
 
 
   // NEW
@@ -98,3 +104,6 @@ export * from './InAppInlineView';
 export * from './AppStoryView';
 
 export default DengageRN as DengageType;
+
+export type { InboxMessage, CarouselItem } from './types';
+

@@ -105,8 +105,89 @@ class ReactNativeDengage: RCTEventEmitter {
     resolve(subscription.toDictionary())
   }
   
+  @objc(getInboxMessages:limit:resolve:reject:)
+  func getInboxMessages(offset: Int = 10, limit: Int = 20, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock){
+    var isCalled = false
+    Dengage.getInboxMessages(offset: offset, limit: limit) { (result) in
+      func safeResolve(_ value: Any?) {
+        if !isCalled {
+          isCalled = true
+          resolve(value)
+        }
+      }
+      func safeReject(_ code: String, _ message: String, _ error: Error?) {
+        if !isCalled {
+          isCalled = true
+          reject(code, message, error)
+        }
+      }
+      switch result {
+      case .success(let resultType):
+        var arrDict = [[String: Any]]()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+        formatter.timeZone = TimeZone(abbreviation: "UTC")
+        
+        for message in resultType {
+          var carouselArr = [[String: Any]]()
+          if let items = message.carouselItems {
+            for carousel in items {
+              carouselArr.append([
+                "id": carousel.id,
+                "title": carousel.title,
+                "descriptionText": carousel.descriptionText,
+                "mediaUrl": carousel.mediaUrl,
+                "targetUrl": carousel.targetUrl
+              ])
+            }
+          }
+          
+          let dict: [String: Any] = [
+            "id": message.id,
+            "title": message.title ?? "",
+            "message": message.message ?? "",
+            "mediaURL": message.mediaURL ?? "",
+            "targetUrl": message.targetUrl ?? "",
+            "receiveDate": message.receiveDate != nil ? formatter.string(from: message.receiveDate!) : "",
+            "isClicked": message.isClicked,
+            "carouselItems": carouselArr
+          ]
+          arrDict.append(dict)
+        }
+        safeResolve(arrDict)
+      case .failure(let error):
+        safeReject("error", error.localizedDescription, error)
+      }
+    }
+  }
   
+  @objc(deleteInboxMessage:resolve:reject:)
+  func deleteInboxMessage(id: NSString, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock){
+    Dengage.deleteInboxMessage(with: id as String) { (result) in
+      switch result {
+      case .success:
+        resolve(["success": true, "id": id])
+        break;
+      case .failure (let error):
+        reject("error", error.localizedDescription , error)
+        break;
+      }
+    }
+  }
   
+  @objc(setInboxMessageAsClicked:resolve:reject:)
+  func setInboxMessageAsClicked(id: NSString, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock){
+    Dengage.setInboxMessageAsClicked(with: id as String) { (result) in
+      switch result {
+      case .success:
+        resolve(["success": true, "id": id])
+        break;
+      case .failure (let error):
+        reject("error", error.localizedDescription , error)
+        break;
+      }
+    }
+  }
   
   
   
@@ -188,11 +269,11 @@ class ReactNativeDengage: RCTEventEmitter {
       
       var reqContent = [String:Any?]()
       var contentAttachments = [Any]()
-      for attachement in notificationResponse.notification.request.content.attachments {
+      for attachment in notificationResponse.notification.request.content.attachments {
         var contentAttachment = [String:Any?]()
-        contentAttachment["identifier"] = attachement.identifier
-        contentAttachment["url"] = attachement.url
-        contentAttachment["type"] = attachement.type
+        contentAttachment["identifier"] = attachment.identifier
+        contentAttachment["url"] = attachment.url
+        contentAttachment["type"] = attachment.type
         contentAttachments.append(contentAttachment)
       }
       reqContent["badge"] = notificationResponse.notification.request.content.badge
@@ -245,11 +326,11 @@ class ReactNativeDengage: RCTEventEmitter {
       
       var reqContent = [String:Any?]()
       var contentAttachments = [Any]()
-      for attachement in notificationResponse.notification.request.content.attachments {
+      for attachment in notificationResponse.notification.request.content.attachments {
         var contentAttachment = [String:Any?]()
-        contentAttachment["identifier"] = attachement.identifier
-        contentAttachment["url"] = attachement.url
-        contentAttachment["type"] = attachement.type
+        contentAttachment["identifier"] = attachment.identifier
+        contentAttachment["url"] = attachment.url
+        contentAttachment["type"] = attachment.type
         contentAttachments.append(contentAttachment)
       }
       reqContent["badge"] = notificationResponse.notification.request.content.badge
@@ -393,92 +474,8 @@ class ReactNativeDengage: RCTEventEmitter {
     }
   }
   
-
-  
-  @objc(getInboxMessages:limit:resolve:reject:)
-  func getInboxMessages(offset: Int = 10, limit: Int = 20, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock){
-    Dengage.getInboxMessages(offset: offset, limit: limit) { (result) in
-      switch result {
-      case .success(let resultType): // do something with the result
-        do {
-          var arrDict = [[String:Any]]()
-          var arrCarousel = [[String:String]]()
-          
-          let formatter = DateFormatter()
-          formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
-          formatter.timeZone = TimeZone(abbreviation: "UTC")
-          
-          
-          for dict in resultType
-          {
-            if let items = dict.carouselItems
-            {
-              for carousel in items
-              {
-                arrCarousel.append(["id": carousel.id ?? "", "title":carousel.title ?? "" , "descriptionText":carousel.descriptionText ?? "" , "mediaUrl": carousel.mediaUrl ?? "" ,  "targetUrl":carousel.targetUrl ?? ""])
-                
-                
-              }
-              
-              arrDict.append(["message_json" : ["iosMediaUrl": dict.mediaURL ?? "", "iosTargetUrl":dict.targetUrl ?? "" , "iosCarouselContent": arrCarousel, "mediaUrl":dict.mediaURL ?? "" , "message": dict.message ?? "" , "receiveDate": formatter.string(from: dict.receiveDate ?? Date()) ?? "", "targetUrl":dict.targetUrl ?? "" , "title": dict.title ?? "" ], "is_clicked": dict.isClicked, "smsg_id": dict.id])
-            }
-            else
-            {
-              arrDict.append(["message_json" : ["iosMediaUrl": dict.mediaURL ?? "", "iosTargetUrl":dict.targetUrl ?? "" , "iosCarouselContent": [], "mediaUrl":dict.mediaURL ?? "" , "message": dict.message ?? "" , "receiveDate": formatter.string(from: dict.receiveDate ?? Date()) ?? "", "targetUrl":dict.targetUrl ?? "" , "title": dict.title ?? "" ], "is_clicked": dict.isClicked, "smsg_id": dict.id])
-            }
-            
-            
-            
-          }
-          
-          let encodedData = try JSONSerialization.data(withJSONObject: arrDict, options: .prettyPrinted)
-          
-          let jsonString = String(data: encodedData,
-                                  encoding: .utf8)
-          print("JSON String of inbox API \(jsonString)")
-          
-          resolve(jsonString)
-        } catch {
-          reject("error", error.localizedDescription , error)
-        }
-        break;
-      case .failure(let error): // Handle the error
-        reject("error", error.localizedDescription , error)
-        break;
-      }
-    }
-  }
   
   
-  @objc(deleteInboxMessage:resolve:reject:)
-  func deleteInboxMessage(id: NSString, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock){
-    Dengage.deleteInboxMessage(with: id as String) { (result) in
-      switch result {
-      case .success:
-        resolve(["success": true, "id": id])
-        break;
-      case .failure (let error):
-        reject("error", error.localizedDescription , error)
-        break;
-      }
-    }
-  }
-  
-  @objc(setInboxMessageAsClicked:resolve:reject:)
-  func setInboxMessageAsClicked(id: NSString, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock){
-    Dengage.setInboxMessageAsClicked(with: id as String) { (result) in
-      switch result {
-      case .success:
-        resolve(["success": true, "id": id])
-        break;
-      case .failure (let error):
-        reject("error", error.localizedDescription , error)
-        break;
-      }
-    }
-  }
-
-
   
   @objc(setCategoryPath:)
   func setCategoryPath(path: NSString) {
