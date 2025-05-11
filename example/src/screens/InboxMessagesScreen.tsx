@@ -62,6 +62,9 @@ export default function InboxMessagesScreen() {
         <Text style={styles.title}>{item.title || 'No Title'}</Text>
         <Text style={styles.message}>{item.message || ''}</Text>
         <Text style={styles.date}>{item.receiveDate || ''}</Text>
+        <Text style={styles.isClicked}>
+        {item.isClicked ? 'Clicked' : 'Not Clicked'}
+      </Text>
       </View>
       <View style={styles.actions}>
         <TouchableOpacity
@@ -139,6 +142,7 @@ const styles = StyleSheet.create({
   title: { fontWeight: 'bold', fontSize: 15, marginBottom: 4, color: '#222' },
   message: { fontSize: 13, color: '#444', marginBottom: 4 },
   date: { fontSize: 11, color: '#888' },
+  isClicked: { fontSize: 11, color: '#27ae60', marginTop: 2 },
   actions: { marginLeft: 12, justifyContent: 'space-between' },
   actionButton: {
     paddingVertical: 6,

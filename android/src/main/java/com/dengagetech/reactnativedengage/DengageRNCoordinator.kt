@@ -2,12 +2,13 @@ package com.dengagetech.reactnativedengage
 
 import android.content.Context
 import android.util.Log
-import com.dengage.sdk.DengageManager
+import com.facebook.react.ReactInstanceManager
+import com.facebook.react.bridge.ReactContext
 import com.dengage.sdk.Dengage
 import com.dengage.sdk.data.remote.api.DeviceConfigurationPreference
 import com.dengage.sdk.data.remote.api.NotificationDisplayPriorityConfiguration
-import com.facebook.react.ReactInstanceManager
-import com.facebook.react.bridge.ReactContext
+import com.dengage.sdk.push.IDengageHmsManager
+
 
 class DengageRNCoordinator private constructor() {
   private var reactInstanceManager: ReactInstanceManager? = null
@@ -31,12 +32,15 @@ class DengageRNCoordinator private constructor() {
     this.reactInstanceManager!!.onNewIntent(null)
   }
 
-  fun initDengage(
+  fun setupDengage(
     firebaseIntegrationKey: String?,
+    huaweiIntegrationKey: String?,
     context: Context,
+    dengageHmsManager: IDengageHmsManager? = null,
     deviceConfigurationPreference: DeviceConfigurationPreference,
     disableOpenWelUrl:Boolean?=false,
-    logEnabled: Boolean
+    logEnabled: Boolean = false,
+    enableGeoFence: Boolean? = false
     ) {
     if (firebaseIntegrationKey == null) {
       throw Error("Firebase key can't be null");
@@ -45,11 +49,27 @@ class DengageRNCoordinator private constructor() {
     Dengage.init(
       context = context,
       firebaseIntegrationKey = firebaseIntegrationKey,
+      huaweiIntegrationKey = huaweiIntegrationKey,
+      dengageHmsManager = dengageHmsManager,
       deviceConfigurationPreference = deviceConfigurationPreference,
       disableOpenWebUrl = disableOpenWelUrl,
-      notificationDisplayPriorityConfiguration = NotificationDisplayPriorityConfiguration.SHOW_WITH_HIGH_PRIORITY
+      notificationDisplayPriorityConfiguration = NotificationDisplayPriorityConfiguration.SHOW_WITH_HIGH_PRIORITY,
     )
     Dengage.setLogStatus(logEnabled)
+    if (enableGeoFence == true) {
+      try {
+        val clazz = Class.forName("com.dengage.geofence.DengageGeofence")
+        val instance = clazz.getField("INSTANCE").get(null)
+        val method = clazz.getMethod("startGeofence")
+        method.invoke(instance)
+      } catch (e: ClassNotFoundException) {
+        Log.w(LOG_TAG, "DengageGeofence library could not be found")
+      } catch (e: Exception) {
+        e.printStackTrace()
+      }
+    }
+
+
   }
 
   companion object {

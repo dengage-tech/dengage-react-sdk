@@ -18,9 +18,7 @@ class ReactNativeDengage: RCTEventEmitter {
   func setUserPermission(permission: Bool) {
     Dengage.setUserPermission(permission: permission)
   }
-  
-  // MARK: - Contact Key
-  
+    
   @objc(setContactKey:)
   func setContactKey(contactKey: String?) {
     Dengage.setContactKey(contactKey: contactKey)
@@ -30,56 +28,7 @@ class ReactNativeDengage: RCTEventEmitter {
   func getContactKey(_ resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
     resolve(Dengage.getContactKey())
   }
-  
-  // MARK: - Navigation
-  
-  @objc(setNavigation:)
-  func setNavigation(screenName: NSString) {
-    Dengage.setNavigation(screenName: screenName as String)
-  }
-  
-  // MARK: - In-App Device Info
-  
-  @objc(setInAppDeviceInfo:withValue:)
-  func setInAppDeviceInfo(key: String, value: String) {
-    Dengage.setInAppDeviceInfo(key: key, value: value)
-  }
-  
-  @objc(clearInAppDeviceInfo)
-  func clearInAppDeviceInfo() {
-    Dengage.clearInAppDeviceInfo()
-  }
-  
-  @objc
-  func getInAppDeviceInfo(_ resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
-    resolve(Dengage.getInAppDeviceInfo())
-  }
-  
-  // MARK: - Geofence
-  
-  @objc(requestLocationPermissions)
-  func requestLocationPermissions() {
-#if canImport(DengageGeofence)
-    DengageGeofence.requestLocationPermissions()
-#endif
-  }
-  
-  @objc(startGeofence)
-  func startGeofence() {
-#if canImport(DengageGeofence)
-    DengageGeofence.startGeofence()
-#endif
-  }
-  
-  @objc(stopGeofence)
-  func stopGeofence() {
-#if canImport(DengageGeofence)
-    DengageGeofence.stopGeofence()
-#endif
-  }
-  
-  // MARK: - Subscription
-  
+    
   @objc
   func getSubscription(_ resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
     let subscription = Subscription(
@@ -104,6 +53,30 @@ class ReactNativeDengage: RCTEventEmitter {
     )
     resolve(subscription.toDictionary())
   }
+  
+  // MARK: - Inapp Notifications
+  
+  @objc(setNavigation:)
+  func setNavigation(screenName: NSString) {
+    Dengage.setNavigation(screenName: screenName as String)
+  }
+    
+  @objc(setInAppDeviceInfo:withValue:)
+  func setInAppDeviceInfo(key: String, value: String) {
+    Dengage.setInAppDeviceInfo(key: key, value: value)
+  }
+  
+  @objc(clearInAppDeviceInfo)
+  func clearInAppDeviceInfo() {
+    Dengage.clearInAppDeviceInfo()
+  }
+  
+  @objc
+  func getInAppDeviceInfo(_ resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
+    resolve(Dengage.getInAppDeviceInfo())
+  }
+  
+  // MARK: - Inbox Messages
   
   @objc(getInboxMessages:limit:resolve:reject:)
   func getInboxMessages(offset: Int = 10, limit: Int = 20, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock){
@@ -191,8 +164,14 @@ class ReactNativeDengage: RCTEventEmitter {
   
   
   
+  // MARK: - Geofence
   
-  
+  @objc(requestLocationPermissions)
+  func requestLocationPermissions() {
+#if canImport(DengageGeofence)
+    DengageGeofence.requestLocationPermissions()
+#endif
+  }
   
 
   
@@ -558,11 +537,4 @@ class ReactNativeDengage: RCTEventEmitter {
     Dengage.setDeviceId(applicationIdentifier: deviceId)
   }
   
-  
-  // NEW
-  
-  @objc
-  func getSdkVersion(_ resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
-    resolve(Dengage.getSdkVersion())
-  }
 }

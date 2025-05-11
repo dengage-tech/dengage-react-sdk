@@ -12,6 +12,7 @@ import com.facebook.react.defaults.DefaultReactNativeHost
 import com.facebook.react.soloader.OpenSourceMergedSoMapping
 import com.facebook.soloader.SoLoader
 import com.dengagetech.reactnativedengage.DengageRNCoordinator
+import com.dengage.hms.DengageHmsManager
 
 
 class MainApplication : Application(), ReactApplication {
@@ -46,12 +47,17 @@ class MainApplication : Application(), ReactApplication {
     }
     DengageRNCoordinator.sharedInstance.injectReactInstanceManager(reactNativeHost.reactInstanceManager)
 
-    DengageRNCoordinator.sharedInstance.initDengage(
+    val dengageHmsManager = DengageHmsManager()
+
+    DengageRNCoordinator.sharedInstance.setupDengage(
       firebaseIntegrationKey = Constants.FIREBASE_APP_INTEGRATION_KEY,
+      huaweiIntegrationKey= Constants.HUAWEI_APP_INTEGRATION_KEY,
+      dengageHmsManager = dengageHmsManager,
       context = this,
       deviceConfigurationPreference = com.dengage.sdk.data.remote.api.DeviceConfigurationPreference.Google,
       disableOpenWelUrl = false,
-      logEnabled = true
+      logEnabled = true,
+      enableGeoFence = true
     )
   }
 }

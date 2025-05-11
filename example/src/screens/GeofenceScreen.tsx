@@ -16,10 +16,6 @@ export default function GeofenceScreen() {
     Dengage.requestLocationPermissions();
   };
 
-  const stopGeofence = () => {
-    Dengage.stopGeofence();
-  };
-
   return (
     <SafeAreaView style={styles.flex}>
       <KeyboardAvoidingView
@@ -32,10 +28,6 @@ export default function GeofenceScreen() {
               title="Request Location Always Authorization"
               onPress={requestLocationPermissions}
             />
-          </View>
-
-          <View style={styles.buttonMargin}>
-            <Button title="Stop Geofence" onPress={stopGeofence} />
           </View>
         </ScrollView>
       </KeyboardAvoidingView>

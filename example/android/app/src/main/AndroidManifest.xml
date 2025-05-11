@@ -34,7 +34,13 @@
         <action android:name="com.google.firebase.MESSAGING_EVENT" />
       </intent-filter>
     </service>
-
+    <service
+      android:name="com.dengage.hms.HmsMessagingService"
+      android:exported="false" >
+      <intent-filter>
+        <action android:name="com.huawei.push.action.MESSAGING_EVENT" />
+      </intent-filter>
+    </service>
     <receiver
       android:name="com.dengage.sdk.push.NotificationReceiver"
       android:exported="false">

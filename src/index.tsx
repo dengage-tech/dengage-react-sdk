@@ -75,18 +75,21 @@ type DengageType = {
   promptForPushNotifications(): void; // iOS only
   setContactKey(key: string | null): void;
   getContactKey(): Promise<string | null>; // iOS only
-  setUserPermission(permission: boolean): void;
-  requestLocationPermissions(): void;
+  setUserPermission(permission: boolean): void;  
+  getSubscription(): Promise<Subscription>; // android only yet. for iOS use getContactKey
+
   setNavigation(screenName: string | null): void;
   setInAppDeviceInfo(key: string, value: string): void;
   clearInAppDeviceInfo(): void;
   getInAppDeviceInfo(): Promise<Record<string, string>>;
-  startGeofence(): void;
-  stopGeofence(): void;
-  getSubscription(): Promise<Subscription>; // android only yet. for iOS use getContactKey
+
+
   getInboxMessages(offset: number, limit: number): Promise<[InboxMessage]>;
   deleteInboxMessage(id: string): Promise<boolean>;
   setInboxMessageAsClicked(id: string): Promise<boolean>;
+
+  requestLocationPermissions(): void;
+  
 
 
 

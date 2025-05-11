@@ -26,7 +26,15 @@ RCT_EXTERN_METHOD(getContactKey:(RCTPromiseResolveBlock)resolve reject:(RCTPromi
 
 RCT_EXTERN_METHOD(setUserPermission:(BOOL)permission)
 
-RCT_EXTERN_METHOD(requestLocationPermissions)
+RCT_EXTERN_METHOD(getSubscription:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(getInboxMessages:(NSInteger *)offset limit:(NSInteger *)limit resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(deleteInboxMessage:(NSString *)id resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(setInboxMessageAsClicked:(NSString *)id resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
+
+
 
 RCT_EXTERN_METHOD(setNavigation:(NSString *)screenName)
 
@@ -36,17 +44,10 @@ RCT_EXTERN_METHOD(clearInAppDeviceInfo)
 
 RCT_EXTERN_METHOD(getInAppDeviceInfo:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
 
-RCT_EXTERN_METHOD(startGeofence)
 
-RCT_EXTERN_METHOD(stopGeofence)
+RCT_EXTERN_METHOD(requestLocationPermissions)
 
-RCT_EXTERN_METHOD(getSubscription:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
 
-RCT_EXTERN_METHOD(getInboxMessages:(NSInteger *)offset limit:(NSInteger *)limit resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
-
-RCT_EXTERN_METHOD(deleteInboxMessage:(NSString *)id resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
-
-RCT_EXTERN_METHOD(setInboxMessageAsClicked:(NSString *)id resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
 
 
 
@@ -136,12 +137,6 @@ RCT_EXTERN_METHOD(setDevelopmentStatus:(BOOL)isDebug)
 RCT_EXTERN_METHOD(setLanguage:(NSString *)language)
 
 RCT_EXTERN_METHOD(setDeviceId:(NSString *)deviceId)
-
-
-// NEW
-RCT_EXTERN_METHOD(getSdkVersion:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
-
-
 
 
 
