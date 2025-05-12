@@ -14,21 +14,19 @@ class InAppInlineView(context: Context) : FrameLayout(context) {
   var hasShownInline = false
 
   init {
-    addView(inlineElement, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT))
+    addView(inlineElement, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
 
     inlineElement.webViewClient = object : WebViewClient() {
       override fun onPageFinished(view: WebView?, url: String?) {
-        super.onPageFinished(view, url)
+        // Evaluate JS to get content height and update layout
         view?.evaluateJavascript(
           "(function() { return document.body.scrollHeight; })();"
-        ) { value ->
-          val height = value?.toFloatOrNull() ?: return@evaluateJavascript
-          Handler(Looper.getMainLooper()).post {
-            val params = inlineElement.layoutParams
-            params.height = height.toInt()
-            inlineElement.layoutParams = params
-            this@InAppInlineView.requestLayout()
-          }
+        ) { heightStr ->
+          val height = heightStr?.replace("\"", "")?.toIntOrNull() ?: 1
+          inlineElement.layoutParams?.height = height
+          inlineElement.requestLayout()
+          this@InAppInlineView.layoutParams?.height = height
+          this@InAppInlineView.requestLayout()
         }
       }
     }

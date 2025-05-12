@@ -34,6 +34,8 @@
 	<string>https://dev-push.dengage.com</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+  <key>CFBundleIconName</key>
+  <string>AppIcon</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>

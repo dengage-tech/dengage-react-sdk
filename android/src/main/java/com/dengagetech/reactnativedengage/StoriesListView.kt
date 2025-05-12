@@ -1,14 +1,10 @@
 package com.dengagetech.reactnativedengage
 
 import android.content.Context
-import android.util.AttributeSet
 import android.widget.FrameLayout
 import com.dengage.sdk.ui.story.StoriesListView as DengageStoriesListView
 
-class StoriesListView @JvmOverloads constructor(
-  context: Context,
-  attrs: AttributeSet? = null
-) : FrameLayout(context, attrs) {
+class StoriesListView (context: Context) : FrameLayout(context) {
 
   var storiesListView = DengageStoriesListView(context)
   var hasShownStory = false
