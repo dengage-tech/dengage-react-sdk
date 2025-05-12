@@ -56,6 +56,7 @@ class DengageRNCoordinator private constructor() {
       notificationDisplayPriorityConfiguration = NotificationDisplayPriorityConfiguration.SHOW_WITH_HIGH_PRIORITY,
     )
     Dengage.setLogStatus(logEnabled)
+    Dengage.inAppLinkConfiguration("www.chaitanyamunje.com")
     if (enableGeoFence == true) {
       try {
         val clazz = Class.forName("com.dengage.geofence.DengageGeofence")

@@ -35,5 +35,5 @@ export default function InAppInlineScreen() {
 
 const styles = StyleSheet.create({
   container: { padding: 16 },
-  inline: { marginTop: 16 },
+  inline: { marginTop: 16, height: 244 },
 });

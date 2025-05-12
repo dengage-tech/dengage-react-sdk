@@ -101,7 +101,7 @@ type DengageType = {
 DengageRN?.registerNotificationListeners?.();
 
 export * from './InAppInlineView';
-export * from './AppStoryView';
+export * from './StoriesListView';
 export * from './types';
 
 

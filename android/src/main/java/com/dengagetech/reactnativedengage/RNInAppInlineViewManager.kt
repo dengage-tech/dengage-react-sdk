@@ -1,101 +1,65 @@
 package com.dengagetech.reactnativedengage
 
-import com.facebook.react.bridge.Arguments
 import com.facebook.react.bridge.ReactApplicationContext
-import com.facebook.react.bridge.ReadableArray
-import com.facebook.react.bridge.WritableMap
-import com.facebook.react.common.MapBuilder
+import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.uimanager.SimpleViewManager
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.annotations.ReactProp
-import com.facebook.react.uimanager.events.RCTEventEmitter
+import com.dengage.sdk.Dengage
+import java.util.stream.Collectors.toMap
 
-/*
 class RNInAppInlineViewManager(
-  val context: ReactApplicationContext
-) : SimpleViewManager<StoryRecyclerView>() {
+  private val reactContext: ReactApplicationContext
+) : SimpleViewManager<InAppInlineView>() {
 
-  companion object {
-    const val VIEW_NAME = "RDRCTStoryView"
-    const val COMMAND_GET_STORIES = 1
+  override fun getName() = "RCTInAppInlineView"
+
+  private var propertyId: String? = null
+  private var screenName: String? = null
+  private var customParams: HashMap<String, String>? = null
+
+  override fun createViewInstance(reactContext: ThemedReactContext): InAppInlineView {
+    return InAppInlineView(reactContext)
   }
 
-  private var actionId: String? = null
-
-  override fun getName() = VIEW_NAME
-
-  override fun createViewInstance(reactContext: ThemedReactContext): StoryRecyclerView {
-    val story = StoryRecyclerView(reactContext)
-    return story
+  @ReactProp(name = "propertyId")
+  fun setPropertyId(view: InAppInlineView, propertyId: String) {
+    this.propertyId = propertyId
+    maybeShowInlineInApp(view)
   }
 
-  override fun getCommandsMap(): Map<String, Int> {
-    return MapBuilder.of("getStories", COMMAND_GET_STORIES)
+  @ReactProp(name = "screenName")
+  fun setScreenName(view: InAppInlineView, screenName: String) {
+    this.screenName = screenName
+    maybeShowInlineInApp(view)
   }
 
-  override fun receiveCommand(
-    root: StoryRecyclerView,
-    commandId: String,
-    args: ReadableArray?
-  ) {
-    super.receiveCommand(root, commandId, args)
-    val viewId = args?.getInt(0) ?: return
-    val commandIdInt = commandId.toIntOrNull() ?: return
-
-    if (commandIdInt == COMMAND_GET_STORIES) {
-      getStories(root, viewId)
-    }
+  @ReactProp(name = "customParams")
+  fun setCustomParams(view: InAppInlineView, customParams: ReadableMap?) {
+    this.customParams = customParams.toHashMap()
+    maybeShowInlineInApp(view)
   }
 
-  @ReactProp(name = "actionId")
-  fun setActionId(view: StoryRecyclerView, actionId: String?) {
-    this.actionId = actionId
-  }
+  private fun maybeShowInlineInApp(view: InAppInlineView) {
+    val currentPropertyId = propertyId
+    val currentScreenName = screenName
+    val currentCustomParams = customParams
+    val currentActivity = reactContext.currentActivity
 
-  fun getStories( rdRecyclerView: StoryRecyclerView, viewId: Int) {
-
-    val storyItemClickListener = object : StoryItemClickListener {
-      override fun storyItemClicked(storyLink: String?) {
-        val data = Arguments.createMap()
-        data.putString("storyLink", storyLink)
-        sendData(data, viewId)
-      }
-    }
-
-
-    actionId?.let {
-      rdRecyclerView.setStoryActionId(
-        context,
-        it,
-        storyItemClickListener
+    if (!view.hasShownInline &&
+      currentPropertyId != null &&
+      currentScreenName != null &&
+      currentCustomParams != null &&
+      currentActivity != null
+    ) {
+      view.hasShownInline = true
+      Dengage.showInlineInApp(
+        screenName = currentScreenName,
+        inAppInlineElement = view.inlineElement,
+        propertyId = currentPropertyId,
+        activity = currentActivity,
+        customParams = currentCustomParams
       )
-    } ?: rdRecyclerView.setStoryAction(
-      context,
-      storyItemClickListener
-    )
-
-
-
-  }
-
-  override fun getExportedCustomBubblingEventTypeConstants(): Map<String, Any> {
-    return MapBuilder.builder<String, Any>()
-      .put(
-        "onItemClicked",
-        MapBuilder.of(
-          "phasedRegistrationNames",
-          MapBuilder.of("bubbled", "onItemClicked")
-        )
-      )
-      .build()
-  }
-
-  private fun sendData(data: WritableMap, viewId: Int) {
-    context.getJSModule(RCTEventEmitter::class.java)
-      .receiveEvent(viewId, "onItemClicked", data)
+    }
   }
 }
-
-
-
-*/

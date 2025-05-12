@@ -12,6 +12,6 @@ class ReactNativeDengagePackage : ReactPackage {
   }
 
   override fun createViewManagers(reactContext: ReactApplicationContext): List<ViewManager<*, *>> {
-    return listOf(RNStoriesListViewManager(reactContext))
+    return listOf(RNStoriesListViewManager(reactContext), RNInAppInlineViewManager(reactContext))
   }
 }
