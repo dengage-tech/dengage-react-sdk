@@ -19,7 +19,7 @@ RCT_EXPORT_VIEW_PROPERTY(screenName, NSString)
 RCT_EXPORT_MODULE(RCTStoriesListView)
 
 - (UIView *)view {
-  return [[RCTStoriesListView alloc] init];
+    return [[RCTStoriesListView alloc] init];
 }
 
 @end

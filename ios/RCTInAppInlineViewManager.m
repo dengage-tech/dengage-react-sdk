@@ -20,12 +20,12 @@ RCT_EXPORT_VIEW_PROPERTY(customParams, NSDictionary)
 RCT_EXPORT_MODULE(RCTInAppInlineView)
 
 - (UIView *)view {
-  return [[RCTInAppInlineView alloc] init];
+    return [[RCTInAppInlineView alloc] init];
 }
 
 + (BOOL)requiresMainQueueSetup
 {
-  return YES;
+    return YES;
 }
 
 @end

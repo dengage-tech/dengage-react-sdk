@@ -18,28 +18,28 @@ NSString *integrationKey = @"n_p_l_lO9FMM4fzlX4jbudL355PGRpKsipGVHMgaPbOGAxR_s_l
 
 
 + (void)registerDeviceToken:(NSData *)deviceToken {
-  [[DengageRNCoordinator staticInstance] registerForPushToken:deviceToken];
+    [[DengageRNCoordinator staticInstance] registerForPushToken:deviceToken];
 }
 
 + (void)handleDengageInitialization:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-  DengageRNCoordinator *coordinator = [DengageRNCoordinator staticInstance];
-  [coordinator setValue:launchOptions forKey:@"launchOptions"];
-  [coordinator setupDengage:integrationKey
-               appGroupsKey:@"group.com.dengage.RNExample.dengage"
-              launchOptions:launchOptions
-                application:application
-  askNotificationPermission:YES
-             enableGeoFence:YES
-             disableOpenURL:NO
-            badgeCountReset:NO
-                 logVisible:YES];
+    DengageRNCoordinator *coordinator = [DengageRNCoordinator staticInstance];
+    [coordinator setValue:launchOptions forKey:@"launchOptions"];
+    [coordinator setupDengage:integrationKey
+                 appGroupsKey:@"group.com.dengage.RNExample.dengage"
+                launchOptions:launchOptions
+                  application:application
+    askNotificationPermission:YES
+               enableGeoFence:YES
+               disableOpenURL:NO
+              badgeCountReset:NO
+                   logVisible:YES];
 }
 
 + (void)userNotification:(UNUserNotificationCenter *)center
     notificationResponse:(UNNotificationResponse *)response
    withCompletionHandler:(void (^)(void))completionHandler
 {
-  [[DengageRNCoordinator staticInstance] didReceivePush:center response:response withCompletionHandler:completionHandler];
+    [[DengageRNCoordinator staticInstance] didReceivePush:center response:response withCompletionHandler:completionHandler];
 }
 
 @end

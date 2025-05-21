@@ -3,13 +3,13 @@
 @interface RCT_EXTERN_MODULE(DengageRN, NSObject)
 
 RCT_EXTERN_METHOD(multiply:(float)a withB:(float)b
-                 withResolver:(RCTPromiseResolveBlock)resolve
-                 withRejecter:(RCTPromiseRejectBlock)reject)
+                  withResolver:(RCTPromiseResolveBlock)resolve
+                  withRejecter:(RCTPromiseRejectBlock)reject)
 
 // TODO: egemen check, if not necessary remove
 + (BOOL)requiresMainQueueSetup
 {
-  return NO;
+    return NO;
 }
 
 
