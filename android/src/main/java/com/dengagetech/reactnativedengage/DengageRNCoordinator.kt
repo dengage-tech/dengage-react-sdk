@@ -1,5 +1,6 @@
 package com.dengagetech.reactnativedengage
 
+import android.app.Application
 import android.content.Context
 import android.util.Log
 import com.facebook.react.ReactInstanceManager
@@ -8,6 +9,7 @@ import com.dengage.sdk.Dengage
 import com.dengage.sdk.data.remote.api.DeviceConfigurationPreference
 import com.dengage.sdk.data.remote.api.NotificationDisplayPriorityConfiguration
 import com.dengage.sdk.push.IDengageHmsManager
+import com.dengage.sdk.util.DengageLifecycleTracker
 
 
 class DengageRNCoordinator private constructor() {
@@ -44,6 +46,10 @@ class DengageRNCoordinator private constructor() {
     ) {
     if (firebaseIntegrationKey == null) {
       throw Error("Firebase key can't be null");
+    }
+
+    if (context is Application) {
+      context.registerActivityLifecycleCallbacks(DengageLifecycleTracker())
     }
 
     Dengage.init(

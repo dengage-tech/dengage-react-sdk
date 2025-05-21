@@ -12,6 +12,7 @@ import {
   NativeModules,
   ScrollView,
 } from 'react-native';
+import DeviceInfo from 'react-native-device-info';
 import Clipboard from '@react-native-clipboard/clipboard';
 import Dengage from '@dengage-tech/react-native-dengage';
 
@@ -48,7 +49,7 @@ export default function DeviceInfoScreen() {
   const pixelRatio = PixelRatio.get();
   const realWidth = Math.round(width * pixelRatio);
   const realHeight = Math.round(height * pixelRatio);
-  const osVersion = Platform.Version;
+  const osVersion = DeviceInfo.getSystemVersion();
 
   const fields = [
     { label: 'Integration Key', value: info.integrationKey },
