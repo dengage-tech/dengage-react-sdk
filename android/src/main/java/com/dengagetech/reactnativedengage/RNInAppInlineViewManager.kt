@@ -6,7 +6,6 @@ import com.facebook.react.uimanager.SimpleViewManager
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.annotations.ReactProp
 import com.dengage.sdk.Dengage
-import java.util.stream.Collectors.toMap
 
 class RNInAppInlineViewManager(
     private val reactContext: ReactApplicationContext

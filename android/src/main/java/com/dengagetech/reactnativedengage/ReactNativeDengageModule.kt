@@ -1,6 +1,11 @@
 package com.dengagetech.reactnativedengage
 
 import android.app.Activity
+import android.content.Context
+import android.content.IntentFilter
+import android.os.Build
+import android.util.Log
+import androidx.core.content.ContextCompat
 import com.dengage.sdk.Dengage
 import com.dengage.sdk.callback.DengageCallback
 import com.dengage.sdk.callback.DengageError
@@ -104,6 +109,54 @@ class ReactNativeDengageModule(reactContext: ReactApplicationContext) :
         }
     }
 
+    @ReactMethod
+    fun setCategoryPath(path: String) {
+        Dengage.setCategoryPath(path)
+    }
+
+    @ReactMethod
+    fun setCartItemCount(count: String) {
+        Dengage.setCartItemCount(count)
+    }
+
+    @ReactMethod
+    fun setCartAmount(amount: String) {
+        Dengage.setCartAmount(amount)
+    }
+
+    @ReactMethod
+    fun setState(name: String) {
+        Dengage.setState(name)
+    }
+
+    @ReactMethod
+    fun setCity(name: String) {
+        Dengage.setCity(name)
+    }
+
+    @ReactMethod
+    fun showRealTimeInApp(screenName: String, params: ReadableMap?) {
+        val activity = currentActivity ?: return
+        Dengage.showRealTimeInApp(
+            activity,
+            screenName,
+            params.toHashMap()
+        )
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     // Inbox Messages
 
     @ReactMethod
@@ -192,6 +245,53 @@ class ReactNativeDengageModule(reactContext: ReactApplicationContext) :
 
     companion object {
         const val NAME = "DengageRN"
+    }
+
+
+
+    @ReactMethod
+    fun registerNotificationListeners() {
+
+        Log.d("den/react-native", "RegisteringNotificationListeners.")
+
+        val filter = IntentFilter()
+        filter.addAction("com.dengage.push.intent.RECEIVE")
+        filter.addAction("com.dengage.push.intent.OPEN")
+        val notifReceiver = NotifReciever(reactApplicationContext)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            reactApplicationContext.currentActivity?.registerReceiver(notifReceiver, filter,
+                Context.RECEIVER_EXPORTED)
+        }
+        else {
+            ContextCompat.registerReceiver(
+                reactApplicationContext,
+                notifReceiver,
+                filter,
+                ContextCompat.RECEIVER_NOT_EXPORTED
+            )
+        }
+
+    }
+
+    private var listenerCount = 0
+
+    @ReactMethod
+    fun addListener(eventName: String) {
+        if (listenerCount == 0) {
+            Log.d(NAME, "addListener")
+            // Set up any upstream listeners or background tasks as necessary
+        }
+
+        listenerCount += 1
+    }
+
+    @ReactMethod
+    fun removeListeners(count: Int) {
+        listenerCount -= count
+        if (listenerCount == 0) {
+            Log.d(NAME, "removeListeners")
+            // Remove upstream listeners, stop unnecessary background tasks
+        }
     }
 
 
