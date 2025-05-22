@@ -2,9 +2,6 @@
 
 @interface RCT_EXTERN_MODULE(DengageRN, NSObject)
 
-RCT_EXTERN_METHOD(multiply:(float)a withB:(float)b
-                  withResolver:(RCTPromiseResolveBlock)resolve
-                  withRejecter:(RCTPromiseRejectBlock)reject)
 
 // TODO: egemen check, if not necessary remove
 + (BOOL)requiresMainQueueSetup
@@ -28,12 +25,6 @@ RCT_EXTERN_METHOD(setUserPermission:(BOOL)permission)
 
 RCT_EXTERN_METHOD(getSubscription:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
 
-RCT_EXTERN_METHOD(getInboxMessages:(NSInteger *)offset limit:(NSInteger *)limit resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
-
-RCT_EXTERN_METHOD(deleteInboxMessage:(NSString *)id resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
-
-RCT_EXTERN_METHOD(setInboxMessageAsClicked:(NSString *)id resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
-
 
 
 RCT_EXTERN_METHOD(setNavigation:(NSString *)screenName)
@@ -43,6 +34,33 @@ RCT_EXTERN_METHOD(setInAppDeviceInfo:(NSString *)key withValue:(NSString *)value
 RCT_EXTERN_METHOD(clearInAppDeviceInfo)
 
 RCT_EXTERN_METHOD(getInAppDeviceInfo:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(setCategoryPath:(NSString *)path)
+
+RCT_EXTERN_METHOD(setCartItemCount:(NSString *)count)
+
+RCT_EXTERN_METHOD(setCartAmount:(NSString *)amount)
+
+RCT_EXTERN_METHOD(setState:(NSString *)state)
+
+RCT_EXTERN_METHOD(setCity:(NSString *)city)
+
+RCT_EXTERN_METHOD(showRealTimeInApp:(NSString *)screenName withParams:(NSDictionary *)params)
+
+
+
+
+
+
+
+RCT_EXTERN_METHOD(getInboxMessages:(NSInteger *)offset limit:(NSInteger *)limit resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(deleteInboxMessage:(NSString *)id resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(setInboxMessageAsClicked:(NSString *)id resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
+
+
+
 
 
 RCT_EXTERN_METHOD(requestLocationPermissions)
@@ -110,17 +128,11 @@ RCT_EXTERN_METHOD(sendDeviceEvent:(NSString *)tableName withData:(NSDictionary *
 
 
 
-RCT_EXTERN_METHOD(showRealTimeInApp:(NSString *)screenName withData:(NSDictionary *)withData)
 
-RCT_EXTERN_METHOD(setCity:(NSString *)city)
 
-RCT_EXTERN_METHOD(setState:(NSString *)state)
 
-RCT_EXTERN_METHOD(setCartAmount:(NSString *)amount)
 
-RCT_EXTERN_METHOD(setCartItemCount:(NSString *)count)
 
-RCT_EXTERN_METHOD(setCategoryPath:(NSString *)path)
 
 RCT_EXTERN_METHOD(setPartnerDeviceId:(NSString *)adid)
 

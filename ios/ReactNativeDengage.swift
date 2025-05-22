@@ -76,6 +76,36 @@ class ReactNativeDengage: RCTEventEmitter {
         resolve(Dengage.getInAppDeviceInfo())
     }
     
+    @objc(setCategoryPath:)
+    func setCategoryPath(path: NSString) {
+        Dengage.setCategory(path: path as String)
+    }
+    
+    @objc(setCartItemCount:)
+    func setCartItemCount(count: NSString) {
+        Dengage.setCart(itemCount: count as String)
+    }
+    
+    @objc(setCartAmount:)
+    func setCartAmount(amount: NSString) {
+        Dengage.setCart(amount: amount as String)
+    }
+    
+    @objc(setState:)
+    func setState(state: NSString) {
+        Dengage.setState(name: state as String)
+    }
+    
+    @objc(setCity:)
+    func setCity(city: NSString) {
+        Dengage.setCity(name: city as String)
+    }
+    
+    @objc(showRealTimeInApp:withParams:)
+    func showRealTimeInApp (_ screenName: NSString, params: NSDictionary) -> Void {
+        Dengage.showRealTimeInApp(screenName: screenName as String , params: params as? Dictionary<String, String>)
+    }
+    
     // MARK: - Inbox Messages
     
     @objc(getInboxMessages:limit:resolve:reject:)
@@ -177,10 +207,18 @@ class ReactNativeDengage: RCTEventEmitter {
     
     
     
-    @objc(multiply:withB:withResolver:withRejecter:)
-    func multiply(a: Float, b: Float, resolve:RCTPromiseResolveBlock,reject:RCTPromiseRejectBlock) -> Void {
-        resolve(a*b)
-    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     @objc(setIntegrationKey:)
     func setIntegrationKey(key: String) -> Void {
@@ -220,7 +258,181 @@ class ReactNativeDengage: RCTEventEmitter {
         Dengage.setLogStatus(isVisible: isVisible)
     }
     
+
     
+    @objc(pageView:)
+    func pageView (_ data: NSDictionary) -> Void {
+        do {
+            try Dengage.pageView(parameters: data as! [String:Any])
+        } catch {
+            print("Unexpected pageView error: \(error)")
+        }
+    }
+    
+    @objc(addToCart:)
+    func addToCart (_ data: NSDictionary) -> Void {
+        do {
+            print(data)
+            try Dengage.addToCart(parameters: data as! [String:Any])
+        } catch {
+            print("Unexpected addToCart error: \(error)")
+        }
+    }
+    
+    @objc(removeFromCart:)
+    func removeFromCart (_ data: NSDictionary) -> Void {
+        do {
+            print(data)
+            try Dengage.removeFromCart(parameters: data as! [String:Any])
+        } catch {
+            print("Unexpected removeFromCart error: \(error)")
+        }
+    }
+    
+    @objc(viewCart:)
+    func viewCart (_ data: NSDictionary) -> Void {
+        do {
+            print(data)
+            try Dengage.viewCart(parameters: data as! [String:Any])
+        } catch {
+            print("Unexpected viewCart error: \(error)")
+        }
+    }
+    
+    @objc(beginCheckout:)
+    func beginCheckout (_ data: NSDictionary) -> Void {
+        do {
+            print(data)
+            try Dengage.beginCheckout(parameters: data as! [String:Any])
+        } catch {
+            print("Unexpected beginCheckout error: \(error)")
+        }
+    }
+    
+    @objc(placeOrder:)
+    func placeOrder (_ data: NSDictionary) -> Void {
+        do {
+            print(data)
+            try Dengage.order(parameters: data as! [String : Any])
+        } catch {
+            print("Unexpected placeOrder error: \(error)")
+        }
+    }
+    
+    @objc(cancelOrder:)
+    func cancelOrder (_ data: NSDictionary) -> Void {
+        do {
+            print(data)
+            try Dengage.cancelOrder(parameters: data as! [String : Any])
+            
+        } catch {
+            print("Unexpected cancelOrder error: \(error)")
+        }
+    }
+    
+    @objc(addToWishList:)
+    func addToWishList (_ data: NSDictionary) -> Void {
+        do {
+            print(data)
+            try Dengage.addToWithList(parameters: data as! [String : Any])
+        } catch {
+            print("Unexpected addToWishList error: \(error)")
+        }
+    }
+    
+    @objc(removeFromWishList:)
+    func removeFromWishList (_ data: NSDictionary) -> Void {
+        do {
+            print(data)
+            try Dengage.removeFromWithList(parameters: data as! [String : Any])
+        } catch {
+            print("Unexpected removeFromWishList error: \(error)")
+        }
+    }
+    
+    @objc(search:)
+    func search (_ data: NSDictionary) -> Void {
+        do {
+            print(data)
+            try Dengage.search(parameters: data as! [String : Any])
+        } catch {
+            print("Unexpected search error: \(error)")
+        }
+    }
+    
+    @objc(sendDeviceEvent:withData:)
+    func sendDeviceEvent (_ tableName: NSString, withData: NSDictionary) -> Void {
+        do {
+            print(withData)
+            try Dengage.sendCustomEvent(eventTable: tableName as String, parameters: withData as! [String:Any])
+        } catch {
+            print("Unexpected search error: \(error)")
+        }
+    }
+    
+    
+    
+    
+    
+    
+    @objc(setPartnerDeviceId:)
+    func setPartnerDeviceId(adid: NSString) {
+        Dengage.setPartnerDeviceId(adid: adid as String)
+    }
+    
+    @objc
+    func getLastPushPayload(_ resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
+        do {
+            let pushPayload = try Dengage.getLastPushPayload()
+            resolve(pushPayload)
+        } catch {
+            print("Unexpected pushPayload error: \(error)")
+            reject("UNABLE_TO_RETREIVE_payload", error.localizedDescription ?? "Something went wrong", error)
+        }
+    }
+    
+    @objc(registerInAppListener)
+    func registerInAppListener ()
+    {Dengage.handleInAppDeeplink{ url in
+        var response = [String:Any?]();
+        response["targetUrl"] = url
+        print(url)
+        super.sendEvent(withName: "retrieveInAppLink", body: [response])
+        
+    }
+    }
+    
+    @objc(setInAppLinkConfiguration:)
+    func setInAppLinkConfiguration(deeplink: String) {
+        Dengage.inAppLinkConfiguration(deeplink: deeplink)
+    }
+    
+    @objc
+    func getDeviceId(_ resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
+        let deviceId = Dengage.getDeviceId()
+        resolve(deviceId)
+    }
+    
+    @objc(setDevelopmentStatus:)
+    func setDevelopmentStatus(isDebug: Bool) {
+        Dengage.setDevelopmentStatus(isDebug: isDebug)
+    }
+    
+    @objc(setLanguage:)
+    func setLanguage(language: String) {
+        Dengage.setLanguage(language: language)
+    }
+    
+    @objc(setDeviceId:)
+    func setDeviceId(deviceId: String) {
+        Dengage.setDeviceId(applicationIdentifier: deviceId)
+    }
+    
+}
+
+
+// deprecated
+extension ReactNativeDengage {
     
     @objc(registerNotificationListeners)
     func registerNotificationListeners () {
@@ -336,205 +548,4 @@ class ReactNativeDengage: RCTEventEmitter {
             
         }
     }
-    
-    @objc(pageView:)
-    func pageView (_ data: NSDictionary) -> Void {
-        do {
-            try Dengage.pageView(parameters: data as! [String:Any])
-        } catch {
-            print("Unexpected pageView error: \(error)")
-        }
-    }
-    
-    @objc(addToCart:)
-    func addToCart (_ data: NSDictionary) -> Void {
-        do {
-            print(data)
-            try Dengage.addToCart(parameters: data as! [String:Any])
-        } catch {
-            print("Unexpected addToCart error: \(error)")
-        }
-    }
-    
-    @objc(removeFromCart:)
-    func removeFromCart (_ data: NSDictionary) -> Void {
-        do {
-            print(data)
-            try Dengage.removeFromCart(parameters: data as! [String:Any])
-        } catch {
-            print("Unexpected removeFromCart error: \(error)")
-        }
-    }
-    
-    @objc(viewCart:)
-    func viewCart (_ data: NSDictionary) -> Void {
-        do {
-            print(data)
-            try Dengage.viewCart(parameters: data as! [String:Any])
-        } catch {
-            print("Unexpected viewCart error: \(error)")
-        }
-    }
-    
-    @objc(beginCheckout:)
-    func beginCheckout (_ data: NSDictionary) -> Void {
-        do {
-            print(data)
-            try Dengage.beginCheckout(parameters: data as! [String:Any])
-        } catch {
-            print("Unexpected beginCheckout error: \(error)")
-        }
-    }
-    
-    @objc(placeOrder:)
-    func placeOrder (_ data: NSDictionary) -> Void {
-        do {
-            print(data)
-            try Dengage.order(parameters: data as! [String : Any])
-        } catch {
-            print("Unexpected placeOrder error: \(error)")
-        }
-    }
-    
-    @objc(cancelOrder:)
-    func cancelOrder (_ data: NSDictionary) -> Void {
-        do {
-            print(data)
-            try Dengage.cancelOrder(parameters: data as! [String : Any])
-            
-        } catch {
-            print("Unexpected cancelOrder error: \(error)")
-        }
-    }
-    
-    @objc(addToWishList:)
-    func addToWishList (_ data: NSDictionary) -> Void {
-        do {
-            print(data)
-            try Dengage.addToWithList(parameters: data as! [String : Any])
-        } catch {
-            print("Unexpected addToWishList error: \(error)")
-        }
-    }
-    
-    @objc(removeFromWishList:)
-    func removeFromWishList (_ data: NSDictionary) -> Void {
-        do {
-            print(data)
-            try Dengage.removeFromWithList(parameters: data as! [String : Any])
-        } catch {
-            print("Unexpected removeFromWishList error: \(error)")
-        }
-    }
-    
-    @objc(search:)
-    func search (_ data: NSDictionary) -> Void {
-        do {
-            print(data)
-            try Dengage.search(parameters: data as! [String : Any])
-        } catch {
-            print("Unexpected search error: \(error)")
-        }
-    }
-    
-    @objc(sendDeviceEvent:withData:)
-    func sendDeviceEvent (_ tableName: NSString, withData: NSDictionary) -> Void {
-        do {
-            print(withData)
-            try Dengage.sendCustomEvent(eventTable: tableName as String, parameters: withData as! [String:Any])
-        } catch {
-            print("Unexpected search error: \(error)")
-        }
-    }
-    
-    
-    
-    
-    @objc(setCategoryPath:)
-    func setCategoryPath(path: NSString) {
-        Dengage.setCategory(path: path as String)
-    }
-    
-    @objc(setCartItemCount:)
-    func setCartItemCount(count: NSString) {
-        Dengage.setCart(itemCount: count as String)
-    }
-    
-    @objc(setCartAmount:)
-    func setCartAmount(amount: NSString) {
-        Dengage.setCart(amount: amount as String)
-    }
-    
-    @objc(setState:)
-    func setState(state: NSString) {
-        Dengage.setState(name: state as String)
-    }
-    
-    @objc(setCity:)
-    func setCity(city: NSString) {
-        Dengage.setCity(name: city as String)
-    }
-    
-    @objc(showRealTimeInApp:withData:)
-    func showRealTimeInApp (_ screenName: NSString, withData: NSDictionary) -> Void {
-        do {
-            Dengage.showRealTimeInApp(screenName: screenName as String , params: withData as? Dictionary<String, String> )
-        } catch {
-            print("Unexpected search error: \(error)")
-        }
-    }
-    
-    @objc(setPartnerDeviceId:)
-    func setPartnerDeviceId(adid: NSString) {
-        Dengage.setPartnerDeviceId(adid: adid as String)
-    }
-    
-    @objc
-    func getLastPushPayload(_ resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
-        do {
-            let pushPayload = try Dengage.getLastPushPayload()
-            resolve(pushPayload)
-        } catch {
-            print("Unexpected pushPayload error: \(error)")
-            reject("UNABLE_TO_RETREIVE_payload", error.localizedDescription ?? "Something went wrong", error)
-        }
-    }
-    
-    @objc(registerInAppListener)
-    func registerInAppListener ()
-    {Dengage.handleInAppDeeplink{ url in
-        var response = [String:Any?]();
-        response["targetUrl"] = url
-        print(url)
-        super.sendEvent(withName: "retrieveInAppLink", body: [response])
-        
-    }
-    }
-    
-    @objc(setInAppLinkConfiguration:)
-    func setInAppLinkConfiguration(deeplink: String) {
-        Dengage.inAppLinkConfiguration(deeplink: deeplink)
-    }
-    
-    @objc
-    func getDeviceId(_ resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
-        let deviceId = Dengage.getDeviceId()
-        resolve(deviceId)
-    }
-    
-    @objc(setDevelopmentStatus:)
-    func setDevelopmentStatus(isDebug: Bool) {
-        Dengage.setDevelopmentStatus(isDebug: isDebug)
-    }
-    
-    @objc(setLanguage:)
-    func setLanguage(language: String) {
-        Dengage.setLanguage(language: language)
-    }
-    
-    @objc(setDeviceId:)
-    func setDeviceId(deviceId: String) {
-        Dengage.setDeviceId(applicationIdentifier: deviceId)
-    }
-    
 }

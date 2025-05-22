@@ -19,6 +19,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
     { title: 'INBOX MESSAGES', screen: 'InboxMessages' },
     //{ title: 'SEND CUSTOM EVENT', screen: 'CustomEvent' },
     { title: 'IN APP MESSAGE', screen: 'InAppMessages' },
+    { title: 'REAL TIME IN APP MESSAGE', screen: 'RTInAppMessages' },
     //{ title: 'REAL TIME IN APP MESSAGES', screen: 'RealTimeInApp' },
     //{ title: 'SET TAGS', screen: 'SetTags' },
     { title: 'GEOFENCE', screen: 'Geofence' },

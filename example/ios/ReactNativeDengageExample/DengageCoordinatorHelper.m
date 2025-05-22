@@ -35,11 +35,12 @@ NSString *integrationKey = @"n_p_l_lO9FMM4fzlX4jbudL355PGRpKsipGVHMgaPbOGAxR_s_l
                    logVisible:YES];
 }
 
-+ (void)userNotification:(UNUserNotificationCenter *)center
-    notificationResponse:(UNNotificationResponse *)response
-   withCompletionHandler:(void (^)(void))completionHandler
++ (void)userNotificationCenter:(UNUserNotificationCenter *)center
+didReceiveNotificationResponse:(UNNotificationResponse *)response
+         withCompletionHandler:(void (^)(void))completionHandler
 {
     [[DengageRNCoordinator staticInstance] didReceivePush:center response:response withCompletionHandler:completionHandler];
 }
+
 
 @end

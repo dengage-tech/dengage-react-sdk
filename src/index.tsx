@@ -18,10 +18,6 @@ const DengageRN = NativeModules.DengageRN
       }
     );
 
-export function multiply(a: number, b: number): Promise<number> {
-  return DengageRN.multiply(a, b);
-}
-
 type DengageType = {
   setIntegrationKey(key: string): void; // iOS only
   setFirebaseIntegrationKey(key: string): void; // android only
@@ -37,7 +33,7 @@ type DengageType = {
   handleNotificationActionBlock(
     callback: (notificationAction: DengageTypes['NotificationAction']) => void
   ): void; // iOS only,
-  registerNotificationListeners(): void; // End Developer No Need to call this, we're calling it ourself, to register for events like `onNotificationReceived` & `onNotificationClicked`
+  
   pageView(params: object): void;
   addToCart(params: object): void;
   removeFromCart(params: object): void;
@@ -55,12 +51,7 @@ type DengageType = {
   onMessageReceived(params: object): void;
 
   resetAppBadge(): void; // android only
-  showRealTimeInApp(screenName: string, data: object): void;
-  setCity(city: string): void;
-  setState(state: string): void;
-  setCartAmount(amount: string): void;
-  setCartItemCount(count: string): void;
-  setCategoryPath(path: string): void;
+  
   setPartnerDeviceId(adid: string): void;
   getLastPushPayload(): Promise<string>;
   registerInAppListener(): void;
@@ -71,6 +62,8 @@ type DengageType = {
   setDeviceId(deviceId: string): void;
 
 
+
+  
   
   promptForPushNotifications(): void; // iOS only
   setContactKey(key: string | null): void;
@@ -82,6 +75,14 @@ type DengageType = {
   setInAppDeviceInfo(key: string, value: string): void;
   clearInAppDeviceInfo(): void;
   getInAppDeviceInfo(): Promise<Record<string, string>>;
+  setCategoryPath(path: string): void;
+  setCartItemCount(count: string): void;
+  setCartAmount(amount: string): void;
+  setState(state: string): void;
+  setCity(city: string): void;
+  showRealTimeInApp(screenName: string, params: Record<string, string>): void;
+  
+ 
 
 
   getInboxMessages(offset: number, limit: number): Promise<[InboxMessage]>;
@@ -96,6 +97,10 @@ type DengageType = {
 
   // NEW
   getSdkVersion(): Promise<string>;
+
+
+  // deprecated
+  registerNotificationListeners(): void; // End Developer No Need to call this, we're calling it ourself, to register for events like `onNotificationReceived` & `onNotificationClicked`
 };
 
 DengageRN?.registerNotificationListeners?.();

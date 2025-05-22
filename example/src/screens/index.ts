@@ -7,3 +7,4 @@ export { default as InAppInlineScreen } from './InAppInlineScreen';
 export { default as AppStoryScreen } from './AppStoryScreen';
 export { default as GeofenceScreen } from './GeofenceScreen';
 export { default as InboxMessagesScreen } from './InboxMessagesScreen';
+export { default as RTInAppMessagesScreen } from './RTInAppMessagesScreen';

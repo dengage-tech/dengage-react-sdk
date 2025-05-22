@@ -12,11 +12,7 @@ npm install @dengage-tech/react-native-dengage
 
 
 ```js
-import { multiply } from '@dengage-tech/react-native-dengage';
 
-// ...
-
-const result = await multiply(3, 7);
 ```
 
 

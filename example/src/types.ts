@@ -6,7 +6,7 @@ export type RootStackParamList = {
   InboxMessages: undefined;
   CustomEvent: undefined;
   InAppMessages: undefined;
-  RealTimeInApp: undefined;
+  RTInAppMessages: undefined;
   SetTags: undefined;
   TestPage: undefined;
   Geofence: undefined;
