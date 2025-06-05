@@ -42,7 +42,8 @@ class DengageRNCoordinator private constructor() {
         deviceConfigurationPreference: DeviceConfigurationPreference,
         disableOpenWelUrl: Boolean? = false,
         logEnabled: Boolean = false,
-        enableGeoFence: Boolean? = false
+        enableGeoFence: Boolean? = false,
+        developmentStatus: Boolean? = false
     ) {
         if (firebaseIntegrationKey == null) {
             throw Error("Firebase key can't be null");
@@ -62,6 +63,7 @@ class DengageRNCoordinator private constructor() {
             notificationDisplayPriorityConfiguration = NotificationDisplayPriorityConfiguration.SHOW_WITH_HIGH_PRIORITY,
         )
         Dengage.setLogStatus(logEnabled)
+        Dengage.setDevelopmentStatus(developmentStatus)
         Dengage.inAppLinkConfiguration("www.chaitanyamunje.com")
         if (enableGeoFence == true) {
             try {

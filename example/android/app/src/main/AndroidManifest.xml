@@ -34,7 +34,7 @@
             </intent-filter>
         </service>
         <receiver
-            android:name="com.dengage.sdk.push.NotificationReceiver"
+            android:name=".PushNotificationReceiver"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.dengage.push.intent.RECEIVE" />

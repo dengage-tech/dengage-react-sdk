@@ -56,7 +56,8 @@ class MainApplication : Application(), ReactApplication {
             deviceConfigurationPreference = com.dengage.sdk.data.remote.api.DeviceConfigurationPreference.Google,
             disableOpenWelUrl = false,
             logEnabled = true,
-            enableGeoFence = true
+            enableGeoFence = true,
+            developmentStatus = true
         )
     }
 }
