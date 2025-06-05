@@ -67,7 +67,6 @@ export default function AppStoryScreen() {
           >
             {storyConfig && (
               <StoriesListView
-                key={storyConfig.propertyId + storyConfig.screenName}
                 storyPropertyId={storyConfig.propertyId}
                 screenName={storyConfig.screenName}
                 customParams={storyConfig.customParams}

@@ -18,6 +18,9 @@ class RNStoriesListViewManager(
     private var customParams: HashMap<String, String>? = null
 
     override fun createViewInstance(reactContext: ThemedReactContext): StoriesListView {
+        storyPropertyId = null
+        screenName = null
+        customParams = null
         return StoriesListView(reactContext)
     }
 
