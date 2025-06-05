@@ -44,7 +44,7 @@ export default function InAppMessageScreen() {
     deviceInfoList.forEach(({ key, value }) => {
       if (key && value) Dengage.setInAppDeviceInfo(key, value);
     });
-    if (screenName) Dengage.setNavigation(screenName);
+    Dengage.setNavigation(screenName);
   };
 
   const handleClearDeviceInfo = () => {
