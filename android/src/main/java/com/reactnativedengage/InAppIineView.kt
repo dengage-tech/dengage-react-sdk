@@ -10,7 +10,7 @@ import com.dengage.sdk.ui.inappmessage.InAppInlineElement
 /**
  * Created by mmpkl05 on 12/14/17.
  */
-class InAppIineView(private val context: Context, val activity: Activity) : InAppInlineElement(
+class InAppIineView(private val context: Context, val activity: Activity?) : InAppInlineElement(
     context
 ) {
     private var propertyId = ""
@@ -40,7 +40,8 @@ class InAppIineView(private val context: Context, val activity: Activity) : InAp
 
   private fun callInAppInline()
   {
-    Dengage.showInlineInApp(propertyId=propertyId, screenName = screenName, customParams = customParams, inAppInlineElement = this,  activity = activity)
-
+    activity?.let {
+      Dengage.showInlineInApp(propertyId=propertyId, screenName = screenName, customParams = customParams, inAppInlineElement = this,  activity = it)
+    }
   }
 }

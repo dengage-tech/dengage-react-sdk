@@ -10,7 +10,7 @@ import com.facebook.react.uimanager.annotations.ReactProp
 /**
  * Created by mmpkl05 on 12/14/17.
  */
-class InAppInlineViewManager(private val activity: Activity) : SimpleViewManager<InAppIineView>() {
+class InAppInlineViewManager(private val activity: Activity?) : SimpleViewManager<InAppIineView>() {
 
     override fun getName(): String {
         return REACT_CLASS
@@ -19,7 +19,7 @@ class InAppInlineViewManager(private val activity: Activity) : SimpleViewManager
     public override fun createViewInstance(context: ThemedReactContext): InAppIineView {
         Log.i("Create View Instance", "ANDROID_SAMPLE_UI")
         return InAppIineView(
-            context,activity
+            context, activity ?: context.currentActivity
         )
     }
 
