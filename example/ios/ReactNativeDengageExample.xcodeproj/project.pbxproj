@@ -276,6 +276,7 @@
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
 				377EBFCB0F8AC5945FA85F44 /* [CP] Copy Pods Resources */,
+				6B163FDC3B68BA381FB76309 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -298,6 +299,7 @@
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				88025ED42DCF304200A0E7C1 /* Embed Foundation Extensions */,
 				F90E03BE3F6597679BA7D5CC /* [CP] Copy Pods Resources */,
+				439B82BD1A595146F401B130 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -524,6 +526,40 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ReactNativeDengageExample-ReactNativeDengageExampleTests/Pods-ReactNativeDengageExample-ReactNativeDengageExampleTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		439B82BD1A595146F401B130 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ReactNativeDengageExample/Pods-ReactNativeDengageExample-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ReactNativeDengageExample/Pods-ReactNativeDengageExample-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ReactNativeDengageExample/Pods-ReactNativeDengageExample-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6B163FDC3B68BA381FB76309 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ReactNativeDengageExample-ReactNativeDengageExampleTests/Pods-ReactNativeDengageExample-ReactNativeDengageExampleTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ReactNativeDengageExample-ReactNativeDengageExampleTests/Pods-ReactNativeDengageExample-ReactNativeDengageExampleTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ReactNativeDengageExample-ReactNativeDengageExampleTests/Pods-ReactNativeDengageExample-ReactNativeDengageExampleTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		7C2FA0FD855DDEA8D1BDCC67 /* [CP] Check Pods Manifest.lock */ = {
@@ -821,7 +857,7 @@
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
-				USE_HERMES = false;
+				USE_HERMES = true;
 			};
 			name = Debug;
 		};
@@ -892,7 +928,7 @@
 				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
-				USE_HERMES = false;
+				USE_HERMES = true;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
