@@ -32,7 +32,6 @@ public class DengageRNCoordinator: NSObject {
         badgeCountReset: DarwinBoolean,
         logVisible: DarwinBoolean
     ) {
-        Dengage.setIntegrationKey(key: key as String)
         let options = DengageOptions(
             disableOpenURL: disableOpenURL.boolValue,
             badgeCountReset: badgeCountReset.boolValue,
@@ -40,8 +39,7 @@ public class DengageRNCoordinator: NSObject {
             appGroupsKey: appGroupsKey as String
         )
         let opts = launchOptions as? [UIApplication.LaunchOptionsKey: Any] ?? [:]
-        Dengage.initWithLaunchOptions(application: application, withLaunchOptions: opts, dengageOptions: options)
-        
+        Dengage.start(apiKey: key as String, application: application, launchOptions: opts, dengageOptions: options)        
         if askNotificationPermission.boolValue {
             Dengage.promptForPushNotifications()
         }
