@@ -9,16 +9,8 @@ PODS:
   - fmt (11.0.2)
   - glog (0.3.5)
   - hermes-engine (0.77.2):
-    - hermes-engine/cdp (= 0.77.2)
-    - hermes-engine/Hermes (= 0.77.2)
-    - hermes-engine/inspector (= 0.77.2)
-    - hermes-engine/inspector_chrome (= 0.77.2)
-    - hermes-engine/Public (= 0.77.2)
-  - hermes-engine/cdp (0.77.2)
-  - hermes-engine/Hermes (0.77.2)
-  - hermes-engine/inspector (0.77.2)
-  - hermes-engine/inspector_chrome (0.77.2)
-  - hermes-engine/Public (0.77.2)
+    - hermes-engine/Pre-built (= 0.77.2)
+  - hermes-engine/Pre-built (0.77.2)
   - RCT-Folly (2024.11.18.00):
     - boost
     - DoubleConversion
@@ -2076,7 +2068,7 @@ SPEC CHECKSUMS:
   FBLazyVector: 4c16dde959a9d6b24f2aa32cb87cb919a1ace3f3
   fmt: a40bb5bd0294ea969aaaba240a927bd33d878cdd
   glog: eb93e2f488219332457c3c4eafd2738ddc7e80b8
-  hermes-engine: 98f34cfd2d29e7f0a792167a79f39e42337fcef6
+  hermes-engine: 8eb265241fa1d7095d3a40d51fd90f7dce68217c
   RCT-Folly: e78785aa9ba2ed998ea4151e314036f6c49e6d82
   RCTDeprecation: 85b72250b63cfb54f29ca96ceb108cb9ef3c2079
   RCTRequired: 567cb8f5d42b990331bfd93faad1d8999b1c1736

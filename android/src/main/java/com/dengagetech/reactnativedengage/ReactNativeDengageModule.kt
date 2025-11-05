@@ -10,6 +10,8 @@ import com.dengage.sdk.Dengage
 import com.dengage.sdk.callback.DengageCallback
 import com.dengage.sdk.callback.DengageError
 import com.dengage.sdk.domain.inboxmessage.model.InboxMessage
+import com.dengage.sdk.domain.inappmessage.model.Cart
+import com.dengage.sdk.domain.inappmessage.model.CartItem
 import com.facebook.react.bridge.*
 
 class ReactNativeDengageModule(reactContext: ReactApplicationContext) :
@@ -220,6 +222,304 @@ class ReactNativeDengageModule(reactContext: ReactApplicationContext) :
         try {
             Dengage.setInboxMessageAsClicked(id)
             promise.resolve(true)
+        } catch (ex: Exception) {
+            promise.reject(ex)
+        }
+    }
+
+    @ReactMethod
+    fun deleteAllInboxMessages(promise: Promise) {
+        try {
+            Dengage.deleteAllInboxMessages()
+            promise.resolve(true)
+        } catch (ex: Exception) {
+            promise.reject(ex)
+        }
+    }
+
+    @ReactMethod
+    fun setAllInboxMessageAsClicked(promise: Promise) {
+        try {
+            Dengage.setAllInboxMessagesAsClicked()
+            promise.resolve(true)
+        } catch (ex: Exception) {
+            promise.reject(ex)
+        }
+    }
+
+    @ReactMethod
+    fun getIntegrationKey(promise: Promise) {
+        try {
+            val integrationKey = Dengage.getSubscription()?.integrationKey ?: ""
+            promise.resolve(integrationKey)
+        } catch (ex: Exception) {
+            promise.reject(ex)
+        }
+    }
+
+    @ReactMethod
+    fun sendCustomEvent(eventTable: String, parameters: ReadableMap) {
+        try {
+            val paramsMap = parameters.toHashMap()
+            Dengage.sendCustomEvent(
+                tableName = eventTable,
+                key = "",
+                data = paramsMap as HashMap<String, Any>
+            )
+        } catch (ex: Exception) {
+            Log.e("DengageRN", "Error sending custom event", ex)
+        }
+    }
+
+    @ReactMethod
+    fun setCart(cart: ReadableMap, promise: Promise) {
+        try {
+            val itemsArray = cart.getArray("items")
+            if (itemsArray != null) {
+                val cartItems = mutableListOf<CartItem>()
+                for (i in 0 until itemsArray.size()) {
+                    val itemMap = itemsArray.getMap(i)
+                    if (itemMap != null) {
+                        val productId = itemMap.getString("productId") ?: itemMap.getString("product_id") ?: ""
+                        val productVariantId = itemMap.getString("productVariantId") ?: itemMap.getString("product_variant_id") ?: ""
+                        val categoryPath = itemMap.getString("categoryPath") ?: itemMap.getString("category_path") ?: ""
+                        val price = if (itemMap.hasKey("price")) itemMap.getInt("price") else 0
+                        val discountedPrice = if (itemMap.hasKey("discountedPrice")) {
+                            itemMap.getInt("discountedPrice")
+                        } else if (itemMap.hasKey("discounted_price")) {
+                            itemMap.getInt("discounted_price")
+                        } else {
+                            0
+                        }
+                        val hasDiscount = if (itemMap.hasKey("hasDiscount")) {
+                            itemMap.getBoolean("hasDiscount")
+                        } else if (itemMap.hasKey("has_discount")) {
+                            itemMap.getBoolean("has_discount")
+                        } else {
+                            false
+                        }
+                        val hasPromotion = if (itemMap.hasKey("hasPromotion")) {
+                            itemMap.getBoolean("hasPromotion")
+                        } else if (itemMap.hasKey("has_promotion")) {
+                            itemMap.getBoolean("has_promotion")
+                        } else {
+                            false
+                        }
+                        val quantity = if (itemMap.hasKey("quantity")) itemMap.getInt("quantity") else 0
+                        
+                        val attributesMap = itemMap.getMap("attributes")
+                        val attributes = mutableMapOf<String, String>()
+                        if (attributesMap != null) {
+                            val iterator = attributesMap.keySetIterator()
+                            while (iterator.hasNextKey()) {
+                                val key = iterator.nextKey()
+                                val value = attributesMap.getString(key) ?: ""
+                                attributes[key] = value
+                            }
+                        }
+                        
+                        val cartItem = CartItem(
+                            productId = productId,
+                            productVariantId = productVariantId,
+                            categoryPath = categoryPath,
+                            price = price,
+                            discountedPrice = discountedPrice,
+                            hasDiscount = hasDiscount,
+                            hasPromotion = hasPromotion,
+                            quantity = quantity,
+                            attributes = attributes
+                        )
+                        cartItems.add(cartItem)
+                    }
+                }
+                val cartObj = Cart(items = cartItems)
+                Dengage.setCart(cartObj)
+                promise.resolve(true)
+            } else {
+                promise.reject("INVALID_CART", "Cart items not found")
+            }
+        } catch (ex: Exception) {
+            promise.reject(ex)
+        }
+    }
+
+    @ReactMethod
+    fun getCart(promise: Promise) {
+        try {
+            val cart = Dengage.getCart()
+            val map = WritableNativeMap()
+            
+            // Convert items
+            val itemsArray = WritableNativeArray()
+            for (item in cart.items) {
+                val itemMap = WritableNativeMap()
+                itemMap.putString("productId", item.productId)
+                itemMap.putString("productVariantId", item.productVariantId)
+                itemMap.putString("categoryPath", item.categoryPath)
+                itemMap.putInt("price", item.price)
+                itemMap.putInt("discountedPrice", item.discountedPrice)
+                itemMap.putBoolean("hasDiscount", item.hasDiscount)
+                itemMap.putBoolean("hasPromotion", item.hasPromotion)
+                itemMap.putInt("quantity", item.quantity)
+                
+                val attributesMap = WritableNativeMap()
+                for ((key, value) in item.attributes) {
+                    attributesMap.putString(key, value)
+                }
+                itemMap.putMap("attributes", attributesMap)
+                
+                itemMap.putInt("effectivePrice", item.effectivePrice)
+                itemMap.putInt("lineTotal", item.lineTotal)
+                itemMap.putInt("discountedLineTotal", item.discountedLineTotal)
+                itemMap.putInt("effectiveLineTotal", item.effectiveLineTotal)
+                
+                val segmentsArray = WritableNativeArray()
+                for (segment in item.categorySegments) {
+                    segmentsArray.pushString(segment)
+                }
+                itemMap.putArray("categorySegments", segmentsArray)
+                itemMap.putString("categoryRoot", item.categoryRoot)
+                
+                itemsArray.pushMap(itemMap)
+            }
+            map.putArray("items", itemsArray)
+            
+            // Convert summary
+            val summaryMap = WritableNativeMap()
+            summaryMap.putString("currency", cart.summary.currency)
+            summaryMap.putDouble("updatedAt", cart.summary.updatedAt.toDouble())
+            summaryMap.putInt("linesCount", cart.summary.linesCount)
+            summaryMap.putInt("itemsCount", cart.summary.itemsCount)
+            summaryMap.putInt("subtotal", cart.summary.subtotal)
+            summaryMap.putInt("discountedSubtotal", cart.summary.discountedSubtotal)
+            summaryMap.putInt("effectiveSubtotal", cart.summary.effectiveSubtotal)
+            summaryMap.putBoolean("anyDiscounted", cart.summary.anyDiscounted)
+            summaryMap.putBoolean("allDiscounted", cart.summary.allDiscounted)
+            summaryMap.putInt("minPrice", cart.summary.minPrice)
+            summaryMap.putInt("maxPrice", cart.summary.maxPrice)
+            summaryMap.putInt("minEffectivePrice", cart.summary.minEffectivePrice)
+            summaryMap.putInt("maxEffectivePrice", cart.summary.maxEffectivePrice)
+            
+            val categoriesMap = WritableNativeMap()
+            for ((key, value) in cart.summary.categories) {
+                categoriesMap.putInt(key, value)
+            }
+            summaryMap.putMap("categories", categoriesMap)
+            
+            map.putMap("summary", summaryMap)
+            
+            promise.resolve(map)
+        } catch (ex: Exception) {
+            promise.reject(ex)
+        }
+    }
+
+    @ReactMethod
+    fun getSdkParameters(promise: Promise) {
+        try {
+            val sdkParams = Dengage.getSdkParameters()
+            if (sdkParams != null) {
+                val map = WritableNativeMap()
+                
+                map.putString("appId", sdkParams.appId)
+                if (sdkParams.accountId != null) {
+                    map.putInt("accountId", sdkParams.accountId!!)
+                }
+                map.putString("accountName", sdkParams.accountName)
+                map.putBoolean("eventsEnabled", sdkParams.eventsEnabled)
+                map.putBoolean("inboxEnabled", sdkParams.inboxEnabled ?: false)
+                map.putBoolean("inAppEnabled", sdkParams.inAppEnabled ?: false)
+                map.putBoolean("subscriptionEnabled", sdkParams.subscriptionEnabled ?: false)
+                map.putInt("inAppFetchIntervalInMin", sdkParams.inAppFetchIntervalInMin ?: 0)
+                map.putInt("expiredMessagesFetchIntervalInMin", sdkParams.expiredMessagesFetchIntervalInMin ?: 0)
+                map.putInt("inAppMinSecBetweenMessages", sdkParams.inAppMinSecBetweenMessages ?: 0)
+                map.putDouble("lastFetchTimeInMillis", sdkParams.lastFetchTimeInMillis.toDouble())
+                map.putBoolean("appTrackingEnabled", sdkParams.appTrackingEnabled)
+                map.putBoolean("realTimeInAppEnabled", sdkParams.realTimeInAppEnabled ?: false)
+                map.putInt("realTimeInAppFetchIntervalInMinutes", sdkParams.realTimeInAppFetchIntervalInMinutes ?: 0)
+                map.putInt("realTimeInAppSessionTimeoutMinutes", sdkParams.realTimeInAppSessionTimeoutMinutes ?: 0)
+                map.putString("surveyCheckEndpoint", sdkParams.surveyCheckEndpoint)
+                
+                // Convert debugDeviceIds
+                if (sdkParams.debugDeviceIds != null) {
+                    val debugIdsArray = WritableNativeArray()
+                    for (id in sdkParams.debugDeviceIds) {
+                        debugIdsArray.pushString(id)
+                    }
+                    map.putArray("debugDeviceIds", debugIdsArray)
+                }
+                
+                // Convert eventMappings
+                if (sdkParams.eventMappings != null) {
+                    val eventMappingsArray = WritableNativeArray()
+                    for (mapping in sdkParams.eventMappings!!) {
+                        val mappingMap = WritableNativeMap()
+                        mappingMap.putString("eventTableName", mapping.eventTableName)
+                        
+                        // Convert eventTypeDefinitions
+                        if (mapping.eventTypeDefinitions != null) {
+                            val typeDefsArray = WritableNativeArray()
+                            for (typeDef in mapping.eventTypeDefinitions!!) {
+                                val typeDefMap = WritableNativeMap()
+                                typeDefMap.putInt("eventTypeId", typeDef.eventTypeId ?: 0)
+                                typeDefMap.putString("eventType", typeDef.eventType)
+                                typeDefMap.putString("logicOperator", typeDef.logicOperator)
+                                typeDefMap.putBoolean("enableClientHistory", typeDef.enableClientHistory ?: false)
+                                
+                                // Convert filterConditions
+                                if (typeDef.filterConditions != null) {
+                                    val filterArray = WritableNativeArray()
+                                    for (filter in typeDef.filterConditions!!) {
+                                        val filterMap = WritableNativeMap()
+                                        filterMap.putString("fieldName", filter.fieldName)
+                                        filterMap.putString("operator", filter.operator)
+                                        if (filter.values != null) {
+                                            val valuesArray = WritableNativeArray()
+                                            for (value in filter.values!!) {
+                                                valuesArray.pushString(value)
+                                            }
+                                            filterMap.putArray("values", valuesArray)
+                                        }
+                                        filterArray.pushMap(filterMap)
+                                    }
+                                    typeDefMap.putArray("filterConditions", filterArray)
+                                }
+                                
+                                // Convert clientHistoryOptions
+                                if (typeDef.clientHistoryOptions != null) {
+                                    val clientHistoryMap = WritableNativeMap()
+                                    clientHistoryMap.putInt("maxEventCount", typeDef.clientHistoryOptions!!.maxEventCount ?: 0)
+                                    clientHistoryMap.putInt("timeWindowInMinutes", typeDef.clientHistoryOptions!!.timeWindowInMinutes ?: 0)
+                                    typeDefMap.putMap("clientHistoryOptions", clientHistoryMap)
+                                }
+                                
+                                // Convert attributes
+                                if (typeDef.attributes != null) {
+                                    val attributesArray = WritableNativeArray()
+                                    for (attr in typeDef.attributes!!) {
+                                        val attrMap = WritableNativeMap()
+                                        attrMap.putString("name", attr.name)
+                                        attrMap.putString("dataType", attr.dataType)
+                                        attrMap.putString("tableColumnName", attr.tableColumnName)
+                                        attributesArray.pushMap(attrMap)
+                                    }
+                                    typeDefMap.putArray("attributes", attributesArray)
+                                }
+                                
+                                typeDefsArray.pushMap(typeDefMap)
+                            }
+                            mappingMap.putArray("eventTypeDefinitions", typeDefsArray)
+                        }
+                        
+                        eventMappingsArray.pushMap(mappingMap)
+                    }
+                    map.putArray("eventMappings", eventMappingsArray)
+                }
+                
+                promise.resolve(map)
+            } else {
+                promise.resolve(null)
+            }
         } catch (ex: Exception) {
             promise.reject(ex)
         }

@@ -1,5 +1,5 @@
 import { NativeModules, Platform } from 'react-native';
-import type { DengageTypes, InboxMessage, Subscription } from './types';
+import type { DengageTypes, InboxMessage, Subscription, Cart, SdkParameters } from './types';
 
 const LINKING_ERROR =
   `The package '@dengage-tech/react-native-dengage' doesn't seem to be linked. Make sure: \n\n` +
@@ -20,6 +20,7 @@ const DengageRN = NativeModules.DengageRN
 
 type DengageType = {
   setIntegrationKey(key: string): void; // iOS only
+  getIntegrationKey(): Promise<string>; // iOS only
   setFirebaseIntegrationKey(key: string): void; // android only
 
   promptForPushNotificationsWitCallback(
@@ -45,6 +46,7 @@ type DengageType = {
   removeFromWishList(params: object): void;
   search(params: object): void;
   sendDeviceEvent(tableName: string, data: object): void;
+  sendCustomEvent(eventTable: string, parameters: object): void;
   
   setNavigation(): void;
   setNavigationWithName(screenName: string): void;
@@ -64,7 +66,6 @@ type DengageType = {
 
 
   
-  
   promptForPushNotifications(): void; // iOS only
   setContactKey(key: string | null): void;
   getContactKey(): Promise<string | null>; // iOS only
@@ -82,18 +83,18 @@ type DengageType = {
   setCity(city: string): void;
   showRealTimeInApp(screenName: string, params: Record<string, string>): void;
   
- 
-
+  setCart(cart: Cart): Promise<boolean>;
+  getCart(): Promise<Cart>;
 
   getInboxMessages(offset: number, limit: number): Promise<[InboxMessage]>;
   deleteInboxMessage(id: string): Promise<boolean>;
   setInboxMessageAsClicked(id: string): Promise<boolean>;
+  deleteAllInboxMessages(): Promise<boolean>;
+  setAllInboxMessageAsClicked(): Promise<boolean>;
 
   requestLocationPermissions(): void;
   
-
-
-
+  getSdkParameters(): Promise<SdkParameters | null>;
 
   // NEW
   getSdkVersion(): Promise<string>;
@@ -111,4 +112,3 @@ export * from './types';
 
 
 export default DengageRN as DengageType;
-

@@ -59,6 +59,10 @@ RCT_EXTERN_METHOD(deleteInboxMessage:(NSString *)id resolve:(RCTPromiseResolveBl
 
 RCT_EXTERN_METHOD(setInboxMessageAsClicked:(NSString *)id resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
 
+RCT_EXTERN_METHOD(deleteAllInboxMessages:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(setAllInboxMessageAsClicked:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
+
 
 
 
@@ -77,7 +81,7 @@ RCT_EXTERN_METHOD(requestLocationPermissions)
 
 RCT_EXTERN_METHOD(setIntegrationKey:(NSString *)key)
 
-
+RCT_EXTERN_METHOD(getIntegrationKey:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
 
 RCT_EXTERN_METHOD(promptForPushNotificationsWitCallback:(RCTResponseSenderBlock)callback)
 
@@ -119,6 +123,14 @@ RCT_EXTERN_METHOD(removeFromWishList:(NSDictionary *)data)
 RCT_EXTERN_METHOD(search:(NSDictionary *)data)
 
 RCT_EXTERN_METHOD(sendDeviceEvent:(NSString *)tableName withData:(NSDictionary *)withData)
+
+RCT_EXTERN_METHOD(sendCustomEvent:(NSString *)eventTable withParameters:(NSDictionary *)withParameters)
+
+RCT_EXTERN_METHOD(setCart:(NSDictionary *)cart)
+
+RCT_EXTERN_METHOD(getCart:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(getSdkParameters:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
 
 
 

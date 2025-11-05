@@ -192,6 +192,34 @@ class ReactNativeDengage: RCTEventEmitter {
         }
     }
     
+    @objc(deleteAllInboxMessages:reject:)
+    func deleteAllInboxMessages(resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock){
+        Dengage.deleteAllInboxMessages { (result) in
+            switch result {
+            case .success:
+                resolve(true)
+                break;
+            case .failure (let error):
+                reject("error", error.localizedDescription , error)
+                break;
+            }
+        }
+    }
+    
+    @objc(setAllInboxMessageAsClicked:reject:)
+    func setAllInboxMessageAsClicked(resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock){
+        Dengage.setAllInboxMessageAsClicked { (result) in
+            switch result {
+            case .success:
+                resolve(true)
+                break;
+            case .failure (let error):
+                reject("error", error.localizedDescription , error)
+                break;
+            }
+        }
+    }
+    
     
     
     // MARK: - Geofence
@@ -223,6 +251,11 @@ class ReactNativeDengage: RCTEventEmitter {
     @objc(setIntegrationKey:)
     func setIntegrationKey(key: String) -> Void {
         Dengage.setIntegrationKey(key: key)
+    }
+    
+    @objc(getIntegrationKey:reject:)
+    func getIntegrationKey(resolve: @escaping RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
+        resolve(Dengage.getIntegrationKey())
     }
     
     
@@ -367,6 +400,127 @@ class ReactNativeDengage: RCTEventEmitter {
             try Dengage.sendCustomEvent(eventTable: tableName as String, parameters: withData as! [String:Any])
         } catch {
             print("Unexpected search error: \(error)")
+        }
+    }
+    
+    @objc(sendCustomEvent:withParameters:)
+    func sendCustomEvent (_ eventTable: NSString, withParameters: NSDictionary) -> Void {
+        do {
+            print(withParameters)
+            try Dengage.sendCustomEvent(eventTable: eventTable as String, parameters: withParameters as! [String:Any])
+        } catch {
+            print("Unexpected sendCustomEvent error: \(error)")
+        }
+    }
+    
+    @objc(setCart:)
+    func setCart(cart: NSDictionary) -> Void {
+        guard let items = cart["items"] as? [[String: Any]] else {
+            print("Cart items not found")
+            return
+        }
+        
+        var cartItems: [CartItem] = []
+        for itemDict in items {
+            guard let productId = (itemDict["productId"] as? String) ?? (itemDict["product_id"] as? String),
+                  let productVariantId = (itemDict["productVariantId"] as? String) ?? (itemDict["product_variant_id"] as? String),
+                  let categoryPath = (itemDict["categoryPath"] as? String) ?? (itemDict["category_path"] as? String) else {
+                continue
+            }
+            
+            let price = (itemDict["price"] as? Int) ?? ((itemDict["price"] as? NSNumber)?.intValue ?? 0)
+            let discountedPrice = (itemDict["discountedPrice"] as? Int) ?? ((itemDict["discounted_price"] as? Int) ?? ((itemDict["discounted_price"] as? NSNumber)?.intValue ?? 0))
+            let hasDiscount = (itemDict["hasDiscount"] as? Bool) ?? ((itemDict["has_discount"] as? Bool) ?? false)
+            let hasPromotion = (itemDict["hasPromotion"] as? Bool) ?? ((itemDict["has_promotion"] as? Bool) ?? false)
+            let quantity = (itemDict["quantity"] as? Int) ?? ((itemDict["quantity"] as? NSNumber)?.intValue ?? 0)
+            let attributes = (itemDict["attributes"] as? [String: String]) ?? [:]
+            
+            let cartItem = CartItem(
+                productId: productId,
+                productVariantId: productVariantId,
+                categoryPath: categoryPath,
+                price: price,
+                discountedPrice: discountedPrice,
+                hasDiscount: hasDiscount,
+                hasPromotion: hasPromotion,
+                quantity: quantity,
+                attributes: attributes
+            )
+            cartItems.append(cartItem)
+        }
+        
+        let cartObj = Cart(items: cartItems)
+        Dengage.setCart(cart: cartObj)
+    }
+    
+    @objc(getCart:reject:)
+    func getCart(resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) {
+        let cart = Dengage.getCart()
+        var cartDict: [String: Any] = [:]
+        
+        // Convert items
+        var itemsArray: [[String: Any]] = []
+        for item in cart.items {
+            var itemDict: [String: Any] = [:]
+            itemDict["productId"] = item.productId
+            itemDict["productVariantId"] = item.productVariantId
+            itemDict["categoryPath"] = item.categoryPath
+            itemDict["price"] = item.price
+            itemDict["discountedPrice"] = item.discountedPrice
+            itemDict["hasDiscount"] = item.hasDiscount
+            itemDict["hasPromotion"] = item.hasPromotion
+            itemDict["quantity"] = item.quantity
+            itemDict["attributes"] = item.attributes
+            itemDict["effectivePrice"] = item.effectivePrice
+            itemDict["lineTotal"] = item.lineTotal
+            itemDict["discountedLineTotal"] = item.discountedLineTotal
+            itemDict["effectiveLineTotal"] = item.effectiveLineTotal
+            itemDict["categorySegments"] = item.categorySegments
+            itemDict["categoryRoot"] = item.categoryRoot
+            itemsArray.append(itemDict)
+        }
+        cartDict["items"] = itemsArray
+        
+        // Convert summary using JSON encoding
+        do {
+            let summaryData = try JSONEncoder().encode(cart.summary)
+            if let summaryDict = try JSONSerialization.jsonObject(with: summaryData) as? [String: Any] {
+                cartDict["summary"] = summaryDict
+            }
+        } catch {
+            print("Error encoding CartSummary: \(error)")
+        }
+        
+        resolve(cartDict)
+    }
+    
+    @objc(getSdkParameters:reject:)
+    func getSdkParameters(resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) {
+        if let sdkParams = Dengage.getSdkParameters() {
+            do {
+                // Use JSON encoding to convert GetSDKParamsResponse to dictionary
+                let encoder = JSONEncoder()
+                let jsonData = try encoder.encode(sdkParams)
+                if var paramsDict = try JSONSerialization.jsonObject(with: jsonData) as? [String: Any] {
+                    // Computed properties are not encoded, so we need to access them separately
+                    // These are computed properties that return Double values
+                    // We'll calculate them from the encoded values if available
+                    if let expiredInterval = paramsDict["expiredMessagesFetchIntervalInMin"] as? Int {
+                        paramsDict["expiredMessagesFetchIntervalInMin"] = expiredInterval
+                    }
+                    if let minSecBetween = paramsDict["inAppMinSecBetweenMessages"] as? Int {
+                        paramsDict["inAppMinSecBetweenMessages"] = minSecBetween
+                    }
+                    resolve(paramsDict)
+                } else {
+                    resolve(nil)
+                }
+            } catch {
+                print("Error encoding GetSDKParamsResponse: \(error)")
+                reject("ENCODING_ERROR", error.localizedDescription, error)
+            }
+        } else {
+            resolve(nil)
         }
     }
     
