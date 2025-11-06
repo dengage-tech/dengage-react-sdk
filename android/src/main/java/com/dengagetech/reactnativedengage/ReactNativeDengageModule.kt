@@ -258,16 +258,29 @@ class ReactNativeDengageModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
-    fun sendCustomEvent(eventTable: String, parameters: ReadableMap) {
+    fun sendCustomEvent(eventTable: String, key: String, parameters: ReadableMap) {
         try {
             val paramsMap = parameters.toHashMap()
             Dengage.sendCustomEvent(
                 tableName = eventTable,
-                key = "",
+                key = key,
                 data = paramsMap as HashMap<String, Any>
             )
         } catch (ex: Exception) {
             Log.e("DengageRN", "Error sending custom event", ex)
+        }
+    }
+
+    @ReactMethod
+    fun sendDeviceEvent(tableName: String, data: ReadableMap) {
+        try {
+            val dataMap = data.toHashMap()
+            Dengage.sendDeviceEvent(
+                tableName = tableName,
+                data = dataMap as HashMap<String, Any>
+            )
+        } catch (ex: Exception) {
+            Log.e("DengageRN", "Error sending device event", ex)
         }
     }
 

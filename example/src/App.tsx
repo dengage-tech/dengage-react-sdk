@@ -18,6 +18,9 @@ import {
   GeofenceScreen,
   InboxMessagesScreen,
   RTInAppMessagesScreen,
+  RealTimeInAppFiltersScreen,
+  EventHistoryScreen,
+  CartScreen,
 } from './screens';
 import React from 'react';
 import { NativeEventEmitter, NativeModules } from 'react-native';
@@ -61,6 +64,9 @@ const App = () => {
         <Stack.Screen name="Geofence" component={GeofenceScreen} />
         <Stack.Screen name="InlineInApp" component={InAppInlineScreen} />
         <Stack.Screen name="AppStory" component={AppStoryScreen} />
+        <Stack.Screen name="RealTimeInAppFilters" component={RealTimeInAppFiltersScreen} />
+        <Stack.Screen name="EventHistory" component={EventHistoryScreen} />
+        <Stack.Screen name="Cart" component={CartScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

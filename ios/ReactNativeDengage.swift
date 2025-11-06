@@ -403,8 +403,8 @@ class ReactNativeDengage: RCTEventEmitter {
         }
     }
     
-    @objc(sendCustomEvent:withParameters:)
-    func sendCustomEvent (_ eventTable: NSString, withParameters: NSDictionary) -> Void {
+    @objc(sendCustomEvent:withKey:withParameters:)
+    func sendCustomEvent (_ eventTable: NSString, withKey: NSString, withParameters: NSDictionary) -> Void {
         do {
             print(withParameters)
             try Dengage.sendCustomEvent(eventTable: eventTable as String, parameters: withParameters as! [String:Any])

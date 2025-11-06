@@ -124,7 +124,7 @@ RCT_EXTERN_METHOD(search:(NSDictionary *)data)
 
 RCT_EXTERN_METHOD(sendDeviceEvent:(NSString *)tableName withData:(NSDictionary *)withData)
 
-RCT_EXTERN_METHOD(sendCustomEvent:(NSString *)eventTable withParameters:(NSDictionary *)withParameters)
+RCT_EXTERN_METHOD(sendCustomEvent:(NSString *)eventTable withKey:(NSString *)key withParameters:(NSDictionary *)withParameters)
 
 RCT_EXTERN_METHOD(setCart:(NSDictionary *)cart)
 

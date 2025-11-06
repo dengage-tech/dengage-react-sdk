@@ -46,7 +46,7 @@ type DengageType = {
   removeFromWishList(params: object): void;
   search(params: object): void;
   sendDeviceEvent(tableName: string, data: object): void;
-  sendCustomEvent(eventTable: string, parameters: object): void;
+  sendCustomEvent(eventTable: string, key: string, parameters: object): void;
   
   setNavigation(): void;
   setNavigationWithName(screenName: string): void;

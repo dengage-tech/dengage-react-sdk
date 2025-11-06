@@ -12,4 +12,7 @@ export type RootStackParamList = {
   Geofence: undefined;
   InlineInApp: undefined;
   AppStory: undefined;
+  RealTimeInAppFilters: undefined;
+  EventHistory: undefined;
+  Cart: undefined;
 };
