@@ -192,12 +192,7 @@ const EventHistoryScreen: React.FC = () => {
       }
     });
 
-    for(let i = 0; i < 100; i++) {
-      eventData["page_title"] = i.toString();
-      Dengage.sendDeviceEvent(config.tableName, eventData);
-    }
-
-    //Dengage.sendDeviceEvent(config.tableName, eventData);
+    Dengage.sendDeviceEvent(config.tableName, eventData);
     Alert.alert('Success', `Event sent to table: ${config.tableName}`);
   };
 
