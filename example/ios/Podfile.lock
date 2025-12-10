@@ -1,8 +1,8 @@
 PODS:
   - boost (1.84.0)
-  - Dengage (5.85)
-  - DengageGeofence (5.85):
-    - Dengage (= 5.85)
+  - Dengage (5.88)
+  - DengageGeofence (5.88):
+    - Dengage (= 5.88)
   - DoubleConversion (1.1.6)
   - fast_float (6.1.4)
   - FBLazyVector (0.77.2)
@@ -1214,8 +1214,8 @@ PODS:
     - React-RCTFBReactNativeSpec
     - ReactCommon/turbomodule/core
   - react-native-dengage (1.1.0):
-    - Dengage (= 5.85)
-    - DengageGeofence (= 5.85)
+    - Dengage (= 5.88)
+    - DengageGeofence (= 5.88)
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1825,7 +1825,7 @@ PODS:
 
 DEPENDENCIES:
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
-  - Dengage (= 5.85)
+  - Dengage (= 5.88)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - fast_float (from `../node_modules/react-native/third-party-podspecs/fast_float.podspec`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
@@ -2061,8 +2061,8 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   boost: 7e761d76ca2ce687f7cc98e698152abd03a18f90
-  Dengage: 96b728caf409e89c4937e330850f7d6b5697ac10
-  DengageGeofence: 445a613b843ca73a1954ea684af24886ec6ec22f
+  Dengage: 36ebcc6bfc75c4b4bcd8f6e7e28a73e3d9637f8a
+  DengageGeofence: 56166789bd644854d70f3001280f18452d1d88d8
   DoubleConversion: cb417026b2400c8f53ae97020b2be961b59470cb
   fast_float: 06eeec4fe712a76acc9376682e4808b05ce978b6
   FBLazyVector: 4c16dde959a9d6b24f2aa32cb87cb919a1ace3f3
@@ -2098,7 +2098,7 @@ SPEC CHECKSUMS:
   React-logger: 592d84bed2e04db64c0b3725f9970b437473f3d3
   React-Mapbuffer: 595c88852c1dcb1c4faafad88148de8690a70aae
   React-microtasksnativemodule: b56986b155ae82e9bcb1d1c0ca8726bac52dbb6e
-  react-native-dengage: 0f3c43916aec522220089cf1b669023a608d98e2
+  react-native-dengage: 671facb674f776f9c40931d7ebd9fd9b9b40c00a
   react-native-safe-area-context: afcc2e2b3e78ae8ef90d81e658aacee34ebc27ea
   React-nativeconfig: ecf4dc92c40b97e2b3f0c619938f78bfd6507b08
   React-NativeModulesApple: f457bbfb30fb3bc41979b1a87b99d292d7340d39
@@ -2138,6 +2138,6 @@ SPEC CHECKSUMS:
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   Yoga: 31a098f74c16780569aebd614a0f37a907de0189
 
-PODFILE CHECKSUM: ed8da6ed8c36deb55255700ac400cd3a5e639eb1
+PODFILE CHECKSUM: 378ecacaa269445088ecaa17e2d644f73c07657e
 
 COCOAPODS: 1.16.2

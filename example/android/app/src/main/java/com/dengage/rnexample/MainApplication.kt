@@ -54,7 +54,7 @@ class MainApplication : Application(), ReactApplication {
             dengageHmsManager = dengageHmsManager,
             context = this,
             deviceConfigurationPreference = com.dengage.sdk.data.remote.api.DeviceConfigurationPreference.Google,
-            disableOpenWelUrl = false,
+            disableOpenWebUrl = false,
             logEnabled = true,
             enableGeoFence = true,
             developmentStatus = true

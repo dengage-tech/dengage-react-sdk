@@ -25,6 +25,7 @@ export default function InboxMessagesScreen() {
         0,
         PAGE_LIMIT
       );
+      console.log('msgs', JSON.stringify(msgs));
       setMessages(msgs);
     } catch {
       Alert.alert('Error', 'Failed to fetch messages');

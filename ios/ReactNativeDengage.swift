@@ -133,6 +133,7 @@ class ReactNativeDengage: RCTEventEmitter {
                 
                 for message in resultType {
                     var carouselArr = [[String: Any]]()
+                    var customParamsArr = [[String: Any]]()
                     if let items = message.carouselItems {
                         for carousel in items {
                             carouselArr.append([
@@ -145,6 +146,16 @@ class ReactNativeDengage: RCTEventEmitter {
                         }
                     }
                     
+                    if let items = message.customParameters {
+                        for customParams in items {
+                            customParamsArr.append([
+                                "key": customParams.key,
+                                "value": customParams.value,
+                                
+                            ])
+                        }
+                    }
+                   
                     let dict: [String: Any] = [
                         "id": message.id,
                         "title": message.title ?? "",
@@ -153,7 +164,8 @@ class ReactNativeDengage: RCTEventEmitter {
                         "targetUrl": message.targetUrl ?? "",
                         "receiveDate": message.receiveDate != nil ? formatter.string(from: message.receiveDate!) : "",
                         "isClicked": message.isClicked,
-                        "carouselItems": carouselArr
+                        "carouselItems": carouselArr,
+                        "customParameters": customParamsArr,
                     ]
                     arrDict.append(dict)
                 }

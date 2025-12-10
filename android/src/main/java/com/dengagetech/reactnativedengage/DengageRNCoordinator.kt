@@ -40,7 +40,7 @@ class DengageRNCoordinator private constructor() {
         context: Context,
         dengageHmsManager: IDengageHmsManager? = null,
         deviceConfigurationPreference: DeviceConfigurationPreference,
-        disableOpenWelUrl: Boolean? = false,
+        disableOpenWebUrl: Boolean? = false,
         logEnabled: Boolean = false,
         enableGeoFence: Boolean? = false,
         developmentStatus: Boolean? = false
@@ -59,12 +59,12 @@ class DengageRNCoordinator private constructor() {
             huaweiIntegrationKey = huaweiIntegrationKey,
             dengageHmsManager = dengageHmsManager,
             deviceConfigurationPreference = deviceConfigurationPreference,
-            disableOpenWebUrl = disableOpenWelUrl,
+            disableOpenWebUrl = disableOpenWebUrl,
             notificationDisplayPriorityConfiguration = NotificationDisplayPriorityConfiguration.SHOW_WITH_HIGH_PRIORITY,
         )
         Dengage.setLogStatus(logEnabled)
         Dengage.setDevelopmentStatus(developmentStatus)
-        Dengage.inAppLinkConfiguration("www.chaitanyamunje.com")
+
         if (enableGeoFence == true) {
             try {
                 val clazz = Class.forName("com.dengage.geofence.DengageGeofence")

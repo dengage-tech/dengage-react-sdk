@@ -182,6 +182,7 @@ class ReactNativeDengageModule(reactContext: ReactApplicationContext) :
                             map.putBoolean("isClicked", message.isClicked ?: false)
 
                             val carouselArr = WritableNativeArray()
+                            val customParametersArr = WritableNativeArray()
                             message.data.carouselItems?.forEach { carousel ->
                                 val carouselMap = WritableNativeMap()
                                 carouselMap.putString("id", carousel.id)
@@ -191,7 +192,15 @@ class ReactNativeDengageModule(reactContext: ReactApplicationContext) :
                                 carouselMap.putString("targetUrl", carousel.targetUrl)
                                 carouselArr.pushMap(carouselMap)
                             }
+                            message.data.customParameters?.forEach { customParams ->
+                                val customParamsMap = WritableNativeMap()
+                                customParamsMap.putString("key", customParams.key)
+                                customParamsMap.putString("value", customParams.value)
+
+                                customParametersArr.pushMap(customParamsMap)
+                            }
                             map.putArray("carouselItems", carouselArr)
+                            map.putArray("customParameters", customParametersArr)
 
                             arr.pushMap(map)
                         }
@@ -319,7 +328,7 @@ class ReactNativeDengageModule(reactContext: ReactApplicationContext) :
                             false
                         }
                         val quantity = if (itemMap.hasKey("quantity")) itemMap.getInt("quantity") else 0
-                        
+
                         val attributesMap = itemMap.getMap("attributes")
                         val attributes = mutableMapOf<String, String>()
                         if (attributesMap != null) {
@@ -330,7 +339,7 @@ class ReactNativeDengageModule(reactContext: ReactApplicationContext) :
                                 attributes[key] = value
                             }
                         }
-                        
+
                         val cartItem = CartItem(
                             productId = productId,
                             productVariantId = productVariantId,
@@ -361,7 +370,7 @@ class ReactNativeDengageModule(reactContext: ReactApplicationContext) :
         try {
             val cart = Dengage.getCart()
             val map = WritableNativeMap()
-            
+
             // Convert items
             val itemsArray = WritableNativeArray()
             for (item in cart.items) {
@@ -374,29 +383,29 @@ class ReactNativeDengageModule(reactContext: ReactApplicationContext) :
                 itemMap.putBoolean("hasDiscount", item.hasDiscount)
                 itemMap.putBoolean("hasPromotion", item.hasPromotion)
                 itemMap.putInt("quantity", item.quantity)
-                
+
                 val attributesMap = WritableNativeMap()
                 for ((key, value) in item.attributes) {
                     attributesMap.putString(key, value)
                 }
                 itemMap.putMap("attributes", attributesMap)
-                
+
                 itemMap.putInt("effectivePrice", item.effectivePrice)
                 itemMap.putInt("lineTotal", item.lineTotal)
                 itemMap.putInt("discountedLineTotal", item.discountedLineTotal)
                 itemMap.putInt("effectiveLineTotal", item.effectiveLineTotal)
-                
+
                 val segmentsArray = WritableNativeArray()
                 for (segment in item.categorySegments) {
                     segmentsArray.pushString(segment)
                 }
                 itemMap.putArray("categorySegments", segmentsArray)
                 itemMap.putString("categoryRoot", item.categoryRoot)
-                
+
                 itemsArray.pushMap(itemMap)
             }
             map.putArray("items", itemsArray)
-            
+
             // Convert summary
             val summaryMap = WritableNativeMap()
             summaryMap.putString("currency", cart.summary.currency)
@@ -412,15 +421,15 @@ class ReactNativeDengageModule(reactContext: ReactApplicationContext) :
             summaryMap.putInt("maxPrice", cart.summary.maxPrice)
             summaryMap.putInt("minEffectivePrice", cart.summary.minEffectivePrice)
             summaryMap.putInt("maxEffectivePrice", cart.summary.maxEffectivePrice)
-            
+
             val categoriesMap = WritableNativeMap()
             for ((key, value) in cart.summary.categories) {
                 categoriesMap.putInt(key, value)
             }
             summaryMap.putMap("categories", categoriesMap)
-            
+
             map.putMap("summary", summaryMap)
-            
+
             promise.resolve(map)
         } catch (ex: Exception) {
             promise.reject(ex)
@@ -433,7 +442,7 @@ class ReactNativeDengageModule(reactContext: ReactApplicationContext) :
             val sdkParams = Dengage.getSdkParameters()
             if (sdkParams != null) {
                 val map = WritableNativeMap()
-                
+
                 map.putString("appId", sdkParams.appId)
                 if (sdkParams.accountId != null) {
                     map.putInt("accountId", sdkParams.accountId!!)
@@ -452,7 +461,7 @@ class ReactNativeDengageModule(reactContext: ReactApplicationContext) :
                 map.putInt("realTimeInAppFetchIntervalInMinutes", sdkParams.realTimeInAppFetchIntervalInMinutes ?: 0)
                 map.putInt("realTimeInAppSessionTimeoutMinutes", sdkParams.realTimeInAppSessionTimeoutMinutes ?: 0)
                 map.putString("surveyCheckEndpoint", sdkParams.surveyCheckEndpoint)
-                
+
                 // Convert debugDeviceIds
                 if (sdkParams.debugDeviceIds != null) {
                     val debugIdsArray = WritableNativeArray()
@@ -461,14 +470,14 @@ class ReactNativeDengageModule(reactContext: ReactApplicationContext) :
                     }
                     map.putArray("debugDeviceIds", debugIdsArray)
                 }
-                
+
                 // Convert eventMappings
                 if (sdkParams.eventMappings != null) {
                     val eventMappingsArray = WritableNativeArray()
                     for (mapping in sdkParams.eventMappings!!) {
                         val mappingMap = WritableNativeMap()
                         mappingMap.putString("eventTableName", mapping.eventTableName)
-                        
+
                         // Convert eventTypeDefinitions
                         if (mapping.eventTypeDefinitions != null) {
                             val typeDefsArray = WritableNativeArray()
@@ -478,7 +487,7 @@ class ReactNativeDengageModule(reactContext: ReactApplicationContext) :
                                 typeDefMap.putString("eventType", typeDef.eventType)
                                 typeDefMap.putString("logicOperator", typeDef.logicOperator)
                                 typeDefMap.putBoolean("enableClientHistory", typeDef.enableClientHistory ?: false)
-                                
+
                                 // Convert filterConditions
                                 if (typeDef.filterConditions != null) {
                                     val filterArray = WritableNativeArray()
@@ -497,7 +506,7 @@ class ReactNativeDengageModule(reactContext: ReactApplicationContext) :
                                     }
                                     typeDefMap.putArray("filterConditions", filterArray)
                                 }
-                                
+
                                 // Convert clientHistoryOptions
                                 if (typeDef.clientHistoryOptions != null) {
                                     val clientHistoryMap = WritableNativeMap()
@@ -505,7 +514,7 @@ class ReactNativeDengageModule(reactContext: ReactApplicationContext) :
                                     clientHistoryMap.putInt("timeWindowInMinutes", typeDef.clientHistoryOptions!!.timeWindowInMinutes ?: 0)
                                     typeDefMap.putMap("clientHistoryOptions", clientHistoryMap)
                                 }
-                                
+
                                 // Convert attributes
                                 if (typeDef.attributes != null) {
                                     val attributesArray = WritableNativeArray()
@@ -518,17 +527,17 @@ class ReactNativeDengageModule(reactContext: ReactApplicationContext) :
                                     }
                                     typeDefMap.putArray("attributes", attributesArray)
                                 }
-                                
+
                                 typeDefsArray.pushMap(typeDefMap)
                             }
                             mappingMap.putArray("eventTypeDefinitions", typeDefsArray)
                         }
-                        
+
                         eventMappingsArray.pushMap(mappingMap)
                     }
                     map.putArray("eventMappings", eventMappingsArray)
                 }
-                
+
                 promise.resolve(map)
             } else {
                 promise.resolve(null)
