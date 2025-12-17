@@ -75,6 +75,11 @@ export type CarouselItem = {
   targetUrl: string;
 };
 
+export type CustomParameter = {
+  key: string;
+  value: string;
+};
+
 export type InboxMessage = {
   id: string;
   title?: string;
@@ -84,6 +89,7 @@ export type InboxMessage = {
   receiveDate?: string;
   isClicked: boolean;
   carouselItems?: CarouselItem[];
+  customParameters?: CustomParameter[];
   [key: string]: any;
 };
 
