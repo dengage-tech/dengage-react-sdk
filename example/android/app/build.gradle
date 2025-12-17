@@ -118,6 +118,6 @@ dependencies {
   } else {
     implementation jscFlavor
   }
-  implementation 'com.github.dengage-tech.dengage-android-sdk:sdk:6.0.83'
-  implementation 'com.github.dengage-tech.dengage-android-sdk:sdk-hms:6.0.83'
+  implementation 'com.github.dengage-tech.dengage-android-sdk:sdk:6.0.86'
+  implementation 'com.github.dengage-tech.dengage-android-sdk:sdk-hms:6.0.86'
 }
