@@ -1,29 +1,1253 @@
-# @dengage-tech/react-native-dengage
+# Dengage React Native SDK
 
-dEngage Customer Driven Marketing Platform (CDMP) serves as a customer data platform (CDP) with built-in omnichannel marketing features. It replaces your marketing automation and cross-channel campaign management. This package makes it easy to integrate your native React-Native iOS and/or Android apps with dEngage.
+## Table of Contents
 
-## Installation
+- [SDK Setup](#sdk-setup)
+  - [SDK Installation](#sdk-installation)
+- [Integration](#integration)
+  - [Android-Specific Integration](#android-specific-integration)
+    - [Android Endpoint Configuration](#android-endpoint-configuration)
+    - [Create DengageManager instance](#create-dengagemanager-instance)
+    - [FCM Setup](#fcm-setup)
+    - [Android Carousel Push](#android-carousel-push)
+      - [Defining Custom Receiver](#defining-custom-receiver)
+      - [Preparing Custom Layouts](#preparing-custom-layouts)
+      - [Building Carousel Notification](#building-carousel-notification)
+  - [IOS-Specific Integration](#ios-specific-integration)
+    - [IOS Endpoint Configuration](#ios-endpoint-configuration)
+    - [APNS Setup](#apns-setup)
+    - [Notification Service Extension Setup](#notification-service-extension-setup)
+    - [Notification Content Extension Setup](#notification-content-extension-setup)
+- [User Profiles](#user-profiles)
+  - [setContactKey](#setcontactkey)
+  - [setDeviceId](#setdeviceid)
+  - [setCountry](#setcountry)
+- [User Events](#user-events)
+  - [Login](#login)
+    - [setContactKey](#setcontactkey)
+    - [getSubscription](#getsubscription)
+  - [eCommerce Events](#ecommerce-events)
+    - [Page View Events](#page-view-events)
+    - [Shopping Cart Events](#shopping-cart-events)
+    - [Order Events](#order-events)
+    - [Search Event](#search-event)
+    - [Wishlist Events](#wishlist-events)
+  - [Custom Events](#custom-events)
+- [App Inbox](#app-inbox)
+  - [Methods](#methods)
+    - [Getting Inbox Messages](#getting-inbox-messages)
+    - [Removing an Inbox Message](#removing-an-inbox-message)
+    - [Marking an Inbox Message as Read](#marking-an-inbox-message-as-read)
+- [In-App Messaging](#in-app-messaging)
+  - [Methods](#methods)
 
-```sh
+
+## SDK Setup
+
+### SDK Installation
+
+Dengage SDK is available on npm package repository. To install the SDK, run the following command in your project directory:
+
+```shell
 npm install @dengage-tech/react-native-dengage
 ```
 
-## Usage
+Latest SDK version: `2.0.0`
 
 
-```js
+## Integration
 
+### Android-Specific Integration
+
+#### Android Endpoint Configuration
+
+For the initial setup, if you have been provided with URL addresses by the **Dengage Support Team**, you need to configure these URLs in the `AndroidManifest.xml` file.
+
+Refer to the [API Endpoints By Datacenter](https://dev.dengage.com/reference/api-endpoints-by-datacenter) section to correctly set your API endpoints.
+
+Here’s an example configuration:
+
+```xml
+<meta-data
+    android:name="den_event_api_url"
+    android:value="https://your_api_endpoint" />
+<meta-data
+    android:name="den_push_api_url"
+    android:value="https://your_api_endpoint" />
+<meta-data
+    android:name="den_device_id_api_url"
+    android:value="https://your_api_endpoint" />
+<meta-data
+    android:name="den_in_app_api_url"
+    android:value="https://your_api_endpoint" />
+<meta-data
+    android:name="den_geofence_api_url"
+    android:value="https://your_api_endpoint" />
+<meta-data
+    android:name="fetch_real_time_in_app_api_url"
+    android:value="https://your_api_endpoint" />
+```
+
+**Note:** Ensure the URLs match the ones provided by the Dengage Support Team and are appropriate for your data center.
+
+#### Create DengageManager instance
+
+First, you need to create DengageManager instance in your main or launcher activity.
+
+```kotlin
+package com.dengage.rnexample
+
+import com.dengagetech.reactnativedengage.DengageRNCoordinator
+import com.dengage.hms.DengageHmsManager
+
+
+class MainApplication : Application(), ReactApplication {
+
+    override fun onCreate() {
+        super.onCreate()
+        DengageRNCoordinator.sharedInstance.injectReactInstanceManager(reactNativeHost.reactInstanceManager)
+
+        DengageRNCoordinator.sharedInstance.setupDengage(
+            firebaseIntegrationKey = "YOUR_FIREBASE_KEY_HERE", // null if you don't use FCM
+            huaweiIntegrationKey = "YOUR_HUAWEI_KEY_HERE", // null if you don't use HMS
+            dengageHmsManager = DengageHmsManager(), // null if you don't use HMS
+            context = this,
+            deviceConfigurationPreference = com.dengage.sdk.data.remote.api.DeviceConfigurationPreference.Google,
+            disableOpenWebUrl = false, // set true if you want to disable open web url on push click
+            logEnabled = false, // set true if you want to enable logs
+            enableGeoFence = false // set true if you want to use Geofence feature
+        )
+    }
+}
+```
+
+#### FCM Setup
+
+1. Complete the [FCM Android Setup](https://firebase.google.com/docs/android/setup) to configure your Android application for Firebase integration.
+2. Download the `google-services.json` configuration file and place it in your app's directory.
+3. To ensure the values in your `google-services.json` configuration file are accessible to Firebase SDKs, you need to include the **Google Services Gradle Plugin (`google-services`)** in your project.
+- In your root-level (project-level) Gradle file `<project>/build.gradle`, add the following dependency:
+   ```groovy
+   dependencies {
+       classpath("com.google.gms:google-services:4.4.2")
+   }
+   ```
+- In your module (app-level) Gradle file `<project>/app/build.gradle`, apply the Google Services plugin as follows:
+   ```groovy
+   plugins {
+       id("com.google.gms.google-services")
+   }
+   ```
+4. To handle push messages, you need to include the **FcmMessagingService** in your `AndroidManifest.xml` file. Place the following block inside the `<application>` tag of your `AndroidManifest.xml` file to ensure proper integration:
+
+   ```xml
+   <!-- Add the FCM Messaging Service to handle push notifications from Firebase -->
+   <service
+       android:name="com.dengage.sdk.push.FcmMessagingService"
+       android:exported="false" >
+       <intent-filter>
+           <action android:name="com.google.firebase.MESSAGING_EVENT" />
+       </intent-filter>
+   </service>
+   ```
+
+
+#### Android Carousel Push
+
+Carousel Push functionality allows you to show your notification with a slideshow.
+
+##### Defining Custom Receiver
+
+Before you start, you need to define your receiver in your `AndroidManifest.xml` file.
+
+```xml
+<!-- For handling push notifications comes to messaging service classes -->
+<receiver
+    android:name=".push.PushNotificationReceiver"
+    android:exported="false" >
+    <intent-filter>
+        <action android:name="com.dengage.push.intent.RECEIVE" />
+        <action android:name="com.dengage.push.intent.OPEN" />
+        <action android:name="com.dengage.push.intent.DELETE" />
+        <action android:name="com.dengage.push.intent.ACTION_CLICK" />
+        <action android:name="com.dengage.push.intent.ITEM_CLICK" />
+        <action android:name="com.dengage.push.intent.CAROUSEL_ITEM_CLICK" />
+    </intent-filter>
+</receiver>
+```
+
+##### Preparing Custom Layouts
+
+The SDK utilizes custom layouts for carousel functionality. You need to set up these layouts in your `res` folder. Pre-built layouts are available for both landscape and portrait orientations.
+
+* **Landscape Layout:** Add `_den_carousel_landscape.xml` to your `layouts` directory.
+* **Portrait Layout:** Add `den_carousel_portrait.xml` to your `layouts` directory.
+
+**Note:** Ensure you replace placeholder drawable items with your own resources.
+
+`den_carousel_landscape.xml`:
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <include
+        android:id="@+id/den_carousel_collapsed"
+        layout="@layout/den_carousel_collapsed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <FrameLayout
+        android:id="@+id/den_carousel_frame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/den_carousel_collapsed"
+        android:layout_gravity="center"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
+
+        <ImageView
+            android:id="@+id/den_carousel_landscape_image"
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:layout_gravity="center"
+            android:scaleType="centerCrop" />
+
+        <ImageView
+            android:id="@+id/den_carousel_left_image"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_gravity="start|center_vertical"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_arrow_left" />
+
+        <ImageView
+            android:id="@+id/den_carousel_right_image"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_gravity="end|center_vertical"
+            android:layout_marginEnd="5dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_arrow_right" />
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/den_carousel_item_title_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/den_carousel_frame"
+        android:layout_marginTop="5dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/den_carousel_item_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Item Title" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/den_carousel_item_description_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/den_carousel_item_title_container"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/den_carousel_item_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Item Description" />
+
+    </LinearLayout>
+
+</RelativeLayout>
+```
+
+`den_carousel_portrait.xml`:
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <include
+        android:id="@+id/den_carousel_collapsed"
+        layout="@layout/den_carousel_collapsed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <FrameLayout
+        android:id="@+id/den_carousel_body_portrait"
+        android:layout_width="596dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/den_carousel_collapsed"
+        android:layout_gravity="center"
+        android:layout_marginBottom="8dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <RelativeLayout
+                android:id="@+id/den_carousel_left_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toStartOf="@+id/den_carousel_portrait_current_container"
+                android:layout_toLeftOf="@+id/den_carousel_portrait_current_container">
+
+                <ImageView
+                    android:id="@+id/den_carousel_portrait_left_image"
+                    android:layout_width="192dp"
+                    android:layout_height="130dp"
+                    android:layout_centerInParent="true"
+                    android:scaleType="centerCrop" />
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/den_carousel_portrait_left_image"
+                    android:layout_alignLeft="@+id/den_carousel_portrait_left_image"
+                    android:layout_alignTop="@+id/den_carousel_portrait_left_image"
+                    android:layout_alignEnd="@+id/den_carousel_portrait_left_image"
+                    android:layout_alignRight="@+id/den_carousel_portrait_left_image"
+                    android:layout_alignBottom="@+id/den_carousel_portrait_left_image"
+                    android:background="#BFffffff" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/den_carousel_right_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/den_carousel_portrait_current_container"
+                android:layout_toRightOf="@+id/den_carousel_portrait_current_container">
+
+                <ImageView
+                    android:id="@+id/den_carousel_portrait_right_image"
+                    android:layout_width="192dp"
+                    android:layout_height="130dp"
+                    android:layout_centerInParent="true"
+                    android:scaleType="centerCrop" />
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/den_carousel_portrait_right_image"
+                    android:layout_alignLeft="@+id/den_carousel_portrait_right_image"
+                    android:layout_alignTop="@+id/den_carousel_portrait_right_image"
+                    android:layout_alignEnd="@+id/den_carousel_portrait_right_image"
+                    android:layout_alignRight="@+id/den_carousel_portrait_right_image"
+                    android:layout_alignBottom="@+id/den_carousel_portrait_right_image"
+                    android:background="#B0ffffff" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/den_carousel_portrait_current_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true">
+
+                <ImageView
+                    android:id="@+id/den_carousel_portrait_current_image"
+                    android:layout_width="212dp"
+                    android:layout_height="130dp"
+                    android:cropToPadding="true"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:scaleType="centerCrop" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp">
+
+            <ImageView
+                android:id="@+id/den_carousel_left_arrow"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_gravity="start|center_vertical"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_arrow_left" />
+
+            <ImageView
+                android:id="@+id/den_carousel_right_arrow"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_gravity="end|center_vertical"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_arrow_right" />
+
+        </FrameLayout>
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/den_carousel_item_title_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/den_carousel_body_portrait"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/den_carousel_item_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Item Title"
+            android:textColor="@color/purple_200" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/den_carousel_item_description_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/den_carousel_item_title_container"
+        android:layout_marginBottom="8dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/den_carousel_item_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Item Description"
+            android:textColor="@color/purple_200" />
+
+    </LinearLayout>
+
+</RelativeLayout>
+```
+
+`den_carousel_collapsed.xml`:
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="16dp"
+    android:paddingTop="16dp"
+    android:paddingRight="16dp">
+
+    <ImageView
+        android:id="@+id/den_carousel_image"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="top|end"
+        android:layout_marginStart="12dp"
+        android:layout_marginLeft="12dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_launcher_foreground" /> <!-- Your App Icon -->
+
+    <TextView
+        android:id="@+id/den_carousel_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toStartOf="@+id/den_carousel_image"
+        android:layout_toLeftOf="@id/den_carousel_image"
+        android:text="Remote Title"
+        android:textColor="@color/purple_200"
+        android:textSize="15dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/den_carousel_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/den_carousel_title"
+        android:layout_alignStart="@+id/den_carousel_title"
+        android:layout_alignLeft="@+id/den_carousel_title"
+        android:layout_alignEnd="@+id/den_carousel_title"
+        android:layout_alignRight="@+id/den_carousel_title"
+        android:layout_marginBottom="16dp"
+        android:layout_toLeftOf="@id/den_carousel_image"
+        android:ellipsize="end"
+        android:lineSpacingMultiplier="1.2"
+        android:maxLines="1"
+        android:text="Remote message"
+        android:textColor="@color/purple_200"
+        android:textSize="14dp" />
+
+</RelativeLayout>
+```
+
+##### Building Carousel Notification
+
+To use a custom layout for the notification requires building a message by the developer with the layout.
+
+First, please create your receiver class extends from `NotificationReceiver` and override the method `onCarouselRender`. This method will be called when a carousel push notification is received.
+
+```kotlin
+class PushNotificationReceiver : NotificationReceiver() {
+
+    override fun onCarouselRender(
+        context: Context,
+        intent: Intent,
+        message: Message,
+        leftCarouselItem: CarouselItem,
+        currentCarouselItem: CarouselItem,
+        rightCarouselItem: CarouselItem
+    ) {
+        super.onCarouselRender(
+            context,
+            intent,
+            message,
+            leftCarouselItem,
+            currentCarouselItem,
+            rightCarouselItem
+        )
+
+        val itemTitle = currentCarouselItem.title
+        val itemDesc = currentCarouselItem.description
+
+        // set intents (right button, left button, item click)
+        val itemIntent = getItemClickIntent(intent.extras, context.packageName)
+        val leftIntent = getLeftItemIntent(intent.extras, context.packageName)
+        val rightIntent = getRightItemIntent(intent.extras, context.packageName)
+        val deleteIntent = getDeleteIntent(intent.extras, context.packageName)
+        val contentIntent = getContentIntent(intent.extras, context.packageName)
+
+        val carouseItemIntent = getPendingIntent(context, 0, itemIntent)
+        val carouselLeftIntent = getCarouselDirectionIntent(context, 1, leftIntent)
+        val carouselRightIntent = getCarouselDirectionIntent(context, 2, rightIntent)
+        val deletePendingIntent = getDeletePendingIntent(context, 4, deleteIntent)
+        val contentPendingIntent = getPendingIntent(context, 5, contentIntent)
+
+        // set views for the layout
+        val collapsedView = RemoteViews(
+            context.packageName,
+            R.layout.den_carousel_collapsed
+        )
+        collapsedView.setTextViewText(R.id.den_carousel_title, message.title)
+        collapsedView.setTextViewText(R.id.den_carousel_message, message.message)
+
+        val carouselView = RemoteViews(
+            context.packageName,
+            R.layout.den_carousel_portrait
+        )
+        carouselView.setTextViewText(R.id.den_carousel_title, message.title)
+        carouselView.setTextViewText(R.id.den_carousel_message, message.message)
+        carouselView.setTextViewText(R.id.den_carousel_item_title, itemTitle)
+        carouselView.setTextViewText(R.id.den_carousel_item_description, itemDesc)
+
+        carouselView.setOnClickPendingIntent(R.id.den_carousel_left_arrow, carouselLeftIntent)
+        carouselView.setOnClickPendingIntent(
+            R.id.den_carousel_portrait_current_image,
+            carouseItemIntent
+        )
+        carouselView.setOnClickPendingIntent(R.id.den_carousel_item_title, carouseItemIntent)
+        carouselView.setOnClickPendingIntent(R.id.den_carousel_item_description, carouseItemIntent)
+        carouselView.setOnClickPendingIntent(R.id.den_carousel_right_arrow, carouselRightIntent)
+
+        val channelId = createNotificationChannel(context, message)
+
+        loadCarouselImageToView(
+            carouselView = carouselView,
+            imageViewId = R.id.den_carousel_portrait_left_image,
+            carouselItem = leftCarouselItem,
+            onComplete = {
+                // you can call notificationManager.notify for devices that could not show carousel image contents
+            }
+        )
+
+        loadCarouselImageToView(
+            carouselView = carouselView,
+            imageViewId = R.id.den_carousel_portrait_current_image,
+            carouselItem = currentCarouselItem,
+            onComplete = {
+                // you can call notificationManager.notify for devices that could not show carousel image contents
+            }
+        )
+
+        loadCarouselImageToView(
+            carouselView = carouselView,
+            imageViewId = R.id.den_carousel_portrait_right_image,
+            carouselItem = rightCarouselItem,
+            onComplete = {
+                // you can call notificationManager.notify for devices that could not show carousel image contents
+            }
+        )
+
+        val notification = NotificationCompat.Builder(context, channelId)
+            .setSmallIcon(R.mipmap.ic_launcher)
+            .setCustomContentView(collapsedView)
+            .setCustomBigContentView(carouselView)
+            .setContentIntent(contentPendingIntent)
+            .setDeleteIntent(deletePendingIntent)
+            .setSound(message.sound.getSoundUri(context))
+            .build()
+
+        // show message again silently with next, previous and current item.
+        notification.flags = Notification.FLAG_AUTO_CANCEL or Notification.FLAG_ONLY_ALERT_ONCE
+
+        // show message
+        val notificationManager = NotificationManagerCompat.from(context)
+        intent.extras?.getInt("requestCode")?.let { notificationManager.notify(it, notification) }
+    }
+}
 ```
 
 
-## Contributing
 
-See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.
 
-## License
 
-MIT
+### IOS-Specific Integration
 
----
 
-Made with [create-react-native-library](https://github.com/callstack/react-native-builder-bob)
+#### IOS Endpoint Configuration
+
+
+For the initial setup, if you have been provided with URL addresses by the **Dengage Support Team**, you need to configure these URLs in the `Info.plist` file.
+
+Refer to the [API Endpoints By Datacenter](https://dev.dengage.com/reference/api-endpoints-by-datacenter) section to correctly set your API endpoints.
+
+Here’s an example configuration:
+
+```xml
+<key>DengageApiUrl</key>
+<string>https://your_api_endpoint</string>
+<key>DengageDeviceIdApiUrl</key>
+<string>https://your_api_endpoint</string>
+<key>DengageEventApiUrl</key>
+<string>https://your_api_endpoint</string>
+<key>DengageGeofenceApiUrl</key>
+<string>https://your_api_endpoint</string>
+<key>DengageInAppApiUrl</key>
+<string>https://your_api_endpoint</string>
+<key>fetchRealTimeINAPPURL</key>
+<string>https://your_api_endpoint</string>
+```
+
+**Note:** Ensure the URLs match the ones provided by the Dengage Support Team and are appropriate for your data center.
+
+
+#### Implement DengageRNCoordinator in AppDelegate
+
+To initialize the Dengage SDK and to handle push notifications in your iOS application, you need to implement the `DengageRNCoordinator` in your `AppDelegate` class. Below is an example of how to set it up:
+
+```objc
+@import react_native_dengage;
+
+@implementation AppDelegate
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+
+    DengageRNCoordinator *coordinator = [DengageRNCoordinator staticInstance];
+    [coordinator setValue:launchOptions forKey:@"launchOptions"];
+    [coordinator setupDengage:@"YOUR_APNS_KEY_HERE"
+                 appGroupsKey:@"group.com.dengage.RNExample.dengage"
+                launchOptions:launchOptions
+                  application:application
+    askNotificationPermission:YES // set false if you want to ask permission later
+               enableGeoFence:NO // set true if you want to use Geofence feature
+               disableOpenURL:NO // set true if you want to disable open web url on push click
+              badgeCountReset:NO // set true if you want to reset badge count on app launch
+                   logVisible:YES]; // set true if you want to enable logs
+  return YES;
+}
+
+// Implement required UNUserNotificationCenterDelegate methods
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+{
+    [[DengageRNCoordinator staticInstance] registerForPushToken:deviceToken];
+}
+
+// Called when a notification is delivered to a foreground app
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center
+       willPresentNotification:(UNNotification *)notification
+         withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler {
+    // Show the notification even when the app is in foreground
+    completionHandler(UNAuthorizationOptionSound | UNAuthorizationOptionAlert |
+                      UNAuthorizationOptionBadge);
+}
+
+// Called when a user selects a notification or selects an action from a notification
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center
+didReceiveNotificationResponse:(UNNotificationResponse *)response
+         withCompletionHandler:(void(^)(void))completionHandler {
+    [[DengageRNCoordinator staticInstance] didReceivePush:center response:response withCompletionHandler:completionHandler];
+}
+```
+
+#### APNS Setup
+
+Complete the [APNS iOS Setup](https://developer.apple.com/documentation/usernotifications/registering_your_app_with_apns) to configure your iOS application for push notifications.
+
+#### Notification Service Extension Setup
+
+To handle push messages, you need to include the **Notification Service Extension** in your project. This extension is used to modify the content of remote notifications before they are displayed to the user. Place the following block inside the `<extensions>` tag of your `Info.plist` file to ensure proper integration:
+
+```xml
+<dict>
+    <key>NSExtensionPointIdentifier</key>
+    <string>com.apple.usernotifications.service</string>
+    <key>NSExtensionPrincipalClass</key>
+    <string>$(PRODUCT_MODULE_NAME).NotificationService</string>
+</dict>
+```
+
+> Make sure the version of the SDK matches the version in your main target.
+
+Run `pod install` via terminal to install the Dengage SDK for the Notification Service Extension.
+
+```
+target 'NotificationServiceExtension' do
+  pod 'Dengage', '5.88'
+end
+```
+
+Modify the `NotificationService.swift` file to include the Dengage SDK. This file is used to handle push notifications and is automatically generated when you add the Notification Service Extension to your project. Replace the contents of the file with the following code:
+
+```swift
+import UserNotifications
+import Dengage
+
+class NotificationService: UNNotificationServiceExtension {
+
+    var contentHandler: ((UNNotificationContent) -> Void)?
+    var bestAttemptContent: UNMutableNotificationContent?
+
+    override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
+        self.contentHandler = contentHandler
+        bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
+        if #available(iOS 15.0, *) {
+            bestAttemptContent?.interruptionLevel = .timeSensitive
+        } else {
+            // Fallback on earlier versions
+        }
+        
+        DengageLocalStorage.shared.setAppGroupsUserDefaults(appGroupName: "group.com.dengage.Example.dengage")
+        Dengage.didReceiveNotificationRequest(bestAttemptContent, withContentHandler: contentHandler)
+    }
+    
+    override func serviceExtensionTimeWillExpire() {
+        // Called just before the extension will be terminated by the system.
+        // Use this as an opportunity to deliver your "best attempt" at modified content, otherwise the original push payload will be used.
+        if let contentHandler = contentHandler, let bestAttemptContent =  bestAttemptContent {
+            contentHandler(bestAttemptContent)
+        }
+    }
+}
+```
+
+#### Notification Content Extension Setup
+
+
+To handle carousel push messages, you need to include the **Notification Content Extension** in your project. This extension is used to customize the appearance of your app’s notifications.
+
+Change the `Info.plist` file of your **Notification Content Extension** target to include the following block:
+
+```xml
+<key>NSExtension</key>
+<dict>
+    <key>NSExtensionAttributes</key>
+    <dict>
+        <key>UNNotificationExtensionCategory</key>
+        <string>DENGAGE_CAROUSEL_CATEGORY</string>
+        <key>UNNotificationExtensionDefaultContentHidden</key>
+        <true/>
+        <key>UNNotificationExtensionInitialContentSizeRatio</key>
+        <real>1</real>
+        <key>UNNotificationExtensionUserInteractionEnabled</key>
+        <true/>
+    </dict>
+    <key>NSExtensionPointIdentifier</key>
+    <string>com.apple.usernotifications.content-extension</string>
+    <key>NSExtensionPrincipalClass</key>
+    <string>NotificationContentExtension.NotificationViewController</string>
+</dict>
+<key>DengageApiUrl</key>
+<string>https://your_api_endpoint</string>
+<key>DengageDeviceIdApiUrl</key>
+<string>https://your_api_endpoint</string>
+<key>DengageEventApiUrl</key>
+<string>https://your_api_endpoint</string>
+<key>DengageGeofenceApiUrl</key>
+<string>https://your_api_endpoint</string>
+<key>DengageInAppApiUrl</key>
+<string>https://your_api_endpoint</string>
+<key>fetchRealTimeINAPPURL</key>
+<string>https://your_api_endpoint</string>
+```
+
+> Make sure the version of the SDK matches the version in your main target.
+
+Run `pod install` via terminal to install the Dengage SDK for the Notification Service Extension.
+
+```
+target 'NotificationContentExtension' do
+  pod 'Dengage', '5.88'
+end
+```
+
+You need add Dengage SDK to your **Notification Content Extension** target as described in the **Notification Service Extension** section.
+
+Open `NotificationViewController.swift` and replace the whole file contents with the below code.
+
+```swift
+import UIKit
+import UserNotifications
+import UserNotificationsUI
+import Dengage
+@objc(NotificationViewController)
+
+class NotificationViewController: UIViewController, UNNotificationContentExtension {
+
+    let carouselView = DengageNotificationCarouselView.create()
+    
+    func didReceive(_ notification: UNNotification) {
+        DengageLocalStorage.shared.setAppGroupsUserDefaults(appGroupName: "group.com.dengage.Example.dengage")
+        Dengage.setIntegrationKey(key: "YOUR_APNS_KEY_HERE") // set your APNS integration key
+        Dengage.setLog(isVisible: true) // set false if you want to disable logs
+        carouselView.didReceive(notification)
+    }
+    
+    func didReceive(_ response: UNNotificationResponse, completionHandler completion: @escaping (UNNotificationContentExtensionResponseOption) -> Void) {
+        carouselView.didReceive(response, completionHandler: completion)
+    }
+    
+    override func loadView() {
+        self.view = carouselView
+    }
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## User Profiles
+
+### setContactKey
+
+The **Contact Key** serves as a bridge between **Devices** and **Contacts**. Devices can be categorized into two types:
+
+1. **Anonymous Devices**
+2. **Contact Devices** (which include a Contact Key)
+
+To associate devices with their respective contacts, the **Contact Key** must be set in the SDK.
+
+> **Recommended Usage:**  
+You should call this method if you have user information.  
+It is recommended to call this method during every app launch, as well as on login and logout pages.
+
+```js
+Dengage.setContactKey("contact-key");
+```
+
+### setDeviceId
+
+You can set a unique device id of for current device. This id will be used to identify the device in the Dengage system.
+
+```js
+Dengage.setDeviceId("unique-identifier-of-device")
+```
+
+## User Events
+
+
+In order to collect app events and use that data to create behavioral segments in Dengage you have to determine the type of events and data that needs to collect. Once you have determined that, you will need to create a “Big Data” table in Dengage. Collected events will be stored in this table. Multiple tables can be defined depending on your specific need.
+
+Any type of event can be collected. The content and the structure of the events are completely flexible and can be changed according to unique business requirements. You will just need to define a table for events.
+
+Once defined, all you have to do is to send the event data to these tables. Dengage SDK has only 2 functions for sending events: `sendDeviceEvent` and `sendCustomEvent`. Most of the time you will just need the sendDeviceEvent function.
+
+For eCommerce accounts, there are predefined event tables. And you can feed these tables by using eCommerce event functions.
+
+### Login
+
+If the user logs in or you have user information, this means you have contact_key for that user. You can set contact_key in order to match user with the device. There are two functions for getting and setting contact_key.
+
+#### setContactKey
+
+If user logged in set user id. This is important for identifying your users. You can put this function call in every page. It will not send unnecessary events.
+
+```js
+Dengage.setContactKey("contact-key")
+```
+
+#### getSubscription
+
+If you need to get current user information from SDK use this function. `contactKey` is a property of `Subscription` object.
+
+```js
+Dengage.getSubscription()
+```
+
+Subscription Object:
+
+```js
+export type Subscription = {
+  integrationKey?: string;
+  token?: string;
+  appVersion?: string;
+  sdkVersion: string;
+  deviceId?: string;
+  advertisingId: string;
+  carrierId: string;
+  contactKey?: string;
+  permission?: boolean;
+  trackingPermission: boolean;
+  tokenType: string;
+  webSubscription?: string;
+  testGroup: string;
+  country?: string;
+  language: string;
+  timezone: string;
+  partnerDeviceId?: string;
+  locationPermission?: string;
+};
+```
+
+### eCommerce Events
+
+If your Dengage account is an eCommerce account, you should use standard eCommerce events in the SDK. If you need some custom events or your account is not a standard eCommerce account, you should use custom event functions.
+
+Dengage SDK includes standard eCommerce events:
+
+* **Page View Events**:
+  * Home page view
+  * Product page view
+  * Category page view
+  * Promotion page view
+  * ...
+* **Shopping Cart Events**:
+  * Add to cart
+  * Remove from cart
+  * View cart
+  * Begin checkout
+* **Order Events**:
+  * Order
+  * Cancel order
+* **Wishlist Events**:
+  * Add to wishlist
+  * Remove from wishlist
+* **Search Event**
+
+Each event corresponds to related tables in your account.
+
+#### Page View Events
+
+Page view events are sent to the `page_view_events` table. If you've added new columns to this table, include them in the event data.
+
+```js
+// Home page view
+Dengage.pageView({
+    "page_type":"home"
+    // ... extra columns in page_view_events table, can be added here
+})
+
+// Product page view
+Dengage.pageView({
+    "page_type":"product",
+    "product_id":"1"
+    // ... extra columns in page_view_events table, can be added here
+})
+
+// Category page view
+Dengage.pageView({
+    "page_type":"category",
+    "category_id":"1"
+    // ... extra columns in page_view_events table, can be added here
+})
+
+// Promotion page view
+Dengage.pageView({
+    "page_type":"promotion",
+    "promotion_id":"1"
+    // ... extra columns in page_view_events table, can be added here
+})
+
+// Custom page view
+Dengage.pageView({
+    "page_type":"custom"
+    // ... extra columns in page_view_events table, can be added here
+})
+```
+
+> For other pages you can send anything as page_type
+
+#### Shopping Cart Events
+
+These events are stored in `shopping_cart_events` and `shopping_cart_events_detail` tables. The following functions are available for shopping cart events:
+
+1. `addToCart`
+2. `removeFromCart`
+3. `viewCart`
+4. `beginCheckout`
+
+
+```js
+// Add To Cart
+const addParams = {
+    "product_id":1,
+    "product_variant_id":1,
+    "quantity":1,
+    "unit_price":10.00,
+    "discounted_price":9.99
+}
+Dengage.addToCart(addParams);
+
+// Remove From Cart
+const removeParams = {
+    "product_id":1,
+    "product_variant_id":1,
+    "quantity":1,
+    "unit_price":10.00,
+    "discounted_price":9.99
+}
+Dengage.removeFromCart(removeParams);
+
+// View Cart
+const viewCartParams = {
+    "product_id":1,
+    "product_variant_id":1,
+    "quantity":1,
+    "unit_price":10.00,
+    "discounted_price":9.99
+}
+Dengage.viewCart(viewCartParams);
+
+
+// Begin Checkout
+const beginCheckoutParams = {
+    // ... extra columns in shopping_cart_events table, can be added here
+)
+Dengage.beginCheckout(beginCheckoutParams);
+```
+
+#### Order Events
+
+Order events are stored in `order_events` and `order_events_detail` tables.
+
+```js
+// Paid Order
+const placeOrderParams = {
+    "order_id":1,
+    "item_count":1, // total ordered item count
+    "total_amount":1, // total price
+    "discounted_price":9.99, // use total price if there is no discount
+    "payment_method":"card",
+    "shipping":5,
+    "coupon_code":""
+}
+Dengage.placeOrder(placeOrderParams);
+
+// Cancel Order
+const cancelParams = {
+    "order_id":1, // canceled order id
+    "item_count":1, // canceled total item count
+    "total_amount":1, // canceled item's total price
+    "discounted_price":9.99, // use total price if there is no discount
+}
+Dengage.cancelOrder(cancelParams);
+```
+
+#### Search Event
+
+Search events are stored in the `search_events` table.
+
+```js
+const params = {
+    "keywords":"some product name", // text in the searchbox
+    "result_count":12,
+    "filters":"" //you can send extra filters selected by user here. Formating is not specified
+    // ... extra columns in search_events table, can be added here
+}
+Dengage.search(params)
+```
+
+#### Wishlist Events
+
+These events are stored in `wishlist_events` and `wishlist_events_detail` tables. The available functions are:
+
+1. `addToWishlist`
+2. `removeFromWishlist`
+
+You can send all items in the wishlist for every event, simplifying the tracking of the current wishlist items.
+
+```js
+// Add To Wishlist
+const params = [
+    "product_id": 1,
+    // ... extra columns in wishlist_events table, can be added here
+    "items": wishlistItems // current items
+]
+Dengage.addToWishList(params)
+
+// Remove From Wishlist
+const removeParams = {
+    "product_id": 123
+    // ... extra columns in wishlist_events table can be added here
+}
+Dengage.removeFromWishList(removeParams)
+```
+
+### Custom Events
+
+Use the `sendDeviceEvent` function to send events specific to a device. Events are sent to a big data table defined in your D·engage account, which must have a relation to the `master_device` table. If you set a `contact_key` for that device, collected events will be associated with the user.
+
+```js
+// For example, if you have a table named "events"
+// and the events table has "key", "event_date", "event_name", "product_id" columns
+// You only need to send the columns except "key" and "event_date", as those are sent by the SDK
+
+const params = {
+    "event_name": "page_view",
+    "product_id": "1234",
+    // ... extra columns in events table, can be added here
+}
+Dengage.sendDeviceEvent("events", params)
+```
+
+
+## Push Notifications
+
+
+### Subscription
+
+`Subscription` is self-managed by SDK.
+
+> **Definition**: Subscription is a process which is triggered by sending subscription event to Dengage. It contains necessary information about application to send push notifications to clients.
+
+The SDK automatically sends subscription events in the following scenarios:
+
+1. Initialization
+2. Setting Contact Key
+3. Setting Token
+4. Setting User Permission (if permissions are manually managed)
+
+### Asking User Permission for Notification
+
+To request notification permission from the user (required for Android 13+), you can use the following method provided by the SDK:
+
+```js
+Dengage.promptForPushNotifications();
+```
+
+This function checks if the notification permission (`POST_NOTIFICATIONS`) is granted. If not, it will prompt the user to allow notifications. Make sure to call this method from your `Activity` (for example, during onboarding or before sending notifications).
+
+### User Permission Management (optional)
+
+If you manage your own user permission states on your application you may send user permission by using `setUserPermission` method.
+
+```js
+// Use to set permission of current subscription
+Dengage.setUserPermission(true)
+
+// Use to get permission of current subscription
+Dengage.getUserPermission() // Boolean?
+```
+
+### getToken
+
+Retrieve the token for the current user's subscription using this method.
+
+```js
+const token = await Dengage.getToken()
+```
+
+## App Inbox
+
+App Inbox is a screen within a mobile app that stores persistent messages. It's kind of like an email inbox, but it lives inside the app itself. App Inbox differs from other mobile channels such as push notifications or in-app messages. For both push and in-app messages, they're gone once you open them.
+
+In other words, Dengage admin panel lets you keep selected messages on the platform and Mobile SDK may receive and display these messages when needed.
+
+In order to save messages into App Inbox, you need to select the "Save to Inbox" option when sending messages in D·engage the admin panel by assigning an expiration date to it.
+
+After selecting your Push content, you must activate the "Save To Inbox" option.
+
+> To use the app inbox feature, please send an email to tech@dengage.com.
+
+Inbox messages are kept in the memory storage of the phone until the app is completely closed or for a while and Dengage SDK provides functions for getting and managing these messages.
+
+### Methods
+
+When a push message is received with the `addToInbox` parameter, the message is saved during the notification building stage, allowing users to access these messages later. The following methods facilitate interaction with these messages:
+
+#### Getting Inbox Messages
+
+Retrieve stored inbox messages with pagination:
+
+```js
+const msgs: InboxMessage[] = await Dengage.getInboxMessages(
+    0, // OFFSET
+    20 // LIMIT
+);
+
+```
+#### Removing an Inbox Message
+
+Delete a specific inbox message:
+
+```js
+await Dengage.deleteInboxMessage("message-id");
+```
+
+#### Marking an Inbox Message as Read
+
+Mark a message as clicked to update its status:
+
+```js
+await Dengage.setInboxMessageAsClicked("message-id");
+```
+
+> `receiveDate` property is used to store inbox message receive date. It keeps date as a UTC time format ("yyyy-MM-ddTHH:mm:ss.fffZ"). The applications which are using our SDKs need to convert this UTC date to the client time zone if the applications want to display the message receive date to their users.
+
+
+## In-App Messaging
+
+An in-app message is a type of mobile message where the notification is displayed within the app. It is not sent at a specific time but it is shown to users when the user is using the app.
+
+Examples include popups, yes/no prompts, banners, and more.
+
+In order to show in-app messages, there is no permit requirement.
+
+### Methods
+
+Created messages will be stored in Dengage backend and will be served to mobile SDKs.
+
+If you integrated mobile SDK correctly for push messages, for using in-app features you just have to add `setNavigation` function to every page navigation.
+
+If you want to use a screen name filter, you should send the screen name to `setNavigation` function in every page navigation.
+
+You should pass the current activity to setNavigation function.
+
+```js
+Dengage.setNavigation("screen-name"); // For filtering in app messages with respect to current screen in your app
+```
