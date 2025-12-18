@@ -1160,7 +1160,7 @@ To request notification permission from the user (required for Android 13+), you
 Dengage.promptForPushNotifications();
 ```
 
-This function checks if the notification permission (`POST_NOTIFICATIONS`) is granted. If not, it will prompt the user to allow notifications. Make sure to call this method from your `Activity` (for example, during onboarding or before sending notifications).
+This function checks if the notification permission (`POST_NOTIFICATIONS`) is granted. If not, it will prompt the user to allow notifications.
 
 ### User Permission Management (optional)
 
