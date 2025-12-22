@@ -28,13 +28,10 @@ target 'ReactNativeDengageExample' do
   #TODO: set to 1 to install Dengage Geofence
   ENV['install_dengage_geofence'] = '1'
   
-  # Disable codegen to avoid "environment undefined" error
-  ENV['RCT_NEW_ARCH_ENABLED'] = '0'
 
   use_react_native!(
     :path => config[:reactNativePath],
     :hermes_enabled => true,
-    :fabric_enabled => false,
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
