@@ -52,7 +52,7 @@ Dengage SDK is available on npm package repository. To install the SDK, run the 
 npm install @dengage-tech/react-native-dengage
 ```
 
-Latest SDK version: `2.0.0`
+Latest SDK version: `2.0.1`
 
 
 ## Integration
