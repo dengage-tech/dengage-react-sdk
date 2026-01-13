@@ -1209,7 +1209,35 @@ const msgs: InboxMessage[] = await Dengage.getInboxMessages(
     0, // OFFSET
     20 // LIMIT
 );
+```
 
+The `InboxMessage` type has the following structure:
+
+```ts
+type InboxMessage = {
+  id: string;
+  title?: string;
+  message?: string;
+  mediaURL?: string;
+  targetUrl?: string;
+  receiveDate?: string;
+  isClicked: boolean;
+  carouselItems?: CarouselItem[];
+  customParameters?: CustomParameter[];
+};
+
+type CarouselItem = {
+  id: string;
+  title: string;
+  descriptionText: string;
+  mediaUrl: string;
+  targetUrl: string;
+};
+
+type CustomParameter = {
+  key: string;
+  value: string;
+};
 ```
 #### Removing an Inbox Message
 
