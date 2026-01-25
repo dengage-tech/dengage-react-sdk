@@ -48,6 +48,68 @@ class ReactNativeDengageModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
+    fun getUserPermission(promise: Promise) {
+        try {
+            val permission = Dengage.getSubscription()?.permission ?: false
+            promise.resolve(permission)
+        } catch (ex: Exception) {
+            promise.reject(ex)
+        }
+    }
+
+    @ReactMethod
+    fun getToken(promise: Promise) {
+        try {
+            val token = Dengage.getSubscription()?.token ?: ""
+            promise.resolve(token)
+        } catch (ex: Exception) {
+            promise.reject(ex)
+        }
+    }
+
+    @ReactMethod
+    fun setToken(token: String) {
+        Dengage.setToken(token)
+    }
+
+    @ReactMethod
+    fun setFirebaseIntegrationKey(key: String) {
+        // Note: Firebase integration key should be set during Dengage.init()
+        // This method is kept for API compatibility but may not work if SDK is already initialized
+        Log.w(NAME, "setFirebaseIntegrationKey called. Firebase key should be set during Dengage.init()")
+    }
+
+    @ReactMethod
+    fun getDeviceId(promise: Promise) {
+        try {
+            val deviceId = Dengage.getSubscription()?.deviceId ?: ""
+            promise.resolve(deviceId)
+        } catch (ex: Exception) {
+            promise.reject(ex)
+        }
+    }
+
+    @ReactMethod
+    fun getLastPushPayload(promise: Promise) {
+        try {
+            val payload = Dengage.getLastPushPayload()
+            promise.resolve(payload ?: "")
+        } catch (ex: Exception) {
+            promise.reject(ex)
+        }
+    }
+
+    @ReactMethod
+    fun getSdkVersion(promise: Promise) {
+        try {
+            val sdkVersion = Dengage.getSubscription()?.sdkVersion ?: ""
+            promise.resolve(sdkVersion)
+        } catch (ex: Exception) {
+            promise.reject(ex)
+        }
+    }
+
+    @ReactMethod
     fun getSubscription(promise: Promise) {
         try {
             val original = Dengage.getSubscription()
