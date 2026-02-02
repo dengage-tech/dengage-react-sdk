@@ -1,7 +1,7 @@
 PODS:
   - boost (1.84.0)
   - Dengage (5.89)
-  - DengageGeofence (5.89):
+  - DengageGeofence (5.88):
     - Dengage (= 5.89)
   - DoubleConversion (1.1.6)
   - fast_float (6.1.4)
@@ -1337,7 +1337,7 @@ PODS:
     - ReactCommon/turbomodule/core
   - react-native-dengage (2.0.3):
     - Dengage (= 5.89)
-    - DengageGeofence (= 5.89)
+    - DengageGeofence (= 5.88)
     - DoubleConversion
     - glog
     - hermes-engine

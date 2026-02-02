@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
   s.dependency "Dengage", "5.89"
 
   if ENV['install_dengage_geofence'] == '1' then
-    s.dependency "DengageGeofence", "5.89"
+    s.dependency "DengageGeofence", "5.88"
   end
 
   if respond_to?(:install_modules_dependencies, true)
