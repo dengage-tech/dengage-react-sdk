@@ -1,8 +1,8 @@
 PODS:
   - boost (1.84.0)
-  - Dengage (5.89)
+  - Dengage (5.88)
   - DengageGeofence (5.88):
-    - Dengage (= 5.89)
+    - Dengage (= 5.88)
   - DoubleConversion (1.1.6)
   - fast_float (6.1.4)
   - FBLazyVector (0.79.7)
@@ -1336,7 +1336,7 @@ PODS:
     - React-RCTFBReactNativeSpec
     - ReactCommon/turbomodule/core
   - react-native-dengage (2.0.3):
-    - Dengage (= 5.89)
+    - Dengage (= 5.88)
     - DengageGeofence (= 5.88)
     - DoubleConversion
     - glog
@@ -2012,7 +2012,7 @@ PODS:
 
 DEPENDENCIES:
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
-  - Dengage (= 5.89)
+  - Dengage (= 5.88)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - fast_float (from `../node_modules/react-native/third-party-podspecs/fast_float.podspec`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)

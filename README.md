@@ -41,7 +41,6 @@
 - [In-App Messaging](#in-app-messaging)
   - [Methods](#methods)
 
-
 ## SDK Setup
 
 ### SDK Installation
@@ -53,7 +52,6 @@ npm install @dengage-tech/react-native-dengage
 ```
 
 Latest SDK version: `2.0.1`
-
 
 ## Integration
 
@@ -126,18 +124,20 @@ class MainApplication : Application(), ReactApplication {
 1. Complete the [FCM Android Setup](https://firebase.google.com/docs/android/setup) to configure your Android application for Firebase integration.
 2. Download the `google-services.json` configuration file and place it in your app's directory.
 3. To ensure the values in your `google-services.json` configuration file are accessible to Firebase SDKs, you need to include the **Google Services Gradle Plugin (`google-services`)** in your project.
+
 - In your root-level (project-level) Gradle file `<project>/build.gradle`, add the following dependency:
-   ```groovy
-   dependencies {
-       classpath("com.google.gms:google-services:4.4.2")
-   }
-   ```
+  ```groovy
+  dependencies {
+      classpath("com.google.gms:google-services:4.4.2")
+  }
+  ```
 - In your module (app-level) Gradle file `<project>/app/build.gradle`, apply the Google Services plugin as follows:
-   ```groovy
-   plugins {
-       id("com.google.gms.google-services")
-   }
-   ```
+  ```groovy
+  plugins {
+      id("com.google.gms.google-services")
+  }
+  ```
+
 4. To handle push messages, you need to include the **FcmMessagingService** in your `AndroidManifest.xml` file. Place the following block inside the `<application>` tag of your `AndroidManifest.xml` file to ensure proper integration:
 
    ```xml
@@ -150,7 +150,6 @@ class MainApplication : Application(), ReactApplication {
        </intent-filter>
    </service>
    ```
-
 
 #### Android Carousel Push
 
@@ -180,8 +179,8 @@ Before you start, you need to define your receiver in your `AndroidManifest.xml`
 
 The SDK utilizes custom layouts for carousel functionality. You need to set up these layouts in your `res` folder. Pre-built layouts are available for both landscape and portrait orientations.
 
-* **Landscape Layout:** Add `_den_carousel_landscape.xml` to your `layouts` directory.
-* **Portrait Layout:** Add `den_carousel_portrait.xml` to your `layouts` directory.
+- **Landscape Layout:** Add `_den_carousel_landscape.xml` to your `layouts` directory.
+- **Portrait Layout:** Add `den_carousel_portrait.xml` to your `layouts` directory.
 
 **Note:** Ensure you replace placeholder drawable items with your own resources.
 
@@ -611,15 +610,9 @@ class PushNotificationReceiver : NotificationReceiver() {
 }
 ```
 
-
-
-
-
 ### IOS-Specific Integration
 
-
 #### IOS Endpoint Configuration
-
 
 For the initial setup, if you have been provided with URL addresses by the **Dengage Support Team**, you need to configure these URLs in the `Info.plist` file.
 
@@ -643,7 +636,6 @@ Here’s an example configuration:
 ```
 
 **Note:** Ensure the URLs match the ones provided by the Dengage Support Team and are appropriate for your data center.
-
 
 #### Implement DengageRNCoordinator in AppDelegate
 
@@ -717,7 +709,7 @@ Run `pod install` via terminal to install the Dengage SDK for the Notification S
 
 ```
 target 'NotificationServiceExtension' do
-  pod 'Dengage', '5.89'
+  pod 'Dengage', '5.88'
 end
 ```
 
@@ -740,11 +732,11 @@ class NotificationService: UNNotificationServiceExtension {
         } else {
             // Fallback on earlier versions
         }
-        
+
         DengageLocalStorage.shared.setAppGroupsUserDefaults(appGroupName: "group.com.dengage.Example.dengage")
         Dengage.didReceiveNotificationRequest(bestAttemptContent, withContentHandler: contentHandler)
     }
-    
+
     override func serviceExtensionTimeWillExpire() {
         // Called just before the extension will be terminated by the system.
         // Use this as an opportunity to deliver your "best attempt" at modified content, otherwise the original push payload will be used.
@@ -756,7 +748,6 @@ class NotificationService: UNNotificationServiceExtension {
 ```
 
 #### Notification Content Extension Setup
-
 
 To handle carousel push messages, you need to include the **Notification Content Extension** in your project. This extension is used to customize the appearance of your app’s notifications.
 
@@ -801,7 +792,7 @@ Run `pod install` via terminal to install the Dengage SDK for the Notification S
 
 ```
 target 'NotificationContentExtension' do
-  pod 'Dengage', '5.89'
+  pod 'Dengage', '5.88'
 end
 ```
 
@@ -819,37 +810,23 @@ import Dengage
 class NotificationViewController: UIViewController, UNNotificationContentExtension {
 
     let carouselView = DengageNotificationCarouselView.create()
-    
+
     func didReceive(_ notification: UNNotification) {
         DengageLocalStorage.shared.setAppGroupsUserDefaults(appGroupName: "group.com.dengage.Example.dengage")
         Dengage.setIntegrationKey(key: "YOUR_APNS_KEY_HERE") // set your APNS integration key
         Dengage.setLog(isVisible: true) // set false if you want to disable logs
         carouselView.didReceive(notification)
     }
-    
+
     func didReceive(_ response: UNNotificationResponse, completionHandler completion: @escaping (UNNotificationContentExtensionResponseOption) -> Void) {
         carouselView.didReceive(response, completionHandler: completion)
     }
-    
+
     override func loadView() {
         self.view = carouselView
     }
 }
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 ## User Profiles
 
@@ -863,11 +840,11 @@ The **Contact Key** serves as a bridge between **Devices** and **Contacts**. Dev
 To associate devices with their respective contacts, the **Contact Key** must be set in the SDK.
 
 > **Recommended Usage:**  
-You should call this method if you have user information.  
-It is recommended to call this method during every app launch, as well as on login and logout pages.
+> You should call this method if you have user information.  
+> It is recommended to call this method during every app launch, as well as on login and logout pages.
 
 ```js
-Dengage.setContactKey("contact-key");
+Dengage.setContactKey('contact-key');
 ```
 
 ### setDeviceId
@@ -875,11 +852,10 @@ Dengage.setContactKey("contact-key");
 You can set a unique device id of for current device. This id will be used to identify the device in the Dengage system.
 
 ```js
-Dengage.setDeviceId("unique-identifier-of-device")
+Dengage.setDeviceId('unique-identifier-of-device');
 ```
 
 ## User Events
-
 
 In order to collect app events and use that data to create behavioral segments in Dengage you have to determine the type of events and data that needs to collect. Once you have determined that, you will need to create a “Big Data” table in Dengage. Collected events will be stored in this table. Multiple tables can be defined depending on your specific need.
 
@@ -898,7 +874,7 @@ If the user logs in or you have user information, this means you have contact_ke
 If user logged in set user id. This is important for identifying your users. You can put this function call in every page. It will not send unnecessary events.
 
 ```js
-Dengage.setContactKey("contact-key")
+Dengage.setContactKey('contact-key');
 ```
 
 #### getSubscription
@@ -906,7 +882,7 @@ Dengage.setContactKey("contact-key")
 If you need to get current user information from SDK use this function. `contactKey` is a property of `Subscription` object.
 
 ```js
-Dengage.getSubscription()
+Dengage.getSubscription();
 ```
 
 Subscription Object:
@@ -940,24 +916,24 @@ If your Dengage account is an eCommerce account, you should use standard eCommer
 
 Dengage SDK includes standard eCommerce events:
 
-* **Page View Events**:
-  * Home page view
-  * Product page view
-  * Category page view
-  * Promotion page view
-  * ...
-* **Shopping Cart Events**:
-  * Add to cart
-  * Remove from cart
-  * View cart
-  * Begin checkout
-* **Order Events**:
-  * Order
-  * Cancel order
-* **Wishlist Events**:
-  * Add to wishlist
-  * Remove from wishlist
-* **Search Event**
+- **Page View Events**:
+  - Home page view
+  - Product page view
+  - Category page view
+  - Promotion page view
+  - ...
+- **Shopping Cart Events**:
+  - Add to cart
+  - Remove from cart
+  - View cart
+  - Begin checkout
+- **Order Events**:
+  - Order
+  - Cancel order
+- **Wishlist Events**:
+  - Add to wishlist
+  - Remove from wishlist
+- **Search Event**
 
 Each event corresponds to related tables in your account.
 
@@ -968,36 +944,36 @@ Page view events are sent to the `page_view_events` table. If you've added new c
 ```js
 // Home page view
 Dengage.pageView({
-    "page_type":"home"
-    // ... extra columns in page_view_events table, can be added here
-})
+  page_type: 'home',
+  // ... extra columns in page_view_events table, can be added here
+});
 
 // Product page view
 Dengage.pageView({
-    "page_type":"product",
-    "product_id":"1"
-    // ... extra columns in page_view_events table, can be added here
-})
+  page_type: 'product',
+  product_id: '1',
+  // ... extra columns in page_view_events table, can be added here
+});
 
 // Category page view
 Dengage.pageView({
-    "page_type":"category",
-    "category_id":"1"
-    // ... extra columns in page_view_events table, can be added here
-})
+  page_type: 'category',
+  category_id: '1',
+  // ... extra columns in page_view_events table, can be added here
+});
 
 // Promotion page view
 Dengage.pageView({
-    "page_type":"promotion",
-    "promotion_id":"1"
-    // ... extra columns in page_view_events table, can be added here
-})
+  page_type: 'promotion',
+  promotion_id: '1',
+  // ... extra columns in page_view_events table, can be added here
+});
 
 // Custom page view
 Dengage.pageView({
-    "page_type":"custom"
-    // ... extra columns in page_view_events table, can be added here
-})
+  page_type: 'custom',
+  // ... extra columns in page_view_events table, can be added here
+});
 ```
 
 > For other pages you can send anything as page_type
@@ -1010,7 +986,6 @@ These events are stored in `shopping_cart_events` and `shopping_cart_events_deta
 2. `removeFromCart`
 3. `viewCart`
 4. `beginCheckout`
-
 
 ```js
 // Add To Cart
@@ -1058,23 +1033,23 @@ Order events are stored in `order_events` and `order_events_detail` tables.
 ```js
 // Paid Order
 const placeOrderParams = {
-    "order_id":1,
-    "item_count":1, // total ordered item count
-    "total_amount":1, // total price
-    "discounted_price":9.99, // use total price if there is no discount
-    "payment_method":"card",
-    "shipping":5,
-    "coupon_code":""
-}
+  order_id: 1,
+  item_count: 1, // total ordered item count
+  total_amount: 1, // total price
+  discounted_price: 9.99, // use total price if there is no discount
+  payment_method: 'card',
+  shipping: 5,
+  coupon_code: '',
+};
 Dengage.placeOrder(placeOrderParams);
 
 // Cancel Order
 const cancelParams = {
-    "order_id":1, // canceled order id
-    "item_count":1, // canceled total item count
-    "total_amount":1, // canceled item's total price
-    "discounted_price":9.99, // use total price if there is no discount
-}
+  order_id: 1, // canceled order id
+  item_count: 1, // canceled total item count
+  total_amount: 1, // canceled item's total price
+  discounted_price: 9.99, // use total price if there is no discount
+};
 Dengage.cancelOrder(cancelParams);
 ```
 
@@ -1084,12 +1059,12 @@ Search events are stored in the `search_events` table.
 
 ```js
 const params = {
-    "keywords":"some product name", // text in the searchbox
-    "result_count":12,
-    "filters":"" //you can send extra filters selected by user here. Formating is not specified
-    // ... extra columns in search_events table, can be added here
-}
-Dengage.search(params)
+  keywords: 'some product name', // text in the searchbox
+  result_count: 12,
+  filters: '', //you can send extra filters selected by user here. Formating is not specified
+  // ... extra columns in search_events table, can be added here
+};
+Dengage.search(params);
 ```
 
 #### Wishlist Events
@@ -1128,16 +1103,14 @@ Use the `sendDeviceEvent` function to send events specific to a device. Events a
 // You only need to send the columns except "key" and "event_date", as those are sent by the SDK
 
 const params = {
-    "event_name": "page_view",
-    "product_id": "1234",
-    // ... extra columns in events table, can be added here
-}
-Dengage.sendDeviceEvent("events", params)
+  event_name: 'page_view',
+  product_id: '1234',
+  // ... extra columns in events table, can be added here
+};
+Dengage.sendDeviceEvent('events', params);
 ```
 
-
 ## Push Notifications
-
 
 ### Subscription
 
@@ -1168,10 +1141,10 @@ If you manage your own user permission states on your application you may send u
 
 ```js
 // Use to set permission of current subscription
-Dengage.setUserPermission(true)
+Dengage.setUserPermission(true);
 
 // Use to get permission of current subscription
-Dengage.getUserPermission() // Boolean?
+Dengage.getUserPermission(); // Boolean?
 ```
 
 ### getToken
@@ -1179,7 +1152,7 @@ Dengage.getUserPermission() // Boolean?
 Retrieve the token for the current user's subscription using this method.
 
 ```js
-const token = await Dengage.getToken()
+const token = await Dengage.getToken();
 ```
 
 ## App Inbox
@@ -1239,12 +1212,13 @@ type CustomParameter = {
   value: string;
 };
 ```
+
 #### Removing an Inbox Message
 
 Delete a specific inbox message:
 
 ```js
-await Dengage.deleteInboxMessage("message-id");
+await Dengage.deleteInboxMessage('message-id');
 ```
 
 #### Marking an Inbox Message as Read
@@ -1252,11 +1226,10 @@ await Dengage.deleteInboxMessage("message-id");
 Mark a message as clicked to update its status:
 
 ```js
-await Dengage.setInboxMessageAsClicked("message-id");
+await Dengage.setInboxMessageAsClicked('message-id');
 ```
 
 > `receiveDate` property is used to store inbox message receive date. It keeps date as a UTC time format ("yyyy-MM-ddTHH:mm:ss.fffZ"). The applications which are using our SDKs need to convert this UTC date to the client time zone if the applications want to display the message receive date to their users.
-
 
 ## In-App Messaging
 
@@ -1277,5 +1250,5 @@ If you want to use a screen name filter, you should send the screen name to `set
 You should pass the current activity to setNavigation function.
 
 ```js
-Dengage.setNavigation("screen-name"); // For filtering in app messages with respect to current screen in your app
+Dengage.setNavigation('screen-name'); // For filtering in app messages with respect to current screen in your app
 ```
