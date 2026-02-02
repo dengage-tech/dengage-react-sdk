@@ -93,6 +93,8 @@ type DengageType = {
   setAllInboxMessageAsClicked(): Promise<boolean>;
 
   requestLocationPermissions(): void;
+  startGeofence(): void;
+  stopGeofence(): void;
   
   getSdkParameters(): Promise<SdkParameters | null>;
 

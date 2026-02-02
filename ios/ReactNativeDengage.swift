@@ -56,6 +56,11 @@ class ReactNativeDengage: RCTEventEmitter {
     
     // MARK: - Inapp Notifications
     
+    @objc(setNavigation)
+    func setNavigation() {
+        Dengage.setNavigation()
+    }
+    
     @objc(setNavigation:)
     func setNavigation(screenName: NSString) {
         Dengage.setNavigation(screenName: screenName as String)
@@ -240,6 +245,20 @@ class ReactNativeDengage: RCTEventEmitter {
     func requestLocationPermissions() {
 #if canImport(DengageGeofence)
         DengageGeofence.requestLocationPermissions()
+#endif
+    }
+    
+    @objc(startGeofence)
+    func startGeofence() {
+#if canImport(DengageGeofence)
+        DengageGeofence.startGeofence()
+#endif
+    }
+    
+    @objc(stopGeofence)
+    func stopGeofence() {
+#if canImport(DengageGeofence)
+        DengageGeofence.stopGeofence()
 #endif
     }
     

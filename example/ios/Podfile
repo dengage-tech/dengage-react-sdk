@@ -15,11 +15,11 @@ end
 
 
 target 'NotificationServiceExtension' do
-  pod 'Dengage', '5.88'
+  pod 'Dengage', '5.89'
 end
 
 target 'NotificationContentExtension' do
-  pod 'Dengage', '5.88'
+  pod 'Dengage', '5.89'
 end
 
 target 'ReactNativeDengageExample' do

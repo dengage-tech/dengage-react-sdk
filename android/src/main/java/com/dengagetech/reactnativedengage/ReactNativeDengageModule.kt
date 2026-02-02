@@ -1,6 +1,7 @@
 package com.dengagetech.reactnativedengage
 
 import android.app.Activity
+import android.app.NotificationManager
 import android.content.Context
 import android.content.IntentFilter
 import android.os.Build
@@ -80,6 +81,15 @@ class ReactNativeDengageModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
+    fun setLogStatus(isVisible: Boolean) {
+        try {
+            Dengage.setLogStatus(isVisible)
+        } catch (ex: Exception) {
+            Log.e(NAME, "setLogStatus error", ex)
+        }
+    }
+
+    @ReactMethod
     fun getDeviceId(promise: Promise) {
         try {
             val deviceId = Dengage.getSubscription()?.deviceId ?: ""
@@ -141,6 +151,13 @@ class ReactNativeDengageModule(reactContext: ReactApplicationContext) :
     }
 
     // Inapp Notifications
+
+    @ReactMethod
+    fun setNavigation() {
+        currentActivity?.let {
+            Dengage.setNavigation(it, null)
+        }
+    }
 
     @ReactMethod
     fun setNavigation(screenName: String?) {
@@ -208,7 +225,217 @@ class ReactNativeDengageModule(reactContext: ReactApplicationContext) :
         )
     }
 
+    @ReactMethod
+    fun setNavigationWithName(screenName: String) {
+        currentActivity?.let {
+            Dengage.setNavigation(it, screenName)
+        }
+    }
 
+    @ReactMethod
+    fun pageView(data: ReadableMap) {
+        try {
+            Dengage.pageView(data.toHashMapAny() as HashMap<String, Any>)
+        } catch (ex: Exception) {
+            Log.e(NAME, "pageView error", ex)
+        }
+    }
+
+    @ReactMethod
+    fun addToCart(data: ReadableMap) {
+        try {
+            Dengage.addToCart(data.toHashMapAny() as HashMap<String, Any>)
+        } catch (ex: Exception) {
+            Log.e(NAME, "addToCart error", ex)
+        }
+    }
+
+    @ReactMethod
+    fun removeFromCart(data: ReadableMap) {
+        try {
+            Dengage.removeFromCart(data.toHashMapAny() as HashMap<String, Any>)
+        } catch (ex: Exception) {
+            Log.e(NAME, "removeFromCart error", ex)
+        }
+    }
+
+    @ReactMethod
+    fun viewCart(data: ReadableMap) {
+        try {
+            Dengage.viewCart(data.toHashMapAny() as HashMap<String, Any>)
+        } catch (ex: Exception) {
+            Log.e(NAME, "viewCart error", ex)
+        }
+    }
+
+    @ReactMethod
+    fun beginCheckout(data: ReadableMap) {
+        try {
+            Dengage.beginCheckout(data.toHashMapAny() as HashMap<String, Any>)
+        } catch (ex: Exception) {
+            Log.e(NAME, "beginCheckout error", ex)
+        }
+    }
+
+    @ReactMethod
+    fun placeOrder(data: ReadableMap) {
+        try {
+            Dengage.order(data.toHashMapAny() as HashMap<String, Any>)
+        } catch (ex: Exception) {
+            Log.e(NAME, "placeOrder error", ex)
+        }
+    }
+
+    @ReactMethod
+    fun cancelOrder(data: ReadableMap) {
+        try {
+            Dengage.cancelOrder(data.toHashMapAny() as HashMap<String, Any>)
+        } catch (ex: Exception) {
+            Log.e(NAME, "cancelOrder error", ex)
+        }
+    }
+
+    @ReactMethod
+    fun addToWishList(data: ReadableMap) {
+        try {
+            Dengage.addToWishList(data.toHashMapAny() as HashMap<String, Any>)
+        } catch (ex: Exception) {
+            Log.e(NAME, "addToWishList error", ex)
+        }
+    }
+
+    @ReactMethod
+    fun removeFromWishList(data: ReadableMap) {
+        try {
+            Dengage.removeFromWishList(data.toHashMapAny() as HashMap<String, Any>)
+        } catch (ex: Exception) {
+            Log.e(NAME, "removeFromWishList error", ex)
+        }
+    }
+
+    @ReactMethod
+    fun search(data: ReadableMap) {
+        try {
+            Dengage.search(data.toHashMapAny() as HashMap<String, Any>)
+        } catch (ex: Exception) {
+            Log.e(NAME, "search error", ex)
+        }
+    }
+
+    @ReactMethod
+    fun onMessageReceived(data: ReadableMap) {
+        try {
+            val dataMap = data.toHashMapAny()
+            val stringMap = mutableMapOf<String, String>()
+            for ((key, value) in dataMap) {
+                stringMap[key] = value?.toString() ?: ""
+            }
+            Dengage.onMessageReceived(stringMap)
+        } catch (ex: Exception) {
+            Log.e(NAME, "onMessageReceived error", ex)
+        }
+    }
+
+    @ReactMethod
+    fun registerInAppListener() {
+        Log.d("den/react-native", "RegisteringInAppListener.")
+        val filter = IntentFilter()
+        filter.addAction("com.dengage.inapp.LINK_RETRIEVAL")
+        val inAppReceiver = InAppLinkReceiver(reactApplicationContext)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            reactApplicationContext.currentActivity?.registerReceiver(inAppReceiver, filter, Context.RECEIVER_EXPORTED)
+        } else {
+            ContextCompat.registerReceiver(
+                reactApplicationContext,
+                inAppReceiver,
+                filter,
+                ContextCompat.RECEIVER_NOT_EXPORTED
+            )
+        }
+    }
+
+    @ReactMethod
+    fun stopGeofence() {
+        try {
+            val clazz = Class.forName("com.dengage.geofence.DengageGeofence")
+            val instance = clazz.getField("INSTANCE").get(null)
+            val method = clazz.getMethod("stopGeofence")
+            method.invoke(instance)
+        } catch (e: ClassNotFoundException) {
+            Log.w(NAME, "DengageGeofence library could not be found")
+        } catch (e: Exception) {
+            Log.e(NAME, "stopGeofence error", e)
+        }
+    }
+
+    @ReactMethod
+    fun startGeofence() {
+        try {
+            val clazz = Class.forName("com.dengage.geofence.DengageGeofence")
+            val instance = clazz.getField("INSTANCE").get(null)
+            val method = clazz.getMethod("startGeofence")
+            method.invoke(instance)
+        } catch (e: ClassNotFoundException) {
+            Log.w(NAME, "DengageGeofence library could not be found")
+        } catch (e: Exception) {
+            Log.e(NAME, "startGeofence error", e)
+        }
+    }
+
+    @ReactMethod
+    fun resetAppBadge() {
+        try {
+            val notificationManager = reactApplicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as? NotificationManager
+            notificationManager?.cancelAll()
+        } catch (ex: Exception) {
+            Log.e(NAME, "resetAppBadge error", ex)
+        }
+    }
+
+    @ReactMethod
+    fun setPartnerDeviceId(adid: String) {
+        try {
+            Dengage.setPartnerDeviceId(adid)
+        } catch (ex: Exception) {
+            Log.e(NAME, "setPartnerDeviceId error", ex)
+        }
+    }
+
+    @ReactMethod
+    fun setInAppLinkConfiguration(deeplink: String) {
+        try {
+            Dengage.inAppLinkConfiguration(deeplink)
+        } catch (ex: Exception) {
+            Log.e(NAME, "setInAppLinkConfiguration error", ex)
+        }
+    }
+
+    @ReactMethod
+    fun setDevelopmentStatus(isDebug: Boolean) {
+        try {
+            Dengage.setDevelopmentStatus(isDebug)
+        } catch (ex: Exception) {
+            Log.e(NAME, "setDevelopmentStatus error", ex)
+        }
+    }
+
+    @ReactMethod
+    fun setLanguage(language: String) {
+        try {
+            Dengage.setLanguage(language)
+        } catch (ex: Exception) {
+            Log.e(NAME, "setLanguage error", ex)
+        }
+    }
+
+    @ReactMethod
+    fun setDeviceId(deviceId: String) {
+        try {
+            Dengage.setDeviceId(deviceId)
+        } catch (ex: Exception) {
+            Log.e(NAME, "setDeviceId error", ex)
+        }
+    }
 
 
 
@@ -331,11 +558,11 @@ class ReactNativeDengageModule(reactContext: ReactApplicationContext) :
     @ReactMethod
     fun sendCustomEvent(eventTable: String, key: String, parameters: ReadableMap) {
         try {
-            val paramsMap = parameters.toHashMap()
+            val paramsMap = parameters.toHashMapAny()
             Dengage.sendCustomEvent(
                 tableName = eventTable,
                 key = key,
-                data = paramsMap as HashMap<String, Any>
+                data = paramsMap
             )
         } catch (ex: Exception) {
             Log.e("DengageRN", "Error sending custom event", ex)
@@ -345,10 +572,10 @@ class ReactNativeDengageModule(reactContext: ReactApplicationContext) :
     @ReactMethod
     fun sendDeviceEvent(tableName: String, data: ReadableMap) {
         try {
-            val dataMap = data.toHashMap()
+            val dataMap = data.toHashMapAny()
             Dengage.sendDeviceEvent(
                 tableName = tableName,
-                data = dataMap as HashMap<String, Any>
+                data = dataMap
             )
         } catch (ex: Exception) {
             Log.e("DengageRN", "Error sending device event", ex)

@@ -1,5 +1,9 @@
-import { NavigationContainer } from '@react-navigation/native';
+import {
+  NavigationContainer,
+  useNavigationContainerRef,
+} from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import Dengage from '@dengage-tech/react-native-dengage';
 
 // Import types
 import type { RootStackParamList } from './types';
@@ -29,6 +33,8 @@ const Stack = createStackNavigator<RootStackParamList>();
 
 const App = () => {
   let eventListener: import('react-native').EmitterSubscription | undefined;
+  const routeNameRef = React.useRef<string>();
+  const navigationRef = useNavigationContainerRef();
 
   React.useEffect(() => {
     const eventEmitter = new NativeEventEmitter(NativeModules.DengageRN);
@@ -48,8 +54,33 @@ const App = () => {
     };
   }, []);
 
+  const handleNavigationStateChange = () => {
+    const previousRouteName = routeNameRef.current;
+    const currentRouteName = navigationRef.current?.getCurrentRoute()?.name;
+    if (previousRouteName !== currentRouteName && currentRouteName) {
+      Dengage.pageView?.({
+        page_type: 'screen',
+        screen_name: currentRouteName,
+      });
+    }
+    routeNameRef.current = currentRouteName;
+  };
+
   return (
-    <NavigationContainer>
+    <NavigationContainer
+      ref={navigationRef}
+      onReady={() => {
+        const initialRoute = navigationRef.current?.getCurrentRoute()?.name;
+        if (initialRoute) {
+          routeNameRef.current = initialRoute;
+          Dengage.pageView?.({
+            page_type: 'screen',
+            screen_name: initialRoute,
+          });
+        }
+      }}
+      onStateChange={handleNavigationStateChange}
+    >
       <Stack.Navigator>
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Notification" component={NotificationScreen} />

@@ -717,7 +717,7 @@ Run `pod install` via terminal to install the Dengage SDK for the Notification S
 
 ```
 target 'NotificationServiceExtension' do
-  pod 'Dengage', '5.88'
+  pod 'Dengage', '5.89'
 end
 ```
 
@@ -801,7 +801,7 @@ Run `pod install` via terminal to install the Dengage SDK for the Notification S
 
 ```
 target 'NotificationContentExtension' do
-  pod 'Dengage', '5.88'
+  pod 'Dengage', '5.89'
 end
 ```
 
