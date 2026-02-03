@@ -1,3 +1,8 @@
+// Bypass node resolution in react-native-gesture-handler (fixes "Cannot run program 'node'" when Gradle runs from IDE)
+ext {
+  REACT_NATIVE_NODE_MODULES_DIR = file("${rootDir}/../node_modules/react-native").absolutePath
+}
+
 buildscript {
   ext {
     buildToolsVersion = "34.0.0"

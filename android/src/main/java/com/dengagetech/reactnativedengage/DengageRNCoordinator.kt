@@ -31,7 +31,6 @@ class DengageRNCoordinator private constructor() {
                     initialized = true
                 }
             })
-        this.reactInstanceManager!!.onNewIntent(null)
     }
 
     fun setupDengage(
