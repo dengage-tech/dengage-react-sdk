@@ -27,7 +27,7 @@ type DengageType = {
     callback: (hasPermission: boolean) => void
   ): void; // iOS only
   registerForRemoteNotifications(enable: boolean): void; // iOS only
-  getUserPermission(): Promise<boolean>; // android only, in iOS use promptForPushNotificationsWitCallback
+  getUserPermission(): Promise<boolean>;
   getToken(): Promise<string>;
   setToken(token: String): void;
   setLogStatus(isVisible: boolean): void;

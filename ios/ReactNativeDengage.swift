@@ -19,6 +19,11 @@ class ReactNativeDengage: RCTEventEmitter {
         Dengage.setUserPermission(permission: permission)
     }
     
+    @objc
+    func getUserPermission(_ resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
+        resolve(Dengage.getPermission())
+    }
+    
     @objc(setContactKey:)
     func setContactKey(contactKey: String?) {
         Dengage.setContactKey(contactKey: contactKey)
