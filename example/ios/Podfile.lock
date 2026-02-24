@@ -1,8 +1,8 @@
 PODS:
   - boost (1.84.0)
-  - Dengage (5.88)
-  - DengageGeofence (5.88):
-    - Dengage (= 5.88)
+  - Dengage (5.90)
+  - DengageGeofence (5.90):
+    - Dengage (= 5.90)
   - DoubleConversion (1.1.6)
   - fast_float (6.1.4)
   - FBLazyVector (0.79.7)
@@ -1335,9 +1335,9 @@ PODS:
     - React-jsiexecutor
     - React-RCTFBReactNativeSpec
     - ReactCommon/turbomodule/core
-  - react-native-dengage (2.0.4):
-    - Dengage (= 5.88)
-    - DengageGeofence (= 5.88)
+  - react-native-dengage (2.0.6):
+    - Dengage (= 5.90)
+    - DengageGeofence (= 5.90)
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2012,7 +2012,7 @@ PODS:
 
 DEPENDENCIES:
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
-  - Dengage (= 5.88)
+  - Dengage (= 5.90)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - fast_float (from `../node_modules/react-native/third-party-podspecs/fast_float.podspec`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
@@ -2260,13 +2260,13 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   boost: 7e761d76ca2ce687f7cc98e698152abd03a18f90
-  Dengage: 36ebcc6bfc75c4b4bcd8f6e7e28a73e3d9637f8a
-  DengageGeofence: 56166789bd644854d70f3001280f18452d1d88d8
+  Dengage: f811d1b8fc8908e7e32d5cbfcf65c93f6c85d6b7
+  DengageGeofence: cef8ed3d848537e11810d9597f4a88cdf64d575c
   DoubleConversion: cb417026b2400c8f53ae97020b2be961b59470cb
   fast_float: 06eeec4fe712a76acc9376682e4808b05ce978b6
   FBLazyVector: b60fe06f0f15b7d7408f169442176e69e8eeacde
   fmt: a40bb5bd0294ea969aaaba240a927bd33d878cdd
-  glog: eb93e2f488219332457c3c4eafd2738ddc7e80b8
+  glog: 5683914934d5b6e4240e497e0f4a3b42d1854183
   hermes-engine: 13c84524b3b6e884b2cf3b3b1e002ffd147d88a3
   RCT-Folly: e78785aa9ba2ed998ea4151e314036f6c49e6d82
   RCTDeprecation: b9b1716eec53aaeaa859aa45e27de7b615cff732
@@ -2299,7 +2299,7 @@ SPEC CHECKSUMS:
   React-logger: 6d6f432994f3d58b769945551af2bd4fb21ad866
   React-Mapbuffer: b47a3289a3fe38e665347e48579f67a37be42bb3
   React-microtasksnativemodule: c1a3d5195c3985a2246f130ad3f3cad587b79b03
-  react-native-dengage: 33f9d1a0cf1d3fc2c82920aa216530247df4826d
+  react-native-dengage: 259b7cb8c4dab61cfc5b4b29833885119de1d0e9
   react-native-safe-area-context: bc59472155ffb889a1ffe16c19a04c0cd451562b
   React-NativeModulesApple: 1ed1401e841d89df68c9a429c785d51272fc21a5
   React-oscompat: 0047f0ce53a328ce225777a6c617970556602c7c
@@ -2341,6 +2341,6 @@ SPEC CHECKSUMS:
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   Yoga: 7ec3c34208133557b95850966446f48c6b3fa468
 
-PODFILE CHECKSUM: 07efb8b34e0dcc373c5fc0617d376d98166acc1d
+PODFILE CHECKSUM: 3a2e6b1a9623acec799a9eb8e1029651d9f8e615
 
 COCOAPODS: 1.15.2

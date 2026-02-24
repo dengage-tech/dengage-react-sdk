@@ -15,11 +15,11 @@ end
 
 
 target 'NotificationServiceExtension' do
-  pod 'Dengage', '5.88'
+  pod 'Dengage', '5.90'
 end
 
 target 'NotificationContentExtension' do
-  pod 'Dengage', '5.88'
+  pod 'Dengage', '5.90'
 end
 
 target 'ReactNativeDengageExample' do
@@ -47,6 +47,12 @@ target 'ReactNativeDengageExample' do
       config[:reactNativePath],
       :mac_catalyst_enabled => false,
     )
+    # Ensure minimum deployment target for Dengage 5.90+
+    installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |config|
+        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0'
+      end
+    end
   end
 end
 
