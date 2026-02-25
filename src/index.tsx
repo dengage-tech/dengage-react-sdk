@@ -72,7 +72,6 @@ type DengageType = {
   setUserPermission(permission: boolean): void;  
   getSubscription(): Promise<Subscription>; // android only yet. for iOS use getContactKey
 
-  setNavigation(screenName: string | null): void;
   setInAppDeviceInfo(key: string, value: string): void;
   clearInAppDeviceInfo(): void;
   getInAppDeviceInfo(): Promise<Record<string, string>>;

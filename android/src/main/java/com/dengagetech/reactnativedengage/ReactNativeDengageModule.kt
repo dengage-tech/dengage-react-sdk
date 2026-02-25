@@ -160,13 +160,6 @@ class ReactNativeDengageModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
-    fun setNavigation(screenName: String?) {
-        currentActivity?.let {
-            Dengage.setNavigation(it, screenName)
-        }
-    }
-
-    @ReactMethod
     fun setInAppDeviceInfo(key: String, value: String) {
         Dengage.setInAppDeviceInfo(key, value)
     }

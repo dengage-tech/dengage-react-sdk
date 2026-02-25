@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "start": "react-native start",
+    "start:logs": "react-native start --client-logs",
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "build": "cd ios && xcodebuild -workspace ReactNativeDengageExample.xcworkspace -scheme ReactNativeDengageExample -configuration Debug -sdk iphonesimulator",

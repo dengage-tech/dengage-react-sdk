@@ -66,8 +66,8 @@ class ReactNativeDengage: RCTEventEmitter {
         Dengage.setNavigation()
     }
     
-    @objc(setNavigation:)
-    func setNavigation(screenName: NSString) {
+    @objc(setNavigationWithName:)
+    func setNavigationWithName(screenName: NSString) {
         Dengage.setNavigation(screenName: screenName as String)
     }
     

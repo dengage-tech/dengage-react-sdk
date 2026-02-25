@@ -1,5 +1,4 @@
 buildscript {
-  // Buildscript is evaluated before everything else so we can't use getExtOrDefault
   def kotlin_version = rootProject.ext.has("kotlinVersion") ? rootProject.ext.get("kotlinVersion") : project.properties["ReactNativeDengage_kotlinVersion"]
 
   repositories {
@@ -9,8 +8,8 @@ buildscript {
   }
 
   dependencies {
-    classpath "com.android.tools.build:gradle:7.2.2"
-    // noinspection DifferentKotlinGradleVersion
+    // Use 8.8.2 to match React Native gradle plugin consumer attribute (AgpVersionAttr) so variant resolution succeeds
+    classpath "com.android.tools.build:gradle:8.8.2"
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
   }
 }
@@ -75,7 +74,7 @@ android {
     }
   }
 
-  lintOptions {
+  lint {
     disable "GradleCompatible"
   }
 
@@ -88,6 +87,7 @@ android {
 repositories {
   mavenCentral()
   google()
+  maven { url 'https://jitpack.io' }
 }
 
 def kotlin_version = getExtOrDefault("kotlinVersion")

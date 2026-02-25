@@ -1335,7 +1335,7 @@ PODS:
     - React-jsiexecutor
     - React-RCTFBReactNativeSpec
     - ReactCommon/turbomodule/core
-  - react-native-dengage (2.0.6):
+  - react-native-dengage (2.0.7):
     - Dengage (= 5.90)
     - DengageGeofence (= 5.90)
     - DoubleConversion
@@ -2299,7 +2299,7 @@ SPEC CHECKSUMS:
   React-logger: 6d6f432994f3d58b769945551af2bd4fb21ad866
   React-Mapbuffer: b47a3289a3fe38e665347e48579f67a37be42bb3
   React-microtasksnativemodule: c1a3d5195c3985a2246f130ad3f3cad587b79b03
-  react-native-dengage: 259b7cb8c4dab61cfc5b4b29833885119de1d0e9
+  react-native-dengage: e0bc0536511758cdcc7f67f52d24e678316fc08a
   react-native-safe-area-context: bc59472155ffb889a1ffe16c19a04c0cd451562b
   React-NativeModulesApple: 1ed1401e841d89df68c9a429c785d51272fc21a5
   React-oscompat: 0047f0ce53a328ce225777a6c617970556602c7c
