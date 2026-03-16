@@ -24,7 +24,7 @@ class ReactNativeDengageModule(reactContext: ReactApplicationContext) :
 
     @ReactMethod
     fun promptForPushNotifications() {
-        val currentActivity = currentActivity ?: return
+        val currentActivity = reactApplicationContext.getCurrentActivity() ?: return
         Dengage.requestNotificationPermission(currentActivity)
     }
 
@@ -154,7 +154,7 @@ class ReactNativeDengageModule(reactContext: ReactApplicationContext) :
 
     @ReactMethod
     fun setNavigation() {
-        currentActivity?.let {
+        reactApplicationContext.getCurrentActivity()?.let {
             Dengage.setNavigation(it, null)
         }
     }
@@ -210,7 +210,7 @@ class ReactNativeDengageModule(reactContext: ReactApplicationContext) :
 
     @ReactMethod
     fun showRealTimeInApp(screenName: String, params: ReadableMap?) {
-        val activity = currentActivity ?: return
+        val activity = reactApplicationContext.getCurrentActivity() ?: return
         Dengage.showRealTimeInApp(
             activity,
             screenName,
@@ -220,7 +220,7 @@ class ReactNativeDengageModule(reactContext: ReactApplicationContext) :
 
     @ReactMethod
     fun setNavigationWithName(screenName: String) {
-        currentActivity?.let {
+        reactApplicationContext.getCurrentActivity()?.let {
             Dengage.setNavigation(it, screenName)
         }
     }
@@ -336,7 +336,7 @@ class ReactNativeDengageModule(reactContext: ReactApplicationContext) :
         filter.addAction("com.dengage.inapp.LINK_RETRIEVAL")
         val inAppReceiver = InAppLinkReceiver(reactApplicationContext)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            reactApplicationContext.currentActivity?.registerReceiver(inAppReceiver, filter, Context.RECEIVER_EXPORTED)
+            reactApplicationContext.getCurrentActivity()?.registerReceiver(inAppReceiver, filter, Context.RECEIVER_EXPORTED)
         } else {
             ContextCompat.registerReceiver(
                 reactApplicationContext,
@@ -833,7 +833,7 @@ class ReactNativeDengageModule(reactContext: ReactApplicationContext) :
 
     @ReactMethod
     fun requestLocationPermissions() {
-        val activity = currentActivity ?: return
+        val activity = reactApplicationContext.getCurrentActivity() ?: return
         try {
             val clazz = Class.forName("com.dengage.geofence.DengageGeofence")
             val instance = clazz.getField("INSTANCE").get(null) // Kotlin object singleton instance
@@ -863,7 +863,7 @@ class ReactNativeDengageModule(reactContext: ReactApplicationContext) :
         filter.addAction("com.dengage.push.intent.OPEN")
         val notifReceiver = NotifReciever(reactApplicationContext)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            reactApplicationContext.currentActivity?.registerReceiver(notifReceiver, filter,
+            reactApplicationContext.getCurrentActivity()?.registerReceiver(notifReceiver, filter,
                 Context.RECEIVER_EXPORTED)
         }
         else {

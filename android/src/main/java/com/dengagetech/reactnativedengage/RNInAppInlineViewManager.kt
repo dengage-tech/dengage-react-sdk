@@ -43,7 +43,7 @@ class RNInAppInlineViewManager(
         val currentPropertyId = propertyId
         val currentScreenName = screenName
         val currentCustomParams = customParams
-        val currentActivity = reactContext.currentActivity
+        val currentActivity = reactContext.getCurrentActivity()
 
         if (!view.hasShownInline &&
             currentPropertyId != null &&

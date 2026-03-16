@@ -47,7 +47,7 @@ class RNStoriesListViewManager(
         val currentStoryPropertyId = storyPropertyId
         val currentScreenName = screenName
         val currentCustomParams = customParams
-        val currentActivity = reactContext.currentActivity
+        val currentActivity = reactContext.getCurrentActivity()
 
         if (!view.hasShownStory &&
             currentStoryPropertyId != null &&
