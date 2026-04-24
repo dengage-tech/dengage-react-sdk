@@ -2,7 +2,7 @@
 
 This guide covers installing and configuring **@dengage-tech/react-native-dengage**, native Android and iOS setup, push (including rich and carousel), in-app messaging, inbox, events, and the full JavaScript API.
 
-**Latest package version:** `2.0.8` (check [npm](https://www.npmjs.com/package/@dengage-tech/react-native-dengage) for updates).
+**Latest package version:** `2.0.9` (check [npm](https://www.npmjs.com/package/@dengage-tech/react-native-dengage) for updates).
 
 ---
 
@@ -202,7 +202,7 @@ In the project-level Gradle file, include the Google Services classpath version 
 
 ### 4.2 Native SDK version
 
-The React Native package depends on **Dengage Android SDK** `6.0.88` (JitPack: `com.github.dengage-tech.dengage-android-sdk:sdk:6.0.88`). You normally do not add this line yourself unless you override versions; the library module brings it in.
+The React Native package depends on **Dengage Android SDK** `6.0.89` (JitPack: `com.github.dengage-tech.dengage-android-sdk:sdk:6.0.89`). You normally do not add this line yourself unless you override versions; the library module brings it in.
 
 ### 4.3 Geofence (optional)
 

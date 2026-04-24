@@ -98,10 +98,10 @@ dependencies {
   //noinspection GradleDynamicVersion
   implementation "com.facebook.react:react-native:+"
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-  implementation 'com.github.dengage-tech.dengage-android-sdk:sdk:6.0.88'
+  implementation 'com.github.dengage-tech.dengage-android-sdk:sdk:6.0.89'
 
   if (project.hasProperty('INSTALL_DENGAGE_GEOFENCE') && project.INSTALL_DENGAGE_GEOFENCE == 'true') {
-    implementation 'com.github.dengage-tech.dengage-android-sdk:sdk-geofence:6.0.88'
+    implementation 'com.github.dengage-tech.dengage-android-sdk:sdk-geofence:6.0.89'
   }
 }
 

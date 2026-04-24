@@ -36,8 +36,12 @@ class ReactNativeDengage: RCTEventEmitter {
     
     @objc
     func getSubscription(_ resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
+        let integrationKey =
+            DengageRNCoordinator.staticInstance.integrationKey ??
+            Dengage.getIntegrationKey() ??
+            ""
         let subscription = Subscription(
-            integrationKey: "",
+            integrationKey: integrationKey,
             token: Dengage.getDeviceToken(),
             appVersion: "",
             sdkVersion: Dengage.getSdkVersion() ?? "",

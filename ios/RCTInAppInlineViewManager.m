@@ -8,6 +8,7 @@
 #import "RCTInAppInlineViewManager.h"
 
 #import <React/RCTBridge.h>
+#import <React/RCTConvert.h>
 #import <React/RCTUIManager.h>
 
 #if __has_include("react_native_dengage/react_native_dengage-Swift.h")
@@ -21,6 +22,11 @@
 RCT_EXPORT_VIEW_PROPERTY(propertyId, NSString)
 RCT_EXPORT_VIEW_PROPERTY(screenName, NSString)
 RCT_EXPORT_VIEW_PROPERTY(customParams, NSDictionary)
+RCT_CUSTOM_VIEW_PROPERTY(hideIfNotFound, BOOL, RCTInAppInlineView)
+{
+  view.hideIfNotFound = (json == nil) ? YES : [RCTConvert BOOL:json];
+}
+RCT_EXPORT_VIEW_PROPERTY(onVisibilityChanged, RCTDirectEventBlock)
 RCT_EXPORT_MODULE(RCTInAppInlineView)
 
 - (UIView *)view {

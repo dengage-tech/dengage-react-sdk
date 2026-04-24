@@ -15,11 +15,11 @@ end
 
 
 target 'NotificationServiceExtension' do
-  pod 'Dengage', '5.90'
+  pod 'Dengage', :git => 'https://github.com/dengage-tech/dengage-ios-sdk.git', :branch => 'version/5.92'
 end
 
 target 'NotificationContentExtension' do
-  pod 'Dengage', '5.90'
+  pod 'Dengage', :git => 'https://github.com/dengage-tech/dengage-ios-sdk.git', :branch => 'version/5.92'
 end
 
 target 'ReactNativeDengageExample' do
@@ -27,7 +27,10 @@ target 'ReactNativeDengageExample' do
 
   #TODO: set to 1 to install Dengage Geofence
   ENV['install_dengage_geofence'] = '1'
-  
+
+  # Same source as Flutter example — CocoaPods does not allow :git on podspec dependencies.
+  pod 'Dengage', :git => 'https://github.com/dengage-tech/dengage-ios-sdk.git', :branch => 'version/5.92'
+  pod 'DengageGeofence', :git => 'https://github.com/dengage-tech/dengage-ios-sdk.git', :branch => 'version/5.92'
 
   use_react_native!(
     :path => config[:reactNativePath],
@@ -47,7 +50,7 @@ target 'ReactNativeDengageExample' do
       config[:reactNativePath],
       :mac_catalyst_enabled => false,
     )
-    # Ensure minimum deployment target for Dengage 5.90+
+    # Ensure minimum deployment target for Dengage 5.92+
     installer.pods_project.targets.each do |target|
       target.build_configurations.each do |config|
         config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0'

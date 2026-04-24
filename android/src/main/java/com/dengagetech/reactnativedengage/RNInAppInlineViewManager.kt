@@ -1,64 +1,53 @@
 package com.dengagetech.reactnativedengage
 
-import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReadableMap
+import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.uimanager.SimpleViewManager
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.annotations.ReactProp
-import com.dengage.sdk.Dengage
 
 class RNInAppInlineViewManager(
-    private val reactContext: ReactApplicationContext
+    @Suppress("UNUSED_PARAMETER") reactContext: ReactApplicationContext
 ) : SimpleViewManager<InAppInlineView>() {
 
     override fun getName() = "RCTInAppInlineView"
 
-    private var propertyId: String? = null
-    private var screenName: String? = null
-    private var customParams: HashMap<String, String>? = null
+    override fun getExportedCustomDirectEventTypeConstants(): MutableMap<String, Any>? =
+        com.facebook.react.common.MapBuilder.of(
+            "topVisibilityChanged",
+            com.facebook.react.common.MapBuilder.of("registrationName", "onVisibilityChanged")
+        )
 
     override fun createViewInstance(reactContext: ThemedReactContext): InAppInlineView {
         return InAppInlineView(reactContext)
     }
 
+    override fun onDropViewInstance(view: InAppInlineView) {
+        view.dispose()
+        super.onDropViewInstance(view)
+    }
+
     @ReactProp(name = "propertyId")
     fun setPropertyId(view: InAppInlineView, propertyId: String) {
-        this.propertyId = propertyId
-        maybeShowInlineInApp(view)
+        view.propertyId = propertyId
+        view.maybeShowInlineInApp()
     }
 
     @ReactProp(name = "screenName")
     fun setScreenName(view: InAppInlineView, screenName: String) {
-        this.screenName = screenName
-        maybeShowInlineInApp(view)
+        view.screenName = screenName
+        view.maybeShowInlineInApp()
     }
 
     @ReactProp(name = "customParams")
     fun setCustomParams(view: InAppInlineView, customParams: ReadableMap?) {
-        this.customParams = customParams.toHashMap()
-        maybeShowInlineInApp(view)
+        view.customParams = customParams.toHashMap() ?: HashMap()
+        view.maybeShowInlineInApp()
     }
 
-    private fun maybeShowInlineInApp(view: InAppInlineView) {
-        val currentPropertyId = propertyId
-        val currentScreenName = screenName
-        val currentCustomParams = customParams
-        val currentActivity = reactContext.getCurrentActivity()
-
-        if (!view.hasShownInline &&
-            currentPropertyId != null &&
-            currentScreenName != null &&
-            currentCustomParams != null &&
-            currentActivity != null
-        ) {
-            view.hasShownInline = true
-            Dengage.showInlineInApp(
-                screenName = currentScreenName,
-                inAppInlineElement = view.inlineElement,
-                propertyId = currentPropertyId,
-                activity = currentActivity,
-                customParams = currentCustomParams
-            )
-        }
+    @ReactProp(name = "hideIfNotFound")
+    fun setHideIfNotFound(view: InAppInlineView, hideIfNotFound: Boolean) {
+        view.hideIfNotFound = hideIfNotFound
+        view.maybeShowInlineInApp()
     }
 }
