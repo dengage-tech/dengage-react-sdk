@@ -90,10 +90,12 @@ class InAppInlineView(private val reactContext: ThemedReactContext) : FrameLayou
 
             // With hideIfNotFound, the Android SDK may keep the WebView GONE briefly while loading; do not
             // report hidden until grace elapses or JS will unmount and kill the WebView before HTML loads.
+            // While lastShowInlineInvokedAtElapsed == 0, [debouncedSdkShowRunnable] has not run yet (it is
+            // posted with DEBOUNCE_SDK_SHOW_MS); reporting hidden here made JS collapse before show().
             val hiddenForEvent = when {
                 !debouncedHidden -> false
                 !hideIfNotFound -> debouncedHidden
-                lastShowInlineInvokedAtElapsed == 0L -> debouncedHidden
+                lastShowInlineInvokedAtElapsed == 0L -> false
                 (now - lastShowInlineInvokedAtElapsed) < INLINE_SHOW_GRACE_MS -> false
                 else -> true
             }
