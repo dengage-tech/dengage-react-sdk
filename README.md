@@ -2,7 +2,7 @@
 
 This guide covers installing and configuring **@dengage-tech/react-native-dengage**, native Android and iOS setup, push (including rich and carousel), in-app messaging, inbox, events, and the full JavaScript API.
 
-**Latest package version:** `2.0.8` (check [npm](https://www.npmjs.com/package/@dengage-tech/react-native-dengage) for updates).
+**Latest package version:** `2.1.0` (check [npm](https://www.npmjs.com/package/@dengage-tech/react-native-dengage) for updates).
 
 ---
 
@@ -202,7 +202,7 @@ In the project-level Gradle file, include the Google Services classpath version 
 
 ### 4.2 Native SDK version
 
-The React Native package depends on **Dengage Android SDK** `6.0.88` (JitPack: `com.github.dengage-tech.dengage-android-sdk:sdk:6.0.88`). You normally do not add this line yourself unless you override versions; the library module brings it in.
+The React Native package depends on **Dengage Android SDK** `6.0.90` (JitPack: `com.github.dengage-tech.dengage-android-sdk:sdk:6.0.90`). You normally do not add this line yourself unless you override versions; the library module brings it in.
 
 ### 4.3 Geofence (optional)
 
@@ -315,7 +315,7 @@ class MainApplication : Application(), ReactApplication {
 
 ### 5.1 Pod dependency
 
-The **`react-native-dengage`** pod pulls in **Dengage `5.90`** (see `react-native-dengage.podspec`). Enabling geofence adds **DengageGeofence** when `install_dengage_geofence=1` is set during `pod install`.
+The **`react-native-dengage`** pod depends on **Dengage** (and **DengageGeofence** when `install_dengage_geofence=1`). Pin them in your app **`Podfile`** (the example uses **dengage-ios-sdk** `version/5.92` from Git for both).
 
 Set a reasonable minimum iOS version in your `Podfile` (for example `platform :ios, '13.0'` or higher as required by your app).
 
@@ -417,7 +417,7 @@ FCM delivers the payload to `FcmMessagingService`; the Dengage SDK can render ex
 
 iOS does not attach remote images automatically. Add a **Notification Service Extension** target. In `NotificationService.swift`, call the Dengage API so media can be downloaded and attached before display.
 
-Set the extension’s `DengageLocalStorage` app group to the **same** App Group name as in `setupDengage`. Link the **Dengage** pod for the extension target (matching major version **5.90**).
+Set the extension’s `DengageLocalStorage` app group to the **same** App Group name as in `setupDengage`. Link the **Dengage** pod for the extension target (matching major version **5.92**).
 
 Example pattern:
 
@@ -683,11 +683,11 @@ If your build requires it, duplicate the same **Dengage URL keys** in this exten
 
 #### Step 3 — Link the **Dengage** pod for the extension
 
-In **`Podfile`**, add a target for the content extension and depend on **`Dengage`** with the **same version** as the main app (the React Native pod uses **`5.90`**). Run **`pod install`**.
+In **`Podfile`**, add a target for the content extension and depend on **`Dengage`** with the **same source** as the main app (match branch/tag or CocoaPods version). Run **`pod install`**.
 
 ```ruby
 target 'YourContentExtension' do
-  pod 'Dengage', '5.90'
+  pod 'Dengage', :git => 'https://github.com/dengage-tech/dengage-ios-sdk.git', :branch => 'version/5.92'
 end
 ```
 
@@ -882,7 +882,11 @@ Requires native geofence dependencies and location permission strings.
 
 ### 8.1 In-app inline
 
-Render a native inline placement where you want a banner or slot. Pass the **property id** and **screen name** configured in Dengage. Call `setNavigationWithName` with the same screen name when that screen is visible.
+Native slot for inline HTML from Dengage. Use **`propertyId`** and **`screenName`** from the panel; call **`setNavigationWithName`** (same screen name) when that screen is active.
+
+**Props:** `propertyId`, `screenName`, `customParams` (required). Optional: **`hideIfNotFound`** (default `true`), **`onInlineVisibilityChanged`** (`nativeEvent.isHidden` — hide when no message / not found, same idea as Flutter `onVisibilityChanged`), **`style`**.
+
+**Layout:** give a fixed **`height`** (e.g. `244`) while content loads. If **`hideIfNotFound`**, listen to **`onInlineVisibilityChanged`** and **unmount** or zero height when **`isHidden`**, or RN keeps an empty gap. Full flow + “testing size” label: **`example/src/screens/InAppInlineScreen.tsx`**.
 
 ```tsx
 import { InAppInlineView } from '@dengage-tech/react-native-dengage';
@@ -891,11 +895,15 @@ import { InAppInlineView } from '@dengage-tech/react-native-dengage';
   propertyId="1"
   screenName="home-inline"
   customParams={{}}
-  style={{ height: 244, width: '100%' }}
+  hideIfNotFound
+  onInlineVisibilityChanged={(e) => {
+    if (e.nativeEvent.isHidden) {
+      /* unmount or height: 0 */
+    }
+  }}
+  style={{ height: 244 }}
 />;
 ```
-
-Give the view a **bounded height** (for example 244) so layout is stable.
 
 ### 8.2 App Story
 
@@ -990,6 +998,7 @@ Replace integration keys and endpoint URLs in:
 | No push (Android) | `google-services.json`, FCM service in manifest, Firebase key in `setupDengage`, endpoint meta-data, Google Services plugin. |
 | No push (iOS) | Push capability, APNs key in Dengage, `registerForPushToken`, correct `Info.plist` URLs, integration key in coordinator. |
 | In-app never shows | `setNavigation` / `setNavigationWithName`, screen name matches campaign, endpoints correct. |
+| Inline empty gap | **§8.1** — collapse on **`onInlineVisibilityChanged`** when **`isHidden`**; see **`InAppInlineScreen.tsx`**. |
 | Carousel (Android) | Custom `NotificationReceiver`, layouts, `CAROUSEL_ITEM_CLICK`, `onCarouselRender` implementation. |
 | Rich / carousel (iOS) | Service extension calls `Dengage.didReceiveNotificationRequest`, App Group matches, content extension category matches campaign, Dengage pod version aligned. |
 | Geofence missing | `INSTALL_DENGAGE_GEOFENCE=true` (Android), `install_dengage_geofence=1` before `pod install` (iOS), location strings in plist. |

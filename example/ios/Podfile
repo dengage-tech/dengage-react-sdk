@@ -13,21 +13,27 @@ if linkage != nil
   use_frameworks! :linkage => linkage.to_sym
 end
 
+dengage_ios = {
+  :git => 'https://github.com/dengage-tech/dengage-ios-sdk.git',
+  :branch => 'version/5.92'
+}
 
 target 'NotificationServiceExtension' do
-  pod 'Dengage', '5.90'
+  pod 'Dengage', dengage_ios
 end
 
 target 'NotificationContentExtension' do
-  pod 'Dengage', '5.90'
+  pod 'Dengage', dengage_ios
 end
 
 target 'ReactNativeDengageExample' do
-  config = use_native_modules!
-
-  #TODO: set to 1 to install Dengage Geofence
+  #TODO: set to 1 to install Dengage Geofence (must match react-native-dengage.podspec conditional)
   ENV['install_dengage_geofence'] = '1'
-  
+
+  pod 'Dengage', dengage_ios
+  pod 'DengageGeofence', dengage_ios
+
+  config = use_native_modules!
 
   use_react_native!(
     :path => config[:reactNativePath],
@@ -47,7 +53,7 @@ target 'ReactNativeDengageExample' do
       config[:reactNativePath],
       :mac_catalyst_enabled => false,
     )
-    # Ensure minimum deployment target for Dengage 5.90+
+    # Ensure minimum deployment target for Dengage 5.92+
     installer.pods_project.targets.each do |target|
       target.build_configurations.each do |config|
         config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0'
