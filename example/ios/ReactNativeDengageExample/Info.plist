@@ -23,15 +23,15 @@
         <key>CFBundleVersion</key>
         <string>$(CURRENT_PROJECT_VERSION)</string>
         <key>DengageApiUrl</key>
-        <string>https://dev-push.dengage.com</string>
+        <string>https://push.dengage.com</string>
         <key>DengageDeviceIdApiUrl</key>
         <string>https://magento.232.dengage.shobii.com/rest/</string>
         <key>DengageEventApiUrl</key>
-        <string>https://dev-push.dengage.com</string>
+        <string>https://push.dengage.com</string>
         <key>DengageGeofenceApiUrl</key>
-        <string>https://dev-push.dengage.com/geoapi/</string>
+        <string>https://push.dengage.com/geoapi/</string>
         <key>DengageInAppApiUrl</key>
-        <string>https://dev-push.dengage.com</string>
+        <string>https://push.dengage.com</string>
         <key>LSRequiresIPhoneOS</key>
         <true/>
         <key>CFBundleIconName</key>
@@ -60,7 +60,7 @@
         <key>UIViewControllerBasedStatusBarAppearance</key>
         <false/>
         <key>fetchRealTimeINAPPURL</key>
-        <string>https://dev-inapp.lib.dengage.com</string>
+        <string>https://tr-inapp.lib.dengage.com</string>
         <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
         <string>This app uses background location services to enhance your app experience</string>
         <key>NSLocationWhenInUseUsageDescription</key>
