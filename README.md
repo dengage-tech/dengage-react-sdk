@@ -2,7 +2,7 @@
 
 This guide covers installing and configuring **@dengage-tech/react-native-dengage**, native Android and iOS setup, push (including rich and carousel), in-app messaging, inbox, events, and the full JavaScript API.
 
-**Latest package version:** `2.1.0` (check [npm](https://www.npmjs.com/package/@dengage-tech/react-native-dengage) for updates).
+**Latest package version:** `2.1.1` (check [npm](https://www.npmjs.com/package/@dengage-tech/react-native-dengage) for updates).
 
 ---
 
@@ -202,7 +202,7 @@ In the project-level Gradle file, include the Google Services classpath version 
 
 ### 4.2 Native SDK version
 
-The React Native package depends on **Dengage Android SDK** `6.0.90` (JitPack: `com.github.dengage-tech.dengage-android-sdk:sdk:6.0.90`). You normally do not add this line yourself unless you override versions; the library module brings it in.
+The React Native package depends on **Dengage Android SDK** `6.0.92` (JitPack: `com.github.dengage-tech.dengage-android-sdk:sdk:6.0.92`). You normally do not add this line yourself unless you override versions; the library module brings it in.
 
 ### 4.3 Geofence (optional)
 
@@ -253,10 +253,10 @@ Add all [endpoint `meta-data`](#31-android--androidmanifestxml) entries under `<
 
 ### 4.5 Initialize Dengage in `Application`
 
-In your **`Application`** subclass (commonly `MainApplication.kt`), you must:
+In your **`Application`** subclass (commonly `MainApplication.kt`):
 
-1. Call **`DengageRNCoordinator.sharedInstance.injectReactInstanceManager(...)`** with your `ReactNativeHost`’s `reactInstanceManager` so the bridge is ready for notification events.
-2. Call **`DengageRNCoordinator.sharedInstance.setupDengage(...)`** once (typically in `onCreate`).
+1. Call **`configureReactBridge(...)`** so legacy and New Architecture apps both work. The lambda must **not** run on New Architecture — the helper skips it when `BuildConfig.IS_NEW_ARCHITECTURE_ENABLED` is true, which avoids the crash from accessing `reactNativeHost` directly.
+2. Call **`setupDengage(...)`** once (typically in `onCreate`).
 
 **Important:** `firebaseIntegrationKey` must be non-null. If you do not use FCM yet, you still need a valid key as required by the coordinator.
 
@@ -271,9 +271,11 @@ class MainApplication : Application(), ReactApplication {
         super.onCreate()
         // ... SoLoader, New Architecture load, etc.
 
-        DengageRNCoordinator.sharedInstance.injectReactInstanceManager(
+        DengageRNCoordinator.sharedInstance.configureReactBridge(
+            isNewArchitectureEnabled = BuildConfig.IS_NEW_ARCHITECTURE_ENABLED,
+        ) {
             reactNativeHost.reactInstanceManager
-        )
+        }
 
         DengageRNCoordinator.sharedInstance.setupDengage(
             firebaseIntegrationKey = "YOUR_FIREBASE_INTEGRATION_KEY",
@@ -315,7 +317,7 @@ class MainApplication : Application(), ReactApplication {
 
 ### 5.1 Pod dependency
 
-The **`react-native-dengage`** pod depends on **Dengage** (and **DengageGeofence** when `install_dengage_geofence=1`). Pin them in your app **`Podfile`** (the example uses **dengage-ios-sdk** `version/5.92` from Git for both).
+The **`react-native-dengage`** pod depends on **Dengage** (and **DengageGeofence** when `install_dengage_geofence=1`). Pin them in your app **`Podfile`** (the example uses **dengage-ios-sdk** `version/5.96` from Git for both).
 
 Set a reasonable minimum iOS version in your `Podfile` (for example `platform :ios, '13.0'` or higher as required by your app).
 
@@ -417,7 +419,7 @@ FCM delivers the payload to `FcmMessagingService`; the Dengage SDK can render ex
 
 iOS does not attach remote images automatically. Add a **Notification Service Extension** target. In `NotificationService.swift`, call the Dengage API so media can be downloaded and attached before display.
 
-Set the extension’s `DengageLocalStorage` app group to the **same** App Group name as in `setupDengage`. Link the **Dengage** pod for the extension target (matching major version **5.92**).
+Set the extension’s `DengageLocalStorage` app group to the **same** App Group name as in `setupDengage`. Link the **Dengage** pod for the extension target (matching major version **5.96**).
 
 Example pattern:
 
@@ -687,7 +689,7 @@ In **`Podfile`**, add a target for the content extension and depend on **`Dengag
 
 ```ruby
 target 'YourContentExtension' do
-  pod 'Dengage', :git => 'https://github.com/dengage-tech/dengage-ios-sdk.git', :branch => 'version/5.92'
+  pod 'Dengage', :git => 'https://github.com/dengage-tech/dengage-ios-sdk.git', :branch => 'version/5.96'
 end
 ```
 
@@ -1003,7 +1005,8 @@ Replace integration keys and endpoint URLs in:
 | Rich / carousel (iOS) | Service extension calls `Dengage.didReceiveNotificationRequest`, App Group matches, content extension category matches campaign, Dengage pod version aligned. |
 | Geofence missing | `INSTALL_DENGAGE_GEOFENCE=true` (Android), `install_dengage_geofence=1` before `pod install` (iOS), location strings in plist. |
 | `retrieveInAppLink` silent | Call `registerInAppListener()` on **both** platforms; on Android verify the `LINK_RETRIEVAL` broadcast path; on iOS ensure `NativeEventEmitter` is subscribed and the Dengage in-app deeplink handler is active. |
-| Bridge errors on startup | `injectReactInstanceManager` called before or with `setupDengage`; rebuild after native changes. |
+| New Architecture crash on startup | Use `configureReactBridge(isNewArchitectureEnabled = BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) { reactNativeHost.reactInstanceManager }` instead of calling `injectReactInstanceManager` directly. |
+| Bridge errors on startup | Call `configureReactBridge` then `setupDengage` in `Application.onCreate`; rebuild after native changes. |
 
 ### 10.3 Example app folders (reference)
 

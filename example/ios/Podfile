@@ -15,7 +15,7 @@ end
 
 dengage_ios = {
   :git => 'https://github.com/dengage-tech/dengage-ios-sdk.git',
-  :branch => 'version/5.92'
+  :branch => 'version/5.96'
 }
 
 target 'NotificationServiceExtension' do
@@ -53,7 +53,7 @@ target 'ReactNativeDengageExample' do
       config[:reactNativePath],
       :mac_catalyst_enabled => false,
     )
-    # Ensure minimum deployment target for Dengage 5.92+
+    # Ensure minimum deployment target for Dengage 5.96+
     installer.pods_project.targets.each do |target|
       target.build_configurations.each do |config|
         config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0'

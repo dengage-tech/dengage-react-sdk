@@ -44,7 +44,12 @@ class MainApplication : Application(), ReactApplication {
             // If you opted-in for the New Architecture, we load the native entry point for this app.
             load()
         }
-        DengageRNCoordinator.sharedInstance.injectReactInstanceManager(reactNativeHost.reactInstanceManager)
+
+        DengageRNCoordinator.sharedInstance.configureReactBridge(
+            isNewArchitectureEnabled = BuildConfig.IS_NEW_ARCHITECTURE_ENABLED,
+        ) {
+            reactNativeHost.reactInstanceManager
+        }
 
         val dengageHmsManager = DengageHmsManager()
 

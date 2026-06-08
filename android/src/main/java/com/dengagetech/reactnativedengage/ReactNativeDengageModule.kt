@@ -744,10 +744,11 @@ class ReactNativeDengageModule(reactContext: ReactApplicationContext) :
                 map.putInt("realTimeInAppSessionTimeoutMinutes", sdkParams.realTimeInAppSessionTimeoutMinutes ?: 0)
                 map.putString("surveyCheckEndpoint", sdkParams.surveyCheckEndpoint)
 
-                // Convert debugDeviceIds
-                if (sdkParams.debugDeviceIds != null) {
+                // Avoid cross-module smart-cast failure by snapshotting the property locally.
+                val debugDeviceIds = sdkParams.debugDeviceIds
+                if (debugDeviceIds != null) {
                     val debugIdsArray = WritableNativeArray()
-                    for (id in sdkParams.debugDeviceIds) {
+                    for (id in debugDeviceIds) {
                         debugIdsArray.pushString(id)
                     }
                     map.putArray("debugDeviceIds", debugIdsArray)

@@ -18,13 +18,42 @@ class DengageRNCoordinator private constructor() {
     var initialized = false
         private set
 
+    /**
+     * Bridges legacy and New Architecture setups from [Application.onCreate].
+     *
+     * When [isNewArchitectureEnabled] is true, [reactInstanceManagerProvider] is **not** invoked,
+     * so it is safe to pass `{ reactNativeHost.reactInstanceManager }` without crashing.
+     *
+     * On legacy architecture the provider runs and the instance manager is registered for
+     * bridge-ready callbacks. On New Architecture push events use
+     * [ReactNativeDengageModule]'s [com.facebook.react.bridge.ReactApplicationContext].
+     */
+    fun configureReactBridge(
+        isNewArchitectureEnabled: Boolean,
+        reactInstanceManagerProvider: () -> ReactInstanceManager?,
+    ) {
+        if (isNewArchitectureEnabled) {
+            Log.d(LOG_TAG, "New Architecture enabled; skipping ReactInstanceManager injection.")
+            return
+        }
+
+        val manager = reactInstanceManagerProvider()
+        if (manager == null) {
+            Log.w(LOG_TAG, "Legacy architecture but ReactInstanceManager provider returned null.")
+            return
+        }
+
+        injectReactInstanceManager(manager)
+    }
+
     fun injectReactInstanceManager(reactInstanceManager: ReactInstanceManager) {
         if (this.reactInstanceManager != null) {
             Log.i(LOG_TAG, "DengageRNCoordinator already initialized.")
+            return
         }
         this.reactInstanceManager = reactInstanceManager
 
-        this.reactInstanceManager!!.addReactInstanceEventListener(
+        reactInstanceManager.addReactInstanceEventListener(
             object : ReactInstanceManager.ReactInstanceEventListener {
                 override fun onReactContextInitialized(context: ReactContext) {
                     reactInstanceManager.removeReactInstanceEventListener(this)
