@@ -29,9 +29,15 @@ import Dengage
         return view
     }()
 
-    private var activeStoriesListView: StoriesListView?
-    private var storiesListHeightConstraint: NSLayoutConstraint?
+    /// Pre-embedded list view passed into the SDK (matches native iOS + Flutter integrations).
+    private let embeddedStoriesListView: StoriesListView = {
+        let view = StoriesListView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.isUserInteractionEnabled = true
+        return view
+    }()
 
+    private var activeStoriesListView: StoriesListView?
     private var lastMeasuredWidth: CGFloat = 0
     private var lastAppliedConfigurationSignature: String?
 
@@ -68,6 +74,25 @@ import Dengage
             containerView.topAnchor.constraint(equalTo: topAnchor),
             containerView.bottomAnchor.constraint(equalTo: bottomAnchor),
         ])
+
+        containerView.addSubview(embeddedStoriesListView)
+        NSLayoutConstraint.activate([
+            embeddedStoriesListView.topAnchor.constraint(equalTo: containerView.topAnchor),
+            embeddedStoriesListView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
+            embeddedStoriesListView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            embeddedStoriesListView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+        ])
+    }
+
+    public override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        guard isUserInteractionEnabled, !isHidden, alpha >= 0.01 else {
+            return nil
+        }
+        let pointInContainer = containerView.convert(point, from: self)
+        if let hit = containerView.hitTest(pointInContainer, with: event) {
+            return hit
+        }
+        return bounds.contains(point) ? nil : super.hitTest(point, with: event)
     }
 
     public override func didMoveToWindow() {
@@ -103,10 +128,8 @@ import Dengage
         lastReportedHidden = nil
         hiddenSinceUptime = nil
         activeStoriesListView?.clearContent()
-        activeStoriesListView?.removeFromSuperview()
         activeStoriesListView = nil
-        storiesListHeightConstraint = nil
-        containerView.subviews.forEach { $0.removeFromSuperview() }
+        embeddedStoriesListView.clearContent()
         notifyReactNativeLayout()
     }
 
@@ -132,21 +155,20 @@ import Dengage
             guard self.configurationSignature() == signature else { return }
             Dengage.showAppStory(
                 storyPropertyID: self.storyPropertyId,
+                storiesListView: self.embeddedStoriesListView,
                 screenName: self.screenName,
                 customParams: self.customParams,
                 hideIfNotFound: self.hideIfNotFound
             ) { storiesListView in
                 guard let storiesListView else {
                     self.activeStoriesListView = nil
-                    self.storiesListHeightConstraint = nil
-                    self.containerView.subviews.forEach { $0.removeFromSuperview() }
                     let hidden = self.hideIfNotFound
                     self.lastReportedHidden = hidden
                     self.applyCollapsedNativeLayout(hidden: hidden)
                     self.onStoryVisibilityChanged?(["isHidden": hidden])
                     return
                 }
-                self.mountStoriesListView(storiesListView)
+                self.activeStoriesListView = storiesListView
                 self.ensureStoryInteractionEnabled()
                 self.updateVisibleHeightIfNeeded(force: true)
                 self.emitVisibilityFromCurrentState()
@@ -168,25 +190,6 @@ import Dengage
         } else {
             runShow()
         }
-    }
-
-    private func mountStoriesListView(_ storiesListView: StoriesListView) {
-        containerView.subviews.forEach { $0.removeFromSuperview() }
-        storiesListHeightConstraint = nil
-
-        storiesListView.translatesAutoresizingMaskIntoConstraints = false
-        storiesListView.isUserInteractionEnabled = true
-        containerView.addSubview(storiesListView)
-        activeStoriesListView = storiesListView
-
-        let heightConstraint = storiesListView.heightAnchor.constraint(equalToConstant: 0)
-        storiesListHeightConstraint = heightConstraint
-        NSLayoutConstraint.activate([
-            storiesListView.topAnchor.constraint(equalTo: containerView.topAnchor),
-            storiesListView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-            storiesListView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
-            heightConstraint,
-        ])
     }
 
     private func measureActiveStoryHeight() -> CGFloat {
@@ -222,7 +225,6 @@ import Dengage
 
     private func updateVisibleHeightIfNeeded(force: Bool = false) {
         if isStoryEffectivelyHidden {
-            storiesListHeightConstraint?.constant = 0
             notifyReactNativeLayout()
             return
         }
@@ -233,16 +235,14 @@ import Dengage
         guard width > 0 else { return }
 
         let widthChanged = abs(width - lastMeasuredWidth) > 0.5
-        let currentHeight = storiesListHeightConstraint?.constant ?? 0
-        guard force || widthChanged || currentHeight <= 1 else { return }
+        guard force || widthChanged else { return }
 
         lastMeasuredWidth = width
-        storiesListHeightConstraint?.constant = measureActiveStoryHeight()
         notifyReactNativeLayout()
     }
 
     private func notifyReactNativeLayout() {
-        let height = isStoryEffectivelyHidden ? 0 : (storiesListHeightConstraint?.constant ?? 0)
+        let height = isStoryEffectivelyHidden ? 0 : measureActiveStoryHeight()
         let width = bounds.width > 0 ? bounds.width : UIView.noIntrinsicMetric
         let intrinsicSize = CGSize(width: width, height: height)
         bridge?.uiManager.setIntrinsicContentSize(intrinsicSize, for: self)
@@ -264,9 +264,7 @@ import Dengage
     }
 
     private func applyCollapsedNativeLayout(hidden: Bool) {
-        if hidden {
-            storiesListHeightConstraint?.constant = 0
-        } else {
+        if !hidden {
             updateVisibleHeightIfNeeded(force: true)
         }
         notifyReactNativeLayout()
@@ -309,6 +307,6 @@ import Dengage
         if isStoryEffectivelyHidden {
             return CGSize(width: UIView.noIntrinsicMetric, height: 0)
         }
-        return CGSize(width: UIView.noIntrinsicMetric, height: storiesListHeightConstraint?.constant ?? 0)
+        return CGSize(width: UIView.noIntrinsicMetric, height: measureActiveStoryHeight())
     }
 }
