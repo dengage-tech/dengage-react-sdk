@@ -59,6 +59,20 @@ class ReactNativeDengageModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
+    fun setTrackingPermission(permission: Boolean) {
+        Dengage.setTrackingPermission(permission)
+    }
+
+    @ReactMethod
+    fun getTrackingPermission(promise: Promise) {
+        try {
+            promise.resolve(Dengage.getTrackingPermission())
+        } catch (ex: Exception) {
+            promise.reject(ex)
+        }
+    }
+
+    @ReactMethod
     fun getToken(promise: Promise) {
         try {
             val token = Dengage.getSubscription()?.token ?: ""

@@ -202,7 +202,7 @@ In the project-level Gradle file, include the Google Services classpath version 
 
 ### 4.2 Native SDK version
 
-The React Native package depends on **Dengage Android SDK** `6.0.92` (JitPack: `com.github.dengage-tech.dengage-android-sdk:sdk:6.0.92`). You normally do not add this line yourself unless you override versions; the library module brings it in.
+The React Native package depends on **Dengage Android SDK** `6.0.94` (JitPack: `com.github.dengage-tech.dengage-android-sdk:sdk:6.0.94`). You normally do not add this line yourself unless you override versions; the library module brings it in.
 
 ### 4.3 Geofence (optional)
 
@@ -317,7 +317,7 @@ class MainApplication : Application(), ReactApplication {
 
 ### 5.1 Pod dependency
 
-The **`react-native-dengage`** pod depends on **Dengage** (and **DengageGeofence** when `install_dengage_geofence=1`). Pin them in your app **`Podfile`** (the example uses **dengage-ios-sdk** `version/5.96` from Git for both).
+The **`react-native-dengage`** pod depends on **Dengage** (and **DengageGeofence** when `install_dengage_geofence=1`). Pin them in your app **`Podfile`** (the example uses **dengage-ios-sdk** `version/5.97` from Git for both).
 
 Set a reasonable minimum iOS version in your `Podfile` (for example `platform :ios, '13.0'` or higher as required by your app).
 
@@ -419,7 +419,7 @@ FCM delivers the payload to `FcmMessagingService`; the Dengage SDK can render ex
 
 iOS does not attach remote images automatically. Add a **Notification Service Extension** target. In `NotificationService.swift`, call the Dengage API so media can be downloaded and attached before display.
 
-Set the extension’s `DengageLocalStorage` app group to the **same** App Group name as in `setupDengage`. Link the **Dengage** pod for the extension target (matching major version **5.96**).
+Set the extension’s `DengageLocalStorage` app group to the **same** App Group name as in `setupDengage`. Link the **Dengage** pod for the extension target (matching major version **5.97**).
 
 Example pattern:
 
@@ -689,7 +689,7 @@ In **`Podfile`**, add a target for the content extension and depend on **`Dengag
 
 ```ruby
 target 'YourContentExtension' do
-  pod 'Dengage', :git => 'https://github.com/dengage-tech/dengage-ios-sdk.git', :branch => 'version/5.96'
+  pod 'Dengage', :git => 'https://github.com/dengage-tech/dengage-ios-sdk.git', :branch => 'version/5.97'
 end
 ```
 
@@ -800,10 +800,32 @@ Call methods after native initialization (for navigation-heavy APIs, when an `Ac
 | `promptForPushNotifications()` | Request notification permission (platform-specific). |
 | `promptForPushNotificationsWitCallback(cb: (hasPermission: boolean) => void)` | **iOS:** permission result callback. |
 | `registerForRemoteNotifications(enable: boolean)` | **iOS:** enable / disable remote registration. |
-| `setUserPermission(permission: boolean)` | Opt-in / permission flag. |
-| `getUserPermission()` | `Promise<boolean>`. |
+| `setUserPermission(permission: boolean)` | Set `permission` on the current subscription. |
+| `getUserPermission()` | `Promise<boolean>` — current subscription `permission` field (native Android: `getUserPermission()`; native iOS: `getPermission()`). |
+| `setTrackingPermission(permission: boolean)` | Enable or disable **event tracking** (analytics events sent by the SDK). Default: `true`. |
+| `getTrackingPermission()` | `Promise<boolean>` — current event-tracking opt-in state. |
 | `getLastPushPayload()` | `Promise<string>` — last push payload string. |
 | `resetAppBadge()` | **Android:** clears notifications (implementation uses `cancelAll`). |
+
+#### Event tracking permission (optional)
+
+`setUserPermission` controls **push** opt-in for the subscription model. **`setTrackingPermission`** is separate: it lets the user enable or disable **analytics / device events** (`pageView`, `sendDeviceEvent`, commerce events, etc.).
+
+- **Default**: `true` (events are allowed unless you disable it)
+- **Behavior**: when `false`, the SDK skips sending events even if the backend `eventsEnabled` parameter is `true`
+- **Scope**: stored locally on the device (persists across app launches)
+- **Subscription sync**: the value is included in the subscription payload on the next sync (`trackingPermission` field in `getSubscription()`)
+
+```typescript
+// User opts out of event tracking
+Dengage.setTrackingPermission(false);
+
+// User opts back in
+Dengage.setTrackingPermission(true);
+
+// Read current value (e.g. to initialize a settings switch)
+const allowed = await Dengage.getTrackingPermission();
+```
 
 ### 7.3 Commerce and analytics events
 
@@ -911,6 +933,10 @@ import { InAppInlineView } from '@dengage-tech/react-native-dengage';
 
 Horizontal story list; configure the template in the Dengage panel and match **property id** and **screen name**.
 
+**Props:** `storyPropertyId`, `screenName`, `customParams` (required). Optional: **`hideIfNotFound`** (default `true`), **`onStoryVisibilityChanged`** (`nativeEvent.isHidden` — hide when no story / not found, same idea as inline in-app), **`style`**.
+
+**Layout:** give a **`minHeight`** (e.g. `160`) while content loads. If **`hideIfNotFound`**, listen to **`onStoryVisibilityChanged`** and **unmount** or zero height when **`isHidden`**, or RN keeps an empty gap. Full flow + “testing size” label: **`example/src/screens/AppStoryScreen.tsx`**.
+
 ```tsx
 import { StoriesListView } from '@dengage-tech/react-native-dengage';
 
@@ -918,6 +944,12 @@ import { StoriesListView } from '@dengage-tech/react-native-dengage';
   storyPropertyId="4"
   screenName="appstory"
   customParams={{}}
+  hideIfNotFound
+  onStoryVisibilityChanged={(e) => {
+    if (e.nativeEvent.isHidden) {
+      /* unmount or height: 0 */
+    }
+  }}
   style={{ minHeight: 160 }}
 />;
 ```
@@ -1029,7 +1061,7 @@ example/
 
 ## Subscription model
 
-The native layer maintains **subscription** state (token, device ids, contact key, permission flags). It is updated on init, contact key changes, token updates, and permission changes. Use **`getSubscription()`** to read a snapshot (`Subscription` type in the package). Some fields may be empty on one platform; always guard for missing values in production UI.
+The native layer maintains **subscription** state (token, device ids, contact key, push permission, **tracking permission**, etc.). It is updated on init, contact key changes, token updates, and permission changes. Use **`getSubscription()`** to read a snapshot (`Subscription` type in the package). Some fields may be empty on one platform; always guard for missing values in production UI.
 
 ---
 

@@ -25,6 +25,8 @@ import {
   RealTimeInAppFiltersScreen,
   EventHistoryScreen,
   CartScreen,
+  SubscriptionScreen,
+  TrackingPermissionScreen,
 } from './screens';
 import React from 'react';
 import { NativeEventEmitter, NativeModules } from 'react-native';
@@ -98,6 +100,12 @@ const App = () => {
         <Stack.Screen name="RealTimeInAppFilters" component={RealTimeInAppFiltersScreen} />
         <Stack.Screen name="EventHistory" component={EventHistoryScreen} />
         <Stack.Screen name="Cart" component={CartScreen} />
+        <Stack.Screen name="Subscription" component={SubscriptionScreen} />
+        <Stack.Screen
+          name="TrackingPermission"
+          component={TrackingPermissionScreen}
+          options={{ title: 'Change Tracking Permission' }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

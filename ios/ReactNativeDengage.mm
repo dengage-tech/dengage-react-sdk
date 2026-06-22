@@ -25,6 +25,10 @@ RCT_EXTERN_METHOD(setUserPermission:(BOOL)permission)
 
 RCT_EXTERN_METHOD(getUserPermission:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
 
+RCT_EXTERN_METHOD(setTrackingPermission:(BOOL)permission)
+
+RCT_EXTERN_METHOD(getTrackingPermission:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
+
 RCT_EXTERN_METHOD(getSubscription:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
 
 

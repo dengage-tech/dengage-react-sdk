@@ -15,7 +15,9 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   const actions: Array<{ title: string; screen: keyof RootStackParamList }> = [
     { title: 'ASK NOTIFICATIONS', screen: 'Notification' },
     { title: 'DEVICE INFO', screen: 'DeviceInfo' },
+    { title: 'SHOW SUBSCRIPTION', screen: 'Subscription' },
     { title: 'CHANGE CONTACT KEY', screen: 'ContactKey' },
+    { title: 'CHANGE TRACKING PERMISSION', screen: 'TrackingPermission' },
     { title: 'INBOX MESSAGES', screen: 'InboxMessages' },
     //{ title: 'SEND CUSTOM EVENT', screen: 'CustomEvent' },
     { title: 'IN APP MESSAGE', screen: 'InAppMessages' },

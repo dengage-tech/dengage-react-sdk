@@ -23,6 +23,17 @@ class ReactNativeDengage: RCTEventEmitter {
     func getUserPermission(_ resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
         resolve(Dengage.getPermission())
     }
+
+    @objc(setTrackingPermission:)
+    func setTrackingPermission(permission: Bool) {
+        Dengage.setTrackingPermission(trackingPermission: permission)
+    }
+
+    @objc
+    func getTrackingPermission(_ resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
+        let permission = DengageLocalStorage.shared.value(for: .trackingPermission) as? Bool ?? true
+        resolve(permission)
+    }
     
     @objc(setContactKey:)
     func setContactKey(contactKey: String?) {
@@ -36,27 +47,7 @@ class ReactNativeDengage: RCTEventEmitter {
     
     @objc
     func getSubscription(_ resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
-        let subscription = Subscription(
-            integrationKey: "",
-            token: Dengage.getDeviceToken(),
-            appVersion: "",
-            sdkVersion: Dengage.getSdkVersion() ?? "",
-            deviceId: Dengage.getDeviceId(),
-            advertisingId: "",
-            carrierId: "",
-            contactKey: Dengage.getContactKey(),
-            permission: Dengage.getPermission(),
-            trackingPermission: false,
-            tokenType: "",
-            webSubscription: "",
-            testGroup: "",
-            country: "",
-            language: "",
-            timezone: "",
-            partnerDeviceId: "",
-            locationPermission: ""
-        )
-        resolve(subscription.toDictionary())
+        resolve(Subscription.currentFromDengage().toDictionary())
     }
     
     // MARK: - Inapp Notifications

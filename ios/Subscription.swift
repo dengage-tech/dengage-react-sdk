@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Dengage
 
 public class Subscription: Codable {
     var integrationKey: String
@@ -67,6 +68,41 @@ public class Subscription: Codable {
         self.locationPermission = locationPermission
     }
     
+    static func currentFromDengage() -> Subscription {
+        let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
+        let trackingPermission = DengageLocalStorage.shared.value(for: .trackingPermission) as? Bool ?? true
+        let country = DengageLocalStorage.shared.value(for: .countrySubscription) as? String
+        let language = DengageLocalStorage.shared.value(for: .languageSubscription) as? String
+            ?? Locale.current.languageCode ?? ""
+        let timezone = DengageLocalStorage.shared.value(for: .timezoneSubscription) as? String
+            ?? TimeZone.current.identifier
+        let partnerDeviceId = DengageLocalStorage.shared.value(for: .partner_device_idSubscription) as? String
+        let carrierId = DengageLocalStorage.shared.value(for: .carrierIdSubscription) as? String ?? ""
+        let locationPermission = DengageLocalStorage.shared.value(for: .locationPermissionSubscription) as? String
+        let advertisingId = DengageLocalStorage.shared.value(for: .advertisingIdSubscription) as? String ?? ""
+
+        return Subscription(
+            integrationKey: Dengage.getIntegrationKey(),
+            token: Dengage.getDeviceToken(),
+            appVersion: appVersion,
+            sdkVersion: Dengage.getSdkVersion() ?? "",
+            deviceId: Dengage.getDeviceId() ?? "",
+            advertisingId: advertisingId,
+            carrierId: carrierId,
+            contactKey: Dengage.getContactKey(),
+            permission: Dengage.getPermission(),
+            trackingPermission: trackingPermission,
+            tokenType: "I",
+            webSubscription: nil,
+            testGroup: "",
+            country: country ?? Locale.current.regionCode,
+            language: language,
+            timezone: timezone,
+            partnerDeviceId: partnerDeviceId ?? "",
+            locationPermission: locationPermission ?? ""
+        )
+    }
+
     func toDictionary() -> [String: Any] {
         return [
             "integrationKey": integrationKey,

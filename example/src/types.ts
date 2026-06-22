@@ -15,4 +15,6 @@ export type RootStackParamList = {
   RealTimeInAppFilters: undefined;
   EventHistory: undefined;
   Cart: undefined;
+  Subscription: undefined;
+  TrackingPermission: undefined;
 };

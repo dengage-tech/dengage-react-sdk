@@ -69,8 +69,10 @@ type DengageType = {
   promptForPushNotifications(): void; // iOS only
   setContactKey(key: string | null): void;
   getContactKey(): Promise<string | null>; // iOS only
-  setUserPermission(permission: boolean): void;  
-  getSubscription(): Promise<Subscription>; // android only yet. for iOS use getContactKey
+  setUserPermission(permission: boolean): void;
+  setTrackingPermission(permission: boolean): void;
+  getTrackingPermission(): Promise<boolean>;
+  getSubscription(): Promise<Subscription>;
 
   setInAppDeviceInfo(key: string, value: string): void;
   clearInAppDeviceInfo(): void;

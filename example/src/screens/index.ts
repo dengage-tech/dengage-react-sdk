@@ -11,3 +11,5 @@ export { default as RTInAppMessagesScreen } from './RTInAppMessagesScreen';
 export { default as RealTimeInAppFiltersScreen } from './RealTimeInAppFiltersScreen';
 export { default as EventHistoryScreen } from './EventHistoryScreen';
 export { default as CartScreen } from './CartScreen';
+export { default as SubscriptionScreen } from './SubscriptionScreen';
+export { default as TrackingPermissionScreen } from './TrackingPermissionScreen';

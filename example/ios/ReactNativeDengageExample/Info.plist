@@ -65,6 +65,8 @@
         <string>This app uses background location services to enhance your app experience</string>
         <key>NSLocationWhenInUseUsageDescription</key>
         <string>This app uses location services to enhance your app experience</string>
+        <key>NSUserTrackingUsageDescription</key>
+        <string>This app uses your device identifier to provide personalized marketing and measure campaign performance.</string>
         <key>UIBackgroundModes</key>
         <array>
             <string>fetch</string>
