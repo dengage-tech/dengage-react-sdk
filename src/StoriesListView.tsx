@@ -44,11 +44,12 @@ function dispatchRefreshCommand(nativeRef: React.ElementRef<typeof RCTStoriesLis
   if (tag == null) {
     return;
   }
-  UIManager.dispatchViewManagerCommand(
-    tag,
-    UIManager.getViewManagerConfig('RCTStoriesListView').Commands.refresh,
-    []
-  );
+  const refreshCommand =
+    UIManager.getViewManagerConfig('RCTStoriesListView')?.Commands?.refresh;
+  if (refreshCommand == null) {
+    return;
+  }
+  UIManager.dispatchViewManagerCommand(tag, refreshCommand, []);
 }
 
 export class StoriesListView extends React.Component<StoriesListViewProps> {

@@ -2,7 +2,7 @@
 
 This guide covers installing and configuring **@dengage-tech/react-native-dengage**, native Android and iOS setup, push (including rich and carousel), in-app messaging, inbox, events, and the full JavaScript API.
 
-**Latest package version:** `2.1.1` (check [npm](https://www.npmjs.com/package/@dengage-tech/react-native-dengage) for updates).
+**Latest package version:** `2.1.2` (check [npm](https://www.npmjs.com/package/@dengage-tech/react-native-dengage) for updates).
 
 ---
 
@@ -76,9 +76,9 @@ This guide covers installing and configuring **@dengage-tech/react-native-dengag
 ### 2.1 Install from npm
 
 ```bash
-npm install @dengage-tech/react-native-dengage
+npm install @dengage-tech/react-native-dengage@2.1.2
 # or
-yarn add @dengage-tech/react-native-dengage
+yarn add @dengage-tech/react-native-dengage@2.1.2
 ```
 
 ### 2.2 iOS pods
@@ -931,11 +931,15 @@ import { InAppInlineView } from '@dengage-tech/react-native-dengage';
 
 ### 8.2 App Story
 
-Horizontal story list; configure the template in the Dengage panel and match **property id** and **screen name**.
+Horizontal story list; configure the template in the Dengage panel and match **property id** and **screen name**. Tapping a story cover opens the full-screen story viewer (Android and iOS).
 
 **Props:** `storyPropertyId`, `screenName`, `customParams` (required). Optional: **`hideIfNotFound`** (default `true`), **`onStoryVisibilityChanged`** (`nativeEvent.isHidden` — hide when no story / not found, same idea as inline in-app), **`style`**.
 
-**Layout:** give a **`minHeight`** (e.g. `160`) while content loads. If **`hideIfNotFound`**, listen to **`onStoryVisibilityChanged`** and **unmount** or zero height when **`isHidden`**, or RN keeps an empty gap. Full flow + “testing size” label: **`example/src/screens/AppStoryScreen.tsx`**.
+**Layout:** give a **`minHeight`** (e.g. `160`) or fixed **`height`** (e.g. `300`) while content loads. If **`hideIfNotFound`**, listen to **`onStoryVisibilityChanged`** and **unmount** or zero height when **`isHidden`**, or RN keeps an empty gap. Full flow + “testing size” label: **`example/src/screens/AppStoryScreen.tsx`**.
+
+**iOS (2.1.2+):** story taps and full-screen presentation work inside `ScrollView` and with React Native’s UIScene-based window setup. Upgrade to **`@dengage-tech/react-native-dengage@2.1.2`** or newer if taps on story covers do not open the viewer on iOS.
+
+**Android:** call **`ref.refresh()`** on `StoriesListView` after changing `storyPropertyId` / `screenName` if you need to reload without remounting (iOS reloads when props change).
 
 ```tsx
 import { StoriesListView } from '@dengage-tech/react-native-dengage';
@@ -1033,6 +1037,8 @@ Replace integration keys and endpoint URLs in:
 | No push (iOS) | Push capability, APNs key in Dengage, `registerForPushToken`, correct `Info.plist` URLs, integration key in coordinator. |
 | In-app never shows | `setNavigation` / `setNavigationWithName`, screen name matches campaign, endpoints correct. |
 | Inline empty gap | **§8.1** — collapse on **`onInlineVisibilityChanged`** when **`isHidden`**; see **`InAppInlineScreen.tsx`**. |
+| App Story tap does nothing (iOS) | Upgrade to **`2.1.2+`**. Rebuild the iOS app after `pod install`. Confirm property id / screen name match the panel; call **`setNavigationWithName`** for the same screen name. |
+| App Story empty gap | **§8.2** — collapse on **`onStoryVisibilityChanged`** when **`isHidden`**; see **`AppStoryScreen.tsx`**. |
 | Carousel (Android) | Custom `NotificationReceiver`, layouts, `CAROUSEL_ITEM_CLICK`, `onCarouselRender` implementation. |
 | Rich / carousel (iOS) | Service extension calls `Dengage.didReceiveNotificationRequest`, App Group matches, content extension category matches campaign, Dengage pod version aligned. |
 | Geofence missing | `INSTALL_DENGAGE_GEOFENCE=true` (Android), `install_dengage_geofence=1` before `pod install` (iOS), location strings in plist. |
@@ -1073,4 +1079,4 @@ MIT — see the `LICENSE` file in the repository.
 
 ## Sample app on GitHub
 
-Runnable sample project (`example/`): **[dengage-react-sdk/example — branch `stable_branch_combined`](https://github.com/dengage-tech/dengage-react-sdk/tree/stable_branch_combined/example)**
+Runnable sample project (`example/`): **[dengage-react-sdk/example — branch `stable_branch_combined`](https://github.com/dengage-tech/dengage-react-sdk/tree/stable_combined_latest/example)**
