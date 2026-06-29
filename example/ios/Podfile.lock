@@ -1,8 +1,8 @@
 PODS:
   - boost (1.84.0)
-  - Dengage (5.97)
-  - DengageGeofence (5.97):
-    - Dengage (= 5.97)
+  - Dengage (5.99)
+  - DengageGeofence (5.99):
+    - Dengage (= 5.99)
   - DoubleConversion (1.1.6)
   - fast_float (6.1.4)
   - FBLazyVector (0.79.7)
@@ -2012,8 +2012,8 @@ PODS:
 
 DEPENDENCIES:
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
-  - Dengage (from `../../../dengage-ios-sdk`)
-  - DengageGeofence (from `../../../dengage-ios-sdk`)
+  - Dengage (from `https://github.com/dengage-tech/dengage-ios-sdk.git`, branch `version/5.99`)
+  - DengageGeofence (from `https://github.com/dengage-tech/dengage-ios-sdk.git`, branch `version/5.99`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - fast_float (from `../node_modules/react-native/third-party-podspecs/fast_float.podspec`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
@@ -2102,9 +2102,11 @@ EXTERNAL SOURCES:
   boost:
     :podspec: "../node_modules/react-native/third-party-podspecs/boost.podspec"
   Dengage:
-    :path: "../../../dengage-ios-sdk"
+    :branch: version/5.99
+    :git: https://github.com/dengage-tech/dengage-ios-sdk.git
   DengageGeofence:
-    :path: "../../../dengage-ios-sdk"
+    :branch: version/5.99
+    :git: https://github.com/dengage-tech/dengage-ios-sdk.git
   DoubleConversion:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
   fast_float:
@@ -2261,10 +2263,18 @@ EXTERNAL SOURCES:
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
+CHECKOUT OPTIONS:
+  Dengage:
+    :commit: 7087588d82788de89f68b80af0a9aa7ff029efaa
+    :git: https://github.com/dengage-tech/dengage-ios-sdk.git
+  DengageGeofence:
+    :commit: 7087588d82788de89f68b80af0a9aa7ff029efaa
+    :git: https://github.com/dengage-tech/dengage-ios-sdk.git
+
 SPEC CHECKSUMS:
   boost: 7e761d76ca2ce687f7cc98e698152abd03a18f90
-  Dengage: 02732e68f22edde1c7cce69cf51fd7c38b90a6ae
-  DengageGeofence: f9c953894e9fd292879456391ccd35b4cf15486f
+  Dengage: 857ee1449bf322acc7d14cc7e1ae8bc46729d201
+  DengageGeofence: f290bce8f5fb0c3fbb3f8cb5e5db7cde821e8b13
   DoubleConversion: cb417026b2400c8f53ae97020b2be961b59470cb
   fast_float: 06eeec4fe712a76acc9376682e4808b05ce978b6
   FBLazyVector: b60fe06f0f15b7d7408f169442176e69e8eeacde
@@ -2344,6 +2354,6 @@ SPEC CHECKSUMS:
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   Yoga: 9663a18d096f7f7e17a535cf00849db756709955
 
-PODFILE CHECKSUM: 82e186145de4fc7002bbe146612e1a80cdad9f52
+PODFILE CHECKSUM: 678518119a79664bdd4cceb75465c5074dc25661
 
 COCOAPODS: 1.16.2
