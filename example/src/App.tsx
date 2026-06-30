@@ -1,256 +1,114 @@
-import * as React from 'react';
-
-import { Button, Dimensions, Platform, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import {
+  NavigationContainer,
+  useNavigationContainerRef,
+} from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import Dengage from '@dengage-tech/react-native-dengage';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
-export default function App() {
-  const [contactKey, setContactKey] = React.useState<string>('checking...');
-  const [subscription, setSubscription] = React.useState<string>('');
-  const [subscriptionHidden, toggleSubscription] = React.useState<string>(false);
+// Import types
+import type { RootStackParamList } from './types';
 
-  const pageViewExample = () => {
-    // pageView event example
-    Dengage.pageView({
-      "product_id":1,
-      "product_variant_id":1,
-      "quantity":1,
-      "unit_price":10.00,
-      "discounted_price":9.99,
-    })
-  }
-  const addToCartExample = () => {
-    // addToCart action starts here.
-    // All items currently exists in shopping cart must be added to an array
-    const cartItem = {}
-    cartItem["product_id"] = 1
-    cartItem["product_variant_id"] = 1
-    cartItem["quantity"] = 1
-    cartItem["unit_price"] = 10.00
-    cartItem["discounted_price"] = 9.99
-    // ... extra columns in shopping_cart_events_detail table, can be added in cartItem
+console.log('App.tsx: App loaded');
 
-    let cartItems = []
-    cartItems.push(cartItem)
-    cartItems.push(cartItem)
+// Import screens
+import {
+  HomeScreen,
+  NotificationScreen,
+  DeviceInfoScreen,
+  ContactKeyScreen,
+  InAppMessageScreen,
+  InAppInlineScreen,
+  AppStoryScreen,
+  GeofenceScreen,
+  InboxMessagesScreen,
+  RTInAppMessagesScreen,
+  RealTimeInAppFiltersScreen,
+  EventHistoryScreen,
+  CartScreen,
+  SubscriptionScreen,
+  TrackingPermissionScreen,
+} from './screens';
+import React from 'react';
+import { NativeEventEmitter, NativeModules } from 'react-native';
 
+const Stack = createStackNavigator<RootStackParamList>();
 
-    // Add to cart action
-    const addParams = {
-      "product_id":1,
-      "product_variant_id":1,
-      "quantity":1,
-      "unit_price":10.00,
-      "discounted_price":9.99,
-      // ... extra columns in shopping_cart_events table, can be added here
-      "cartItems":cartItems // all items in cart
-    }
-    Dengage.addToCart(addParams)
-    // addToCart action ends here.
-  }
-  const removeFromCartExample = () => {
-    const cartItem = {}
-    cartItem["product_id"] = 1
-    cartItem["product_variant_id"] = 1
-    cartItem["quantity"] = 1
-    cartItem["unit_price"] = 10.00
-    cartItem["discounted_price"] = 9.99
-    // ... extra columns in shopping_cart_events_detail table, can be added in cartItem
-
-    let cartItems = []
-    cartItems.push(cartItem)
-    cartItems.push(cartItem)
-
-    // Remove from cart action
-    const removeParams = {
-      "product_id":1,
-      "product_variant_id":1,
-      "quantity":1,
-      "unit_price":10.00,
-      "discounted_price":9.99,
-      // ... extra columns in shopping_cart_events table, can be added here
-      "cartItems":cartItems // all items in cart
-    }
-    Dengage.removeFromCart(removeParams)
-  }
-  const viewCart = () => {
-    const cartItem = {}
-    cartItem["product_id"] = 1
-    cartItem["product_variant_id"] = 1
-    cartItem["quantity"] = 1
-    cartItem["unit_price"] = 10.00
-    cartItem["discounted_price"] = 9.99
-    // ... extra columns in shopping_cart_events_detail table, can be added in cartItem
-
-    let cartItems = []
-    cartItems.push(cartItem)
-    cartItems.push(cartItem)
-    Dengage.viewCart(cartItems)
-  }
-  const appInboxExamples = async () => {
-    const inboxMessages = await Dengage.getInboxMessages(10, 20)
-      .catch(err => err)
-    console.log("inboxMessages", inboxMessages)
-
-    const delResponse = await Dengage.deleteInboxMessage("your-message-id-here")
-      .catch(res => res)
-    console.log("deleteInboxMessage: ", delResponse);
-
-    const messageSetAsInboxRes = await Dengage.setInboxMessageAsClicked("your-message-id-here")
-      .catch(res => res)
-    console.log("messageSetAsInboxRes: ", messageSetAsInboxRes);
-
-  }
+const App = () => {
+  let eventListener: import('react-native').EmitterSubscription | undefined;
+  const routeNameRef = React.useRef<string>();
+  const navigationRef = useNavigationContainerRef();
 
   React.useEffect(() => {
-    Dengage.setLogStatus(true);
-    init()
-  }, [])
+    const eventEmitter = new NativeEventEmitter(NativeModules.DengageRN);
+    eventListener = eventEmitter.addListener(
+      'onNotificationClicked',
+      (event) => {
+        console.log('--------------------');
+        console.log('onNotificationClicked');
+        console.log(event);
+        console.log('--------------------');
+        console.log('onNotificationClicked');
+      }
+    );
 
-  const init = async () => {
-    if (Platform.OS === 'ios') {
-      Dengage.registerForRemoteNotifications(true)
+    return () => {
+      eventListener?.remove?.();
+    };
+  }, []);
+
+  const handleNavigationStateChange = () => {
+    const previousRouteName = routeNameRef.current;
+    const currentRouteName = navigationRef.current?.getCurrentRoute()?.name;
+    if (previousRouteName !== currentRouteName && currentRouteName) {
+      Dengage.pageView?.({
+        page_type: 'screen',
+        screen_name: currentRouteName,
+      });
     }
-    setContactKey(await Dengage.getContactKey())
-    Dengage.setLogStatus(true)
-  }
-
-  const navigation = useNavigation()
-  useFocusEffect(
-    React.useCallback(() => {
-      Dengage.setNavigationWithName("AppScreen")
-    }, [])
-  );
+    routeNameRef.current = currentRouteName;
+  };
 
   return (
-    <ScrollView
-      contentContainerStyle={styles.contentContainerStyles}
-      style={styles.container}>
-
-      <View style={styles.btnContainer}>
-        <Button
-          onPress={async () => {
-            const hasPermissions = await Dengage.getUserPermission()
-            alert("hasPermissions: " + hasPermissions)
-          }}
-          title={"check Permission"}
+    <NavigationContainer
+      ref={navigationRef}
+      onReady={() => {
+        const initialRoute = navigationRef.current?.getCurrentRoute()?.name;
+        if (initialRoute) {
+          routeNameRef.current = initialRoute;
+          Dengage.pageView?.({
+            page_type: 'screen',
+            screen_name: initialRoute,
+          });
+        }
+      }}
+      onStateChange={handleNavigationStateChange}
+    >
+      <Stack.Navigator>
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Notification" component={NotificationScreen} />
+        <Stack.Screen name="DeviceInfo" component={DeviceInfoScreen} />
+        <Stack.Screen name="ContactKey" component={ContactKeyScreen} />
+        <Stack.Screen name="InboxMessages" component={InboxMessagesScreen} />
+        {/* <Stack.Screen name="CustomEvent" component={PlaceholderScreen} /> */}
+        <Stack.Screen name="InAppMessages" component={InAppMessageScreen} />
+        <Stack.Screen name="RTInAppMessages" component={RTInAppMessagesScreen} />
+        {/* <Stack.Screen name="RealTimeInApp" component={PlaceholderScreen} /> */}
+        {/* <Stack.Screen name="SetTags" component={PlaceholderScreen} /> */}
+        <Stack.Screen name="Geofence" component={GeofenceScreen} />
+        <Stack.Screen name="InlineInApp" component={InAppInlineScreen} />
+        <Stack.Screen name="AppStory" component={AppStoryScreen} />
+        <Stack.Screen name="RealTimeInAppFilters" component={RealTimeInAppFiltersScreen} />
+        <Stack.Screen name="EventHistory" component={EventHistoryScreen} />
+        <Stack.Screen name="Cart" component={CartScreen} />
+        <Stack.Screen name="Subscription" component={SubscriptionScreen} />
+        <Stack.Screen
+          name="TrackingPermission"
+          component={TrackingPermissionScreen}
+          options={{ title: 'Change Tracking Permission' }}
         />
-      </View>
-
-      {
-        Platform.OS === 'ios' && <View style={styles.btnContainer}>
-          <Button
-            onPress={() => {
-              Dengage.promptForPushNotificationsWitCallback(async (hasPermission) => {
-                console.log("hasPermission: " + hasPermission)
-                await Dengage.setUserPermission(Boolean(hasPermission))
-              })
-            }}
-            title={"ask Permission"}
-          />
-        </View>
-      }
-
-      <View style={styles.btnContainer}>
-        <Button
-          onPress={async () => {
-            const token = await Dengage.getToken()
-            alert('token: ' + token)
-          }}
-          title={"get & show token"}
-        />
-      </View>
-
-      <View style={styles.btnContainer}>
-        <Button
-          onPress={async () => {
-            alert("contactKey: " + await Dengage.getContactKey())
-          }}
-          title={"show Contact Key"}
-        />
-      </View>
-
-      <View style={styles.groupContainer}>
-        <Text>Edit/Enter Contact Key to update:</Text>
-        <TextInput
-          value={contactKey}
-          onChangeText={(val) => setContactKey(val)}
-          style={styles.input}/>
-
-        <View style={styles.btnContainer}>
-          <Button
-            onPress={async () => {
-              await Dengage.setContactKey(contactKey)
-            }}
-            title={"update Contact Key"}
-          />
-        </View>
-      </View>
-
-      <View style={styles.btnContainer}>
-        <Button
-          onPress={async () => {
-            if (!subscription) {
-              setSubscription(await Dengage.getSubscription())
-            } else {
-              toggleSubscription(!subscriptionHidden)
-            }
-          }}
-          title={'Show/Hide Current Subscription'}
-        />
-        {!subscriptionHidden && <Text>{`subscription: ${subscription}`}</Text>}
-      </View>
-
-      <View style={styles.btnContainer}>
-        <View style={styles.btnContainer}>
-          <Button
-            onPress={async () => {
-              const res = await Dengage.sendDeviceEvent('ky_device_event', {"test_event": "this is test device event."})
-            }}
-            title={"send Device Event"}
-          />
-        </View>
-      </View>
-
-      <View style={styles.btnContainer}>
-        <Button
-          onPress={() => navigation.navigate('SecondScreen')}
-          title={"go to second screen"}
-        />
-      </View>
-      <Text>Note: On Navigation to second screen, setNavigationWithName is called.</Text>
-    </ScrollView>
+      </Stack.Navigator>
+    </NavigationContainer>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {},
-  contentContainerStyles: {
-    width: Dimensions.get('window').width,
-    justifyContent: 'center',
-    alignItems: 'stretch',
-    padding: 20,
-  },
-  box: {
-    width: 60,
-    height: 60,
-    marginVertical: 20,
-  },
-  heading: {
-    fontWeight: 'bold',
-    marginTop: 20
-  },
-  input: {
-    borderWidth: 1,
-    width: 250,
-    borderColor: 'black'
-  },
-  btnContainer: {
-    margin: 10
-  },
-  groupContainer: {
-    borderWidth: 1,
-    borderColor: 'grey',
-    padding: 10
-  }
-});
+export default App;

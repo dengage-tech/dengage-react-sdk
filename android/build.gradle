@@ -1,38 +1,71 @@
 buildscript {
-  // Buildscript is evaluated before everything else so we can't use getExtOrDefault
-  def kotlin_version = "1.6.0"
+  def kotlin_version = rootProject.ext.has("kotlinVersion") ? rootProject.ext.get("kotlinVersion") : project.properties["ReactNativeDengage_kotlinVersion"]
 
   repositories {
     google()
-    jcenter()
+    mavenCentral()
+    maven { url 'https://jitpack.io' }
   }
 
   dependencies {
-    classpath 'com.android.tools.build:gradle:4.1.2'
-     // noinspection DifferentKotlinGradleVersion
+    // Use 8.8.2 to match React Native gradle plugin consumer attribute (AgpVersionAttr) so variant resolution succeeds
+    classpath "com.android.tools.build:gradle:8.8.2"
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
   }
 }
 
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
+def reactNativeArchitectures() {
+  def value = rootProject.getProperties().get("reactNativeArchitectures")
+  return value ? value.split(",") : ["armeabi-v7a", "x86", "x86_64", "arm64-v8a"]
+}
+
+def isNewArchitectureEnabled() {
+  rootProject.logger.lifecycle('isNewArchitectureEnabled')
+
+  //rootProject.logger.debug(rootProject.hasProperty("newArchEnabled"))
+  return rootProject.hasProperty("newArchEnabled") && rootProject.getProperty("newArchEnabled") == "true"
+}
+
+apply plugin: "com.android.library"
+apply plugin: "kotlin-android"
+
+if (isNewArchitectureEnabled()) {
+  apply plugin: "com.facebook.react"
+}
 
 def getExtOrDefault(name) {
-  return rootProject.ext.has(name) ? rootProject.ext.get(name) : project.properties['Dengage_' + name]
+  return rootProject.ext.has(name) ? rootProject.ext.get(name) : project.properties["ReactNativeDengage_" + name]
 }
 
 def getExtOrIntegerDefault(name) {
-  return rootProject.ext.has(name) ? rootProject.ext.get(name) : (project.properties['Dengage_' + name]).toInteger()
+  return rootProject.ext.has(name) ? rootProject.ext.get(name) : (project.properties["ReactNativeDengage_" + name]).toInteger()
+}
+
+def supportsNamespace() {
+  def parsed = com.android.Version.ANDROID_GRADLE_PLUGIN_VERSION.tokenize('.')
+  def major = parsed[0].toInteger()
+  def minor = parsed[1].toInteger()
+
+  // Namespace support was added in 7.3.0
+  return (major == 7 && minor >= 3) || major >= 8
 }
 
 android {
-  compileSdkVersion 32
-   defaultConfig {
-    minSdkVersion 19
-    targetSdkVersion 32
-    versionCode 1
-    versionName "1.0"
+  if (supportsNamespace()) {
+    namespace "com.dengagetech.reactnativedengage"
 
+    sourceSets {
+      main {
+        manifest.srcFile "src/main/AndroidManifestNew.xml"
+      }
+    }
+  }
+
+  compileSdkVersion getExtOrIntegerDefault("compileSdkVersion")
+
+  defaultConfig {
+    minSdkVersion getExtOrIntegerDefault("minSdkVersion")
+    targetSdkVersion getExtOrIntegerDefault("targetSdkVersion")
   }
 
   buildTypes {
@@ -40,9 +73,11 @@ android {
       minifyEnabled false
     }
   }
-  lintOptions {
-    disable 'GradleCompatible'
+
+  lint {
+    disable "GradleCompatible"
   }
+
   compileOptions {
     sourceCompatibility JavaVersion.VERSION_1_8
     targetCompatibility JavaVersion.VERSION_1_8
@@ -51,87 +86,22 @@ android {
 
 repositories {
   mavenCentral()
-  jcenter()
   google()
-
-  def found = false
-  def defaultDir = null
-  def androidSourcesName = 'React Native sources'
-
-  if (rootProject.ext.has('reactNativeAndroidRoot')) {
-    defaultDir = rootProject.ext.get('reactNativeAndroidRoot')
-  } else {
-    defaultDir = new File(
-            projectDir,
-            '/../../../node_modules/react-native/android'
-    )
-  }
-
-  if (defaultDir.exists()) {
-    maven {
-      url defaultDir.toString()
-      name androidSourcesName
-    }
-
-    logger.info(":${project.name}:reactNativeAndroidRoot ${defaultDir.canonicalPath}")
-    found = true
-  } else {
-    def parentDir = rootProject.projectDir
-
-    1.upto(5, {
-      if (found) return true
-      parentDir = parentDir.parentFile
-
-      def androidSourcesDir = new File(
-              parentDir,
-              'node_modules/react-native'
-      )
-
-      def androidPrebuiltBinaryDir = new File(
-              parentDir,
-              'node_modules/react-native/android'
-      )
-
-      if (androidPrebuiltBinaryDir.exists()) {
-        maven {
-          url androidPrebuiltBinaryDir.toString()
-          name androidSourcesName
-        }
-
-        logger.info(":${project.name}:reactNativeAndroidRoot ${androidPrebuiltBinaryDir.canonicalPath}")
-        found = true
-      } else if (androidSourcesDir.exists()) {
-        maven {
-          url androidSourcesDir.toString()
-          name androidSourcesName
-        }
-
-        logger.info(":${project.name}:reactNativeAndroidRoot ${androidSourcesDir.canonicalPath}")
-        found = true
-      }
-    })
-  }
-
-  if (!found) {
-    throw new GradleException(
-            "${project.name}: unable to locate React Native android sources. " +
-                    "Ensure you have you installed React Native as a dependency in your project and try again."
-    )
-  }
+  maven { url 'https://jitpack.io' }
 }
 
-def kotlin_version = getExtOrDefault('kotlinVersion')
+def kotlin_version = getExtOrDefault("kotlinVersion")
 
 dependencies {
-  // noinspection GradleDynamicVersion
-  api 'com.facebook.react:react-native:+'
+  // For < 0.71, this will be from the local maven repo
+  // For > 0.71, this will be replaced by `com.facebook.react:react-android:$version` by react gradle plugin
+  //noinspection GradleDynamicVersion
+  implementation "com.facebook.react:react-native:+"
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-  implementation 'com.google.code.gson:gson:2.8.6'
-  implementation 'com.github.whitehorse-technology:dengage.android.sdk:4.5.1.1'
+  implementation 'com.github.dengage-tech.dengage-android-sdk:sdk:6.0.95'
 
-  implementation 'com.google.firebase:firebase-core:20.0.0'
-  implementation "com.google.firebase:firebase-messaging:23.0.0"
-  implementation 'com.google.firebase:firebase-analytics:20.0.0'
-
-//  implementation 'com.github.whitehorse-technology:dengage.android.sdk:feature~in-app-message-SNAPSHOT' // pre-release with in-app-messaging functionality
+  if (project.hasProperty('INSTALL_DENGAGE_GEOFENCE') && project.INSTALL_DENGAGE_GEOFENCE == 'true') {
+    implementation 'com.github.dengage-tech.dengage-android-sdk:sdk-geofence:6.0.95'
+  }
 }
+

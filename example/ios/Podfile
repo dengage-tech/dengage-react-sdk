@@ -1,25 +1,72 @@
-require_relative '../node_modules/react-native/scripts/react_native_pods'
-require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
+require Pod::Executable.execute_command('node', ['-p',
+  'require.resolve(
+    "react-native/scripts/react_native_pods.rb",
+    {paths: [process.argv[1]]},
+  )', __dir__]).strip
 
-platform :ios, '10.0'
+platform :ios, min_ios_version_supported
+prepare_react_native_project!
 
-target 'DengageExample' do
+linkage = ENV['USE_FRAMEWORKS']
+if linkage != nil
+  Pod::UI.puts "Configuring Pod with #{linkage}ally linked Frameworks".green
+  use_frameworks! :linkage => linkage.to_sym
+end
+
+dengage_ios = {
+  :git => 'https://github.com/dengage-tech/dengage-ios-sdk.git',
+  :branch => 'version/5.99'
+}
+
+target 'NotificationServiceExtension' do
+  pod 'Dengage', dengage_ios
+end
+
+target 'NotificationContentExtension' do
+  pod 'Dengage', dengage_ios
+end
+
+target 'ReactNativeDengageExample' do
+  #TODO: set to 1 to install Dengage Geofence (must match react-native-dengage.podspec conditional)
+  ENV['install_dengage_geofence'] = '1'
+
+  pod 'Dengage', dengage_ios
+  pod 'DengageGeofence', dengage_ios
+
   config = use_native_modules!
 
-  use_react_native!(:path => config["reactNativePath"])
+  use_react_native!(
+    :path => config[:reactNativePath],
+    :hermes_enabled => true,
+    :app_path => "#{Pod::Config.instance.installation_root}/.."
+  )
 
-#  pod 'react-native-dengage', :path => '../..'
-  pod 'Dengage.Framework'
 
-  # Enables Flipper.
-  #
-  # Note that if you have use_frameworks! enabled, Flipper will not work and
-  # you should disable these next few lines.
-  use_flipper!({ 'Flipper-Folly' => '2.3.0' })
+  target 'ReactNativeDengageExampleTests' do
+    inherit! :complete
+  end
+
   post_install do |installer|
-    flipper_post_install(installer)
+    notification_extension_post_install(installer)
+    react_native_post_install(
+      installer,
+      config[:reactNativePath],
+      :mac_catalyst_enabled => false,
+    )
+    # Ensure minimum deployment target for Dengage 5.96+
+    installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |config|
+        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0'
+      end
+    end
   end
 end
-target 'DengageNotificationServiceExtension' do
-  pod 'Dengage.Framework'
+
+
+def notification_extension_post_install(installer)
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings['APPLICATION_EXTENSION_API_ONLY'] = 'NO'
+    end
+  end
 end
