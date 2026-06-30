@@ -2,7 +2,7 @@
 
 This guide covers installing and configuring **@dengage-tech/react-native-dengage**, native Android and iOS setup, push (including rich and carousel), in-app messaging, inbox, events, and the full JavaScript API.
 
-**Latest package version:** `2.1.2` (check [npm](https://www.npmjs.com/package/@dengage-tech/react-native-dengage) for updates).
+**Latest package version:** `2.1.3` (check [npm](https://www.npmjs.com/package/@dengage-tech/react-native-dengage) for updates).
 
 ---
 
@@ -76,9 +76,9 @@ This guide covers installing and configuring **@dengage-tech/react-native-dengag
 ### 2.1 Install from npm
 
 ```bash
-npm install @dengage-tech/react-native-dengage@2.1.2
+npm install @dengage-tech/react-native-dengage@2.1.3
 # or
-yarn add @dengage-tech/react-native-dengage@2.1.2
+yarn add @dengage-tech/react-native-dengage@2.1.3
 ```
 
 ### 2.2 iOS pods
