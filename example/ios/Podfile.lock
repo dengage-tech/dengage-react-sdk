@@ -1,8 +1,8 @@
 PODS:
   - boost (1.84.0)
-  - Dengage (5.99)
-  - DengageGeofence (5.99):
-    - Dengage (= 5.99)
+  - Dengage (5.100)
+  - DengageGeofence (5.100):
+    - Dengage (= 5.100)
   - DoubleConversion (1.1.6)
   - fast_float (6.1.4)
   - FBLazyVector (0.79.7)
@@ -1335,7 +1335,7 @@ PODS:
     - React-jsiexecutor
     - React-RCTFBReactNativeSpec
     - ReactCommon/turbomodule/core
-  - react-native-dengage (2.1.2):
+  - react-native-dengage (2.1.4):
     - Dengage
     - DengageGeofence
     - DoubleConversion
@@ -2012,8 +2012,8 @@ PODS:
 
 DEPENDENCIES:
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
-  - Dengage (from `https://github.com/dengage-tech/dengage-ios-sdk.git`, branch `version/5.99`)
-  - DengageGeofence (from `https://github.com/dengage-tech/dengage-ios-sdk.git`, branch `version/5.99`)
+  - Dengage (from `https://github.com/dengage-tech/dengage-ios-sdk.git`, branch `version/5.100`)
+  - DengageGeofence (from `https://github.com/dengage-tech/dengage-ios-sdk.git`, branch `version/5.100`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - fast_float (from `../node_modules/react-native/third-party-podspecs/fast_float.podspec`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
@@ -2102,10 +2102,10 @@ EXTERNAL SOURCES:
   boost:
     :podspec: "../node_modules/react-native/third-party-podspecs/boost.podspec"
   Dengage:
-    :branch: version/5.99
+    :branch: version/5.100
     :git: https://github.com/dengage-tech/dengage-ios-sdk.git
   DengageGeofence:
-    :branch: version/5.99
+    :branch: version/5.100
     :git: https://github.com/dengage-tech/dengage-ios-sdk.git
   DoubleConversion:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
@@ -2265,16 +2265,16 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   Dengage:
-    :commit: 7087588d82788de89f68b80af0a9aa7ff029efaa
+    :commit: 3dc45ae6f3031308dc2edade8ac4ceb20ed445cb
     :git: https://github.com/dengage-tech/dengage-ios-sdk.git
   DengageGeofence:
-    :commit: 7087588d82788de89f68b80af0a9aa7ff029efaa
+    :commit: 3dc45ae6f3031308dc2edade8ac4ceb20ed445cb
     :git: https://github.com/dengage-tech/dengage-ios-sdk.git
 
 SPEC CHECKSUMS:
   boost: 7e761d76ca2ce687f7cc98e698152abd03a18f90
-  Dengage: 857ee1449bf322acc7d14cc7e1ae8bc46729d201
-  DengageGeofence: f290bce8f5fb0c3fbb3f8cb5e5db7cde821e8b13
+  Dengage: ae18a45cccfaf34ba6ac6abb6beba6d706cc9af4
+  DengageGeofence: a35ee0f7b77a330bf4d801ee522b6ad19bb9fe81
   DoubleConversion: cb417026b2400c8f53ae97020b2be961b59470cb
   fast_float: 06eeec4fe712a76acc9376682e4808b05ce978b6
   FBLazyVector: b60fe06f0f15b7d7408f169442176e69e8eeacde
@@ -2312,7 +2312,7 @@ SPEC CHECKSUMS:
   React-logger: fbdc0814b62fefa412a90af7cacc666387f1bc9a
   React-Mapbuffer: cfe4726ba1929b9dab4645c78376a9165375d62f
   React-microtasksnativemodule: c99b8f1240609566de105b73f2569c0f22880ee1
-  react-native-dengage: 051039dde370900b3e454e43c1c7dc221f9b1082
+  react-native-dengage: fd0caa7185beef9980fa4f5379b2d816ac608eb1
   react-native-safe-area-context: 0b8555c40461feb7198e999912a3446602e7c601
   React-NativeModulesApple: 74051ff264ce0b89ac799b56314f8f440a95ee4d
   React-oscompat: 0047f0ce53a328ce225777a6c617970556602c7c
@@ -2354,6 +2354,6 @@ SPEC CHECKSUMS:
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   Yoga: 9663a18d096f7f7e17a535cf00849db756709955
 
-PODFILE CHECKSUM: 678518119a79664bdd4cceb75465c5074dc25661
+PODFILE CHECKSUM: 953dafb287bd8385f16ed333194e21727b410b1e
 
 COCOAPODS: 1.16.2

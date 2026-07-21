@@ -15,14 +15,14 @@ end
 
 dengage_ios = {
   :git => 'https://github.com/dengage-tech/dengage-ios-sdk.git',
-  :branch => 'version/5.99'
+  :branch => 'version/5.100'
 }
 
 target 'NotificationServiceExtension' do
   pod 'Dengage', dengage_ios
 end
 
-target 'NotificationContentExtension' do
+target 'NotificationContentExtension' do  
   pod 'Dengage', dengage_ios
 end
 

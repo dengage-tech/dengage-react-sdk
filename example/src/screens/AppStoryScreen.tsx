@@ -49,9 +49,11 @@ export default function AppStoryScreen() {
             screenName={screenName.trim()}
             customParams={{}}
             hideIfNotFound={hideIfNotFound}
-            onStoryVisibilityChanged={(e) =>
-              setNativeReportsHidden(e.nativeEvent.isHidden)
-            }
+            onStoryVisibilityChanged={(e) => {
+              const isHidden = e.nativeEvent.isHidden;
+              console.log('[AppStory] onStoryVisibilityChanged isHidden =', isHidden);
+              setNativeReportsHidden(isHidden);
+            }}
             style={[styles.story, { backgroundColor: containerColor }]}
           />
         </View>

@@ -38,9 +38,11 @@ export default function InAppInlineScreen() {
             screenName={screenName}
             customParams={{}}
             hideIfNotFound={hideIfNotFound}
-            onInlineVisibilityChanged={(e) =>
-              setNativeReportsHidden(e.nativeEvent.isHidden)
-            }
+            onInlineVisibilityChanged={(e) => {
+              const isHidden = e.nativeEvent.isHidden;
+              console.log('[InAppInline] onInlineVisibilityChanged isHidden =', isHidden);
+              setNativeReportsHidden(isHidden);
+            }}
             style={styles.inline}
           />
         </View>

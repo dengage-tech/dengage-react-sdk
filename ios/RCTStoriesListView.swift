@@ -133,8 +133,10 @@ import Dengage
         notifyReactNativeLayout()
     }
 
+    /// No active story means not found / not yet shown — treat as hidden.
+    /// Returning `false` here caused a false "visible" event when story was unavailable.
     private var isStoryEffectivelyHidden: Bool {
-        guard let activeStoriesListView else { return false }
+        guard let activeStoriesListView else { return true }
         return activeStoriesListView.isHidden
     }
 
