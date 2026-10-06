@@ -852,19 +852,6 @@ const allowed = await Dengage.getTrackingPermission();
 | `setNavigation()` | Notify current activity / screen (no name). |
 | `setNavigationWithName(screenName: string)` | Set logical screen name for targeting. Call on every navigation when you use screen filters. |
 | `removeInAppMessageDisplay()` | Cancel an in-app message that is still waiting for its display delay (call when leaving a screen). A message already on screen is not closed. |
-
-**Usage — `removeInAppMessageDisplay`** (added in 2.1.5). An in-app message can have a display delay. If the user leaves the screen during that delay the message would still appear on the next screen. Call it when the screen loses focus:
-
-```ts
-import { useFocusEffect } from '@react-navigation/native';
-
-useFocusEffect(
-  useCallback(() => {
-    Dengage.setNavigationWithName('Checkout');
-    return () => Dengage.removeInAppMessageDisplay(); // user left the screen
-  }, [])
-);
-```
 | `setInAppDeviceInfo(key: string, value: string)` | Key / value for in-app targeting. |
 | `clearInAppDeviceInfo()` | Clear custom in-app device info. |
 | `getInAppDeviceInfo()` | `Promise<Record<string, string>>`. |
@@ -876,6 +863,45 @@ useFocusEffect(
 | `showRealTimeInApp(screenName: string, params: Record<string, string>)` | Request a real-time in-app for the screen. |
 | `registerInAppListener()` | Register so in-app deep link taps emit **`retrieveInAppLink`** in JS. **Android:** registers a broadcast receiver for `com.dengage.inapp.LINK_RETRIEVAL`. **iOS:** wraps `Dengage.handleInAppDeeplink` and forwards URLs via the module event emitter. Call once when you need link callbacks (see [Section 9](#9-events-inbox-deep-links)). |
 | `setInAppLinkConfiguration(deeplink: string)` | Deep link / URL handling configuration for in-app actions. |
+
+#### Usage — `removeInAppMessageDisplay` (added in 2.1.5)
+
+An in-app message can have a **display delay** (for example 3 seconds after the screen opens). If the user leaves the screen during that delay, the message would still appear on the next screen, or the next screen's message would be skipped. Call `removeInAppMessageDisplay()` when the user leaves a screen, then call `setNavigationWithName()` for the new screen.
+
+**Requires native SDK fix:** Android SDK `6.0.104`+ and iOS SDK `5.105`+. With older native versions a cancelled message keeps the in-app lock held, so following `setNavigationWithName` calls are skipped.
+
+With React Navigation, call it in the focus cleanup:
+
+```ts
+import { useFocusEffect } from '@react-navigation/native';
+
+useFocusEffect(
+  useCallback(() => {
+    Dengage.setNavigationWithName('Checkout');
+    return () => Dengage.removeInAppMessageDisplay(); // user left the screen
+  }, [])
+);
+```
+
+Without `useFocusEffect` (manual navigation, order matters):
+
+```ts
+const goTo = (next: string) => {
+  Dengage.removeInAppMessageDisplay();   // 1. drop the previous screen's pending message
+  Dengage.setNavigationWithName(next);   // 2. then register the new screen
+};
+```
+
+Behaviour:
+
+| Situation | Result |
+| --------- | ------ |
+| Message is waiting for its display delay | Cancelled, nothing is shown for the old screen. |
+| Message is already on screen | **Not** closed; the call does not affect it. |
+| Fast switch A → B (e.g. every 400 ms) with the call | Only B's message is shown, after its own delay. |
+| Fast switch A → B **without** the call | A's message can show on screen B (the old bug). |
+
+The call is synchronous and has no return value. It is safe to call when nothing is pending.
 
 ### 7.5 Cart object API
 
