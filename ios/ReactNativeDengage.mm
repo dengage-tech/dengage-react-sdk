@@ -33,6 +33,8 @@ RCT_EXTERN_METHOD(getSubscription:(RCTPromiseResolveBlock)resolve reject:(RCTPro
 
 
 
+RCT_EXTERN_METHOD(removeInAppMessageDisplay)
+
 RCT_EXTERN_METHOD(setNavigation)
 RCT_EXTERN_METHOD(setNavigationWithName:(NSString *)screenName)
 
@@ -73,6 +75,12 @@ RCT_EXTERN_METHOD(setAllInboxMessageAsClicked:(RCTPromiseResolveBlock)resolve re
 
 
 
+
+RCT_EXTERN_METHOD(getInboxChannelMessages:(NSInteger)limit resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(sendInboxChannelEvents:(NSArray *)events resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(setLocationPermission:(NSString *)status)
 
 RCT_EXTERN_METHOD(requestLocationPermissions)
 RCT_EXTERN_METHOD(startGeofence)

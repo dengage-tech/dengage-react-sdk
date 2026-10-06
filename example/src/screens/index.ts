@@ -13,3 +13,5 @@ export { default as EventHistoryScreen } from './EventHistoryScreen';
 export { default as CartScreen } from './CartScreen';
 export { default as SubscriptionScreen } from './SubscriptionScreen';
 export { default as TrackingPermissionScreen } from './TrackingPermissionScreen';
+export { default as InboxChannelScreen } from './InboxChannelScreen';
+export { default as LocationPermissionScreen } from './LocationPermissionScreen';

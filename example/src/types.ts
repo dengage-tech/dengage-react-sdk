@@ -4,6 +4,8 @@ export type RootStackParamList = {
   DeviceInfo: undefined;
   ContactKey: undefined;
   InboxMessages: undefined;
+  InboxChannel: undefined;
+  LocationPermission: undefined;
   CustomEvent: undefined;
   InAppMessages: undefined;
   RTInAppMessages: undefined;

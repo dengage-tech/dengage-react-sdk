@@ -11,6 +11,9 @@ import com.dengage.sdk.Dengage
 import com.dengage.sdk.callback.DengageCallback
 import com.dengage.sdk.callback.DengageError
 import com.dengage.sdk.domain.inboxmessage.model.InboxMessage
+import com.dengage.sdk.domain.inboxchannel.model.InboxChannelEvent
+import com.dengage.sdk.domain.inboxchannel.model.InboxChannelEventType
+import com.dengage.sdk.domain.inboxchannel.model.InboxChannelMessage
 import com.dengage.sdk.domain.inappmessage.model.Cart
 import com.dengage.sdk.domain.inappmessage.model.CartItem
 import com.facebook.react.bridge.*
@@ -61,6 +64,11 @@ class ReactNativeDengageModule(reactContext: ReactApplicationContext) :
     @ReactMethod
     fun setTrackingPermission(permission: Boolean) {
         Dengage.setTrackingPermission(permission)
+    }
+
+    @ReactMethod
+    fun setLocationPermission(status: String) {
+        Dengage.setLocationPermission(status)
     }
 
     @ReactMethod
@@ -165,6 +173,11 @@ class ReactNativeDengageModule(reactContext: ReactApplicationContext) :
     }
 
     // Inapp Notifications
+
+    @ReactMethod
+    fun removeInAppMessageDisplay() {
+        Dengage.removeInAppMessageDisplay()
+    }
 
     @ReactMethod
     fun setNavigation() {
@@ -550,6 +563,93 @@ class ReactNativeDengageModule(reactContext: ReactApplicationContext) :
         } catch (ex: Exception) {
             promise.reject(ex)
         }
+    }
+
+    // Inbox Channel
+
+    @ReactMethod
+    fun getInboxChannelMessages(limit: Int, promise: Promise) {
+        try {
+            Dengage.getInboxChannelMessages(
+                limit,
+                object : DengageCallback<MutableList<InboxChannelMessage>> {
+                    override fun onResult(result: MutableList<InboxChannelMessage>) {
+                        try {
+                            val arr = WritableNativeArray()
+                            for (message in result) {
+                                arr.pushMap(inboxChannelMessageToMap(message))
+                            }
+                            promise.resolve(arr)
+                        } catch (ex: Exception) {
+                            promise.reject(ex)
+                        }
+                    }
+
+                    override fun onError(error: DengageError) {
+                        promise.reject(Error(error.errorMessage))
+                    }
+                })
+        } catch (ex: Exception) {
+            promise.reject(ex)
+        }
+    }
+
+    @ReactMethod
+    fun sendInboxChannelEvents(events: ReadableArray, promise: Promise) {
+        try {
+            val list = mutableListOf<InboxChannelEvent>()
+            for (i in 0 until events.size()) {
+                val map = events.getMap(i) ?: continue
+                val code = map.getString("eventType")
+                val type = InboxChannelEventType.values().firstOrNull { it.code == code }
+                    ?: throw IllegalArgumentException(
+                        "Invalid eventType '$code'. Expected one of IM, OP, CL, DT"
+                    )
+                val messageId = map.getString("messageId")
+                    ?: throw IllegalArgumentException("messageId is required")
+                val messageDetails =
+                    if (map.hasKey("messageDetails") && !map.isNull("messageDetails"))
+                        map.getString("messageDetails") else null
+                list.add(InboxChannelEvent(type, messageId, messageDetails))
+            }
+            if (list.isNotEmpty()) {
+                Dengage.sendInboxChannelEvents(list)
+            }
+            promise.resolve(true)
+        } catch (ex: Exception) {
+            promise.reject(ex)
+        }
+    }
+
+    private fun inboxChannelMessageToMap(message: InboxChannelMessage): WritableMap {
+        val map = WritableNativeMap()
+        map.putString("id", message.id)
+        map.putBoolean("isRead", message.isRead)
+        map.putInt("priority", message.priority)
+        map.putBoolean("isDeleted", message.isDeleted)
+
+        val data = message.data
+        val dataMap = WritableNativeMap()
+        dataMap.putString("title", data.title)
+        dataMap.putString("message", data.message)
+        dataMap.putString("imageUrl", data.imageUrl)
+        dataMap.putBoolean("isPinned", data.isPinned)
+        dataMap.putString("receiveDate", data.receiveDate)
+        dataMap.putString("messageDetails", data.messageDetails)
+
+        val ctaArr = WritableNativeArray()
+        data.ctaButtons?.forEach { cta ->
+            val ctaMap = WritableNativeMap()
+            ctaMap.putString("buttonId", cta.buttonId)
+            ctaMap.putString("label", cta.label)
+            ctaMap.putString("iosDeeplink", cta.iosDeeplink)
+            ctaMap.putString("androidDeeplink", cta.androidDeeplink)
+            ctaMap.putString("webUrl", cta.webUrl)
+            ctaArr.pushMap(ctaMap)
+        }
+        dataMap.putArray("ctaButtons", ctaArr)
+        map.putMap("data", dataMap)
+        return map
     }
 
     @ReactMethod

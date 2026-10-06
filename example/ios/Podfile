@@ -15,7 +15,7 @@ end
 
 dengage_ios = {
   :git => 'https://github.com/dengage-tech/dengage-ios-sdk.git',
-  :branch => 'version/5.100'
+  :branch => 'version/5.105'
 }
 
 target 'NotificationServiceExtension' do

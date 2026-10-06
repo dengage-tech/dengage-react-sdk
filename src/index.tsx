@@ -1,5 +1,13 @@
 import { NativeModules, Platform } from 'react-native';
-import type { DengageTypes, InboxMessage, Subscription, Cart, SdkParameters } from './types';
+import type {
+  DengageTypes,
+  InboxMessage,
+  InboxChannelMessage,
+  InboxChannelEvent,
+  Subscription,
+  Cart,
+  SdkParameters,
+} from './types';
 
 const LINKING_ERROR =
   `The package '@dengage-tech/react-native-dengage' doesn't seem to be linked. Make sure: \n\n` +
@@ -50,6 +58,8 @@ type DengageType = {
   
   setNavigation(): void;
   setNavigationWithName(screenName: string): void;
+  /** Cancels an in-app message that is waiting for its display delay (e.g. when leaving a screen). */
+  removeInAppMessageDisplay(): void;
   onMessageReceived(params: object): void;
 
   resetAppBadge(): void; // android only
@@ -93,7 +103,13 @@ type DengageType = {
   deleteAllInboxMessages(): Promise<boolean>;
   setAllInboxMessageAsClicked(): Promise<boolean>;
 
+  // Inbox Channel (limit: 1-100, native default is 20)
+  getInboxChannelMessages(limit: number): Promise<InboxChannelMessage[]>;
+  sendInboxChannelEvents(events: InboxChannelEvent[]): Promise<boolean>;
+
   requestLocationPermissions(): void;
+  /** status: 'always' | 'appinuse' | 'none' */
+  setLocationPermission(status: string): void;
   startGeofence(): void;
   stopGeofence(): void;
   

@@ -52,6 +52,11 @@ class ReactNativeDengage: RCTEventEmitter {
     
     // MARK: - Inapp Notifications
     
+    @objc(removeInAppMessageDisplay)
+    func removeInAppMessageDisplay() {
+        Dengage.removeInAppMessageDisplay()
+    }
+    
     @objc(setNavigation)
     func setNavigation() {
         Dengage.setNavigation()
@@ -234,6 +239,83 @@ class ReactNativeDengage: RCTEventEmitter {
     }
     
     
+    
+    // MARK: - Inbox Channel
+    
+    @objc(getInboxChannelMessages:resolve:reject:)
+    func getInboxChannelMessages(limit: Int, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) {
+        Dengage.getInboxChannelMessages(limit: limit) { (result) in
+            switch result {
+            case .success(let messages):
+                let arr: [[String: Any]] = messages.map { message in
+                    let ctaButtons: [[String: Any]] = (message.data.ctaButtons ?? []).map { cta in
+                        [
+                            "buttonId": cta.buttonId as Any,
+                            "label": cta.label as Any,
+                            "iosDeeplink": cta.iosDeeplink as Any,
+                            "androidDeeplink": cta.androidDeeplink as Any,
+                            "webUrl": cta.webUrl as Any
+                        ]
+                    }
+                    let data: [String: Any] = [
+                        "title": message.data.title as Any,
+                        "message": message.data.message as Any,
+                        "imageUrl": message.data.imageUrl as Any,
+                        "ctaButtons": ctaButtons,
+                        "isPinned": message.data.isPinned,
+                        "receiveDate": message.data.receiveDate as Any,
+                        "messageDetails": message.data.messageDetails as Any
+                    ]
+                    return [
+                        "id": message.id,
+                        "isRead": message.isRead,
+                        "priority": message.priority,
+                        "isDeleted": message.isDeleted,
+                        "data": data
+                    ]
+                }
+                resolve(arr)
+            case .failure(let error):
+                reject("error", error.localizedDescription, error)
+            }
+        }
+    }
+    
+    @objc(sendInboxChannelEvents:resolve:reject:)
+    func sendInboxChannelEvents(events: NSArray, resolve: @escaping RCTPromiseResolveBlock, reject: @escaping RCTPromiseRejectBlock) {
+        var list = [DengageInboxChannelEvent]()
+        for item in events {
+            guard let dict = item as? [String: Any],
+                  let code = dict["eventType"] as? String,
+                  let type = DengageInboxChannelEventType(rawValue: code),
+                  let messageId = dict["messageId"] as? String else {
+                reject("error", "Invalid inbox channel event. eventType (IM, OP, CL, DT) and messageId are required", nil)
+                return
+            }
+            list.append(DengageInboxChannelEvent(eventType: type,
+                                                 messageId: messageId,
+                                                 messageDetails: dict["messageDetails"] as? String))
+        }
+        if list.isEmpty {
+            resolve(true)
+            return
+        }
+        Dengage.sendInboxChannelEvents(list) { (result) in
+            switch result {
+            case .success:
+                resolve(true)
+            case .failure(let error):
+                reject("error", error.localizedDescription, error)
+            }
+        }
+    }
+    
+    // MARK: - Location Permission
+    
+    @objc(setLocationPermission:)
+    func setLocationPermission(status: String) {
+        Dengage.setLocationPermission(status: status)
+    }
     
     // MARK: - Geofence
     

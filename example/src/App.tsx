@@ -21,6 +21,8 @@ import {
   AppStoryScreen,
   GeofenceScreen,
   InboxMessagesScreen,
+  InboxChannelScreen,
+  LocationPermissionScreen,
   RTInAppMessagesScreen,
   RealTimeInAppFiltersScreen,
   EventHistoryScreen,
@@ -89,6 +91,16 @@ const App = () => {
         <Stack.Screen name="DeviceInfo" component={DeviceInfoScreen} />
         <Stack.Screen name="ContactKey" component={ContactKeyScreen} />
         <Stack.Screen name="InboxMessages" component={InboxMessagesScreen} />
+        <Stack.Screen
+          name="InboxChannel"
+          component={InboxChannelScreen}
+          options={{ title: 'Inbox Channel' }}
+        />
+        <Stack.Screen
+          name="LocationPermission"
+          component={LocationPermissionScreen}
+          options={{ title: 'Change Location Permission' }}
+        />
         {/* <Stack.Screen name="CustomEvent" component={PlaceholderScreen} /> */}
         <Stack.Screen name="InAppMessages" component={InAppMessageScreen} />
         <Stack.Screen name="RTInAppMessages" component={RTInAppMessagesScreen} />

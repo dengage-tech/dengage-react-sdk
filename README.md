@@ -76,9 +76,9 @@ This guide covers installing and configuring **@dengage-tech/react-native-dengag
 ### 2.1 Install from npm
 
 ```bash
-npm install @dengage-tech/react-native-dengage@2.1.3
+npm install @dengage-tech/react-native-dengage@2.1.5
 # or
-yarn add @dengage-tech/react-native-dengage@2.1.3
+yarn add @dengage-tech/react-native-dengage@2.1.5
 ```
 
 ### 2.2 iOS pods
@@ -202,7 +202,7 @@ In the project-level Gradle file, include the Google Services classpath version 
 
 ### 4.2 Native SDK version
 
-The React Native package depends on **Dengage Android SDK** `6.0.94` (JitPack: `com.github.dengage-tech.dengage-android-sdk:sdk:6.0.94`). You normally do not add this line yourself unless you override versions; the library module brings it in.
+The React Native package depends on **Dengage Android SDK** `6.0.104` (JitPack: `com.github.dengage-tech.dengage-android-sdk:sdk:6.0.104`). You normally do not add this line yourself unless you override versions; the library module brings it in.
 
 ### 4.3 Geofence (optional)
 
@@ -851,6 +851,20 @@ const allowed = await Dengage.getTrackingPermission();
 | ------ | ----------- |
 | `setNavigation()` | Notify current activity / screen (no name). |
 | `setNavigationWithName(screenName: string)` | Set logical screen name for targeting. Call on every navigation when you use screen filters. |
+| `removeInAppMessageDisplay()` | Cancel an in-app message that is still waiting for its display delay (call when leaving a screen). A message already on screen is not closed. |
+
+**Usage — `removeInAppMessageDisplay`** (added in 2.1.5). An in-app message can have a display delay. If the user leaves the screen during that delay the message would still appear on the next screen. Call it when the screen loses focus:
+
+```ts
+import { useFocusEffect } from '@react-navigation/native';
+
+useFocusEffect(
+  useCallback(() => {
+    Dengage.setNavigationWithName('Checkout');
+    return () => Dengage.removeInAppMessageDisplay(); // user left the screen
+  }, [])
+);
+```
 | `setInAppDeviceInfo(key: string, value: string)` | Key / value for in-app targeting. |
 | `clearInAppDeviceInfo()` | Clear custom in-app device info. |
 | `getInAppDeviceInfo()` | `Promise<Record<string, string>>`. |
@@ -884,15 +898,69 @@ const allowed = await Dengage.getTrackingPermission();
 
 `InboxMessage` includes `id`, `title`, `message`, `mediaURL`, `targetUrl`, `receiveDate`, `isClicked`, `carouselItems`, `customParameters`.
 
+#### Inbox Channel
+
+Requires Android SDK 6.0.102+ and iOS SDK 5.103+.
+
+| Method | Description |
+| ------ | ----------- |
+| `getInboxChannelMessages(limit: number)` | `Promise<InboxChannelMessage[]>` — fetch messages (limit 1–100; native default is 20). |
+| `sendInboxChannelEvents(events: InboxChannelEvent[])` | `Promise<boolean>` — report impression (`'IM'`), open (`'OP'`), click (`'CL'`) or delete (`'DT'`) in one bulk request. |
+
+`InboxChannelMessage` has `id`, `isRead`, `priority`, `isDeleted` and `data` (`title`, `message`, `imageUrl`, `ctaButtons`, `isPinned`, `receiveDate`, `messageDetails`). Every `InboxChannelEvent` is `{ eventType, messageId, messageDetails }`; pass `messageDetails` from the message's `data` unchanged.
+
+**Usage — Inbox Channel** (added in 2.1.5). Fetch the messages, report an impression for what is shown, then report the user's actions. Always build events from the message itself (`id` and `data.messageDetails`), never with hand-written ids.
+
+```ts
+import Dengage, { type InboxChannelMessage } from '@dengage-tech/react-native-dengage';
+
+// 1. fetch (limit 1-100)
+const messages: InboxChannelMessage[] = await Dengage.getInboxChannelMessages(20);
+
+// 2. impression (IM) for every message shown, in one bulk request
+await Dengage.sendInboxChannelEvents(
+  messages.map((m) => ({ eventType: 'IM', messageId: m.id, messageDetails: m.data.messageDetails }))
+);
+
+// 3. user actions: open (OP), click (CL), delete (DT)
+const toEvent = (type: 'OP' | 'CL' | 'DT', m: InboxChannelMessage) => ({
+  eventType: type,
+  messageId: m.id,
+  messageDetails: m.data.messageDetails,
+});
+
+await Dengage.sendInboxChannelEvents([toEvent('OP', messages[0])]);   // opened
+await Dengage.sendInboxChannelEvents([toEvent('CL', messages[0])]);   // tapped a CTA / the card
+await Dengage.sendInboxChannelEvents([toEvent('DT', messages[0])]);   // deleted
+
+// CTA deeplink for the current platform
+const cta = messages[0].data.ctaButtons?.[0];
+const link = (Platform.OS === 'ios' ? cta?.iosDeeplink : cta?.androidDeeplink) || cta?.webUrl;
+```
+
+There is no direct "mark as read" or "delete" call: reading and deleting are reported through events, and the SDK keeps `isRead` / `isDeleted` in a local cache for 7 days. A runnable screen is in `example/src/screens/InboxChannelScreen.tsx`.
+
 ### 7.7 Geofence
 
 | Method | Description |
 | ------ | ----------- |
 | `requestLocationPermissions()` | Request location (requires geofence artifact). |
+| `setLocationPermission(status: string)` | Tell the SDK the current location permission: `'always'`, `'appinuse'` or `'none'`. Reflected in `getSubscription()` as `locationPermission`. |
 | `startGeofence()` | Start geofence (reflection / native). |
 | `stopGeofence()` | Stop geofence. |
 
 Requires native geofence dependencies and location permission strings.
+
+**Usage — `setLocationPermission`** (added in 2.1.5). Tell the SDK what location access the user granted so it is stored on the subscription (`locationPermission`). Values: `'always'`, `'appinuse'`, `'none'`.
+
+```ts
+Dengage.setLocationPermission('appinuse');
+
+const sub = await Dengage.getSubscription();
+console.log(sub.locationPermission); // 'appinuse'
+```
+
+A runnable screen is in `example/src/screens/LocationPermissionScreen.tsx`.
 
 ### 7.8 iOS notification actions
 

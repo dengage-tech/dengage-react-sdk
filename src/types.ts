@@ -93,6 +93,42 @@ export type InboxMessage = {
   [key: string]: any;
 };
 
+export type InboxChannelEventType = 'IM' | 'OP' | 'CL' | 'DT';
+
+export type InboxChannelCtaButton = {
+  buttonId?: string;
+  label?: string;
+  iosDeeplink?: string;
+  androidDeeplink?: string;
+  webUrl?: string;
+};
+
+export type InboxChannelMessageData = {
+  title?: string;
+  message?: string;
+  imageUrl?: string;
+  ctaButtons?: InboxChannelCtaButton[];
+  isPinned: boolean;
+  receiveDate?: string;
+  /** Opaque token, echo it back in every InboxChannelEvent of this message. */
+  messageDetails?: string;
+};
+
+export type InboxChannelMessage = {
+  id: string;
+  isRead: boolean;
+  priority: number;
+  isDeleted: boolean;
+  data: InboxChannelMessageData;
+};
+
+export type InboxChannelEvent = {
+  /** IM = impression, OP = open, CL = click, DT = delete */
+  eventType: InboxChannelEventType;
+  messageId: string;
+  messageDetails?: string | null;
+};
+
 export type CartItem = {
   productId: string;
   productVariantId: string;
